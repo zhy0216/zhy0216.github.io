@@ -4,7 +4,6 @@ var rename = require('gulp-rename');
 var autoprefixer = require('gulp-autoprefixer');
 var jade = require('gulp-jade');
 var coffee = require('gulp-coffee');
-var jshint = require('gulp-jshint');
 var uglify = require('gulp-uglify');
 var sass = require('gulp-sass');
 var browserSync = require('browser-sync');
@@ -59,8 +58,6 @@ gulp.task('coffee', function() {
             }
         }))
         .pipe(coffee({bare: true }))
-        .pipe(jshint())
-        .pipe(jshint.reporter('default'))
         // .pipe(uglify())
         .pipe(gulp.dest('js/'))
         .pipe(browserSync.reload({
