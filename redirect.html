@@ -1,0 +1,30 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Redirection</title>
+  <meta name="description" content="redirect to linkedin">
+  <meta name="author" content="Yang">
+
+
+</head>
+
+<body>
+    <h3>Redirect to my <a href="https://www.linkedin.com/in/im-yang/">linkedin</a> in <span>10</span> second(s) ...</h3>
+  <script>
+      var left = 10;
+      var context = setInterval(function(){
+        if(left === 0){
+            clearInterval(context);
+            window.location.href = "https://www.linkedin.com/in/im-yang/";
+            return ;
+        }
+        left --;
+        document.getElementsByTagName("span")[0].innerHTML = left;
+        
+      }, 1000);
+
+  </script>
+</body>
+</html>
