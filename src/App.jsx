@@ -10,11 +10,12 @@ const NAV_ITEMS = [
 const PROJECTS = [
   {
     number: '01',
-    title: 'NOVA / 01',
-    type: 'DIGITAL IDENTITY · 2025',
-    description: 'A living visual system for a team building tools for the next internet.',
-    tags: ['Brand', 'WebGL', 'Direction'],
-    variant: 'nova',
+    title: 'ZEBRA',
+    type: 'OPEN SOURCE FRAMEWORK · 2026',
+    description: 'A Bun-first TypeScript web framework with first-class dependency injection.',
+    tags: ['Bun', 'TypeScript', 'Open source'],
+    variant: 'zebra',
+    href: '/work/zebra/',
   },
   {
     number: '02',
@@ -23,6 +24,7 @@ const PROJECTS = [
     description: 'An editorial interface for curious people, quiet ideas, and long reads.',
     tags: ['Product', 'Motion', 'Build'],
     variant: 'field',
+    href: '#contact',
   },
   {
     number: '03',
@@ -31,6 +33,7 @@ const PROJECTS = [
     description: 'A browser-native light study that turns a visitor into the material.',
     tags: ['Three.js', 'Experience', 'Sound'],
     variant: 'afterimage',
+    href: '#contact',
   },
   {
     number: '04',
@@ -39,6 +42,7 @@ const PROJECTS = [
     description: 'A calmer way for distributed teams to make decisions together.',
     tags: ['Strategy', 'UI system', 'Prototype'],
     variant: 'ground',
+    href: '#contact',
   },
 ]
 
@@ -254,6 +258,17 @@ function OrbitalScene() {
 function ProjectArt({ variant }) {
   return (
     <div className={`project-art project-art--${variant}`} aria-hidden="true">
+      {variant === 'zebra' && (
+        <>
+          <div className="zebra-card-stripes" />
+          <div className="zebra-card-mark">
+            <span>Z</span>
+          </div>
+          <div className="zebra-card-code">BUN.SERVE / DI / CONTRACTS</div>
+          <div className="art-cross art-cross--a" />
+          <div className="art-cross art-cross--b" />
+        </>
+      )}
       {variant === 'nova' && (
         <>
           <div className="nova-orbit nova-orbit--one" />
@@ -287,7 +302,7 @@ function ProjectArt({ variant }) {
           <div className="ground-label">MAKE<br />ROOM</div>
         </>
       )}
-      <span className="art-index">{variant === 'nova' ? 'A / 01' : variant === 'field' ? 'B / 02' : variant === 'afterimage' ? 'C / 03' : 'D / 04'}</span>
+      <span className="art-index">{variant === 'zebra' || variant === 'nova' ? 'A / 01' : variant === 'field' ? 'B / 02' : variant === 'afterimage' ? 'C / 03' : 'D / 04'}</span>
     </div>
   )
 }
@@ -399,12 +414,12 @@ function Work() {
         <div className="project-grid">
           {PROJECTS.map((project, index) => (
             <article key={project.number} className={`project-card project-card--${index === 0 ? 'featured' : 'standard'}`}>
-              <ProjectArt variant={project.variant} />
+              <a href={project.href} aria-label={`View ${project.title} case study`}><ProjectArt variant={project.variant} /></a>
               <div className="project-info">
                 <div className="project-topline"><span>{project.number}</span><span>{project.type}</span></div>
                 <h3>{project.title}</h3>
                 <p>{project.description}</p>
-                <div className="project-bottom"><div>{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div><a href="#contact" aria-label={`View ${project.title}`}>VIEW PROJECT <Arrow /></a></div>
+                <div className="project-bottom"><div>{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div><a href={project.href} aria-label={`View ${project.title}`}>VIEW PROJECT <Arrow /></a></div>
               </div>
             </article>
           ))}
@@ -457,6 +472,17 @@ export default function App() {
     }, { rootMargin: '-25% 0px -60% 0px', threshold: [0.05, 0.25, 0.5] })
     sections.forEach((section) => observer.observe(section))
     return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const restore = () => {
+      const id = window.location.hash.slice(1)
+      if (!id) return
+      window.requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView())
+    }
+    restore()
+    window.addEventListener('hashchange', restore)
+    return () => window.removeEventListener('hashchange', restore)
   }, [])
 
   return <><Nav activeSection={activeSection} /><main><Hero /><About /><Work /><Lab /></main><Contact /></>
