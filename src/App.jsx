@@ -102,20 +102,20 @@ function OrbitalScene() {
 
     const shell = new THREE.Mesh(
       new THREE.IcosahedronGeometry(2.5, 2),
-      new THREE.MeshBasicMaterial({ color: 0x7778ff, wireframe: true, transparent: true, opacity: 0.27 }),
+      new THREE.MeshBasicMaterial({ color: 0x0011e2, wireframe: true, transparent: true, opacity: 0.27 }),
     )
     root.add(shell)
 
     const innerShell = new THREE.Mesh(
       new THREE.IcosahedronGeometry(1.65, 2),
-      new THREE.MeshBasicMaterial({ color: 0x4b4dff, wireframe: true, transparent: true, opacity: 0.24 }),
+      new THREE.MeshBasicMaterial({ color: 0x2638ff, wireframe: true, transparent: true, opacity: 0.24 }),
     )
     innerShell.rotation.set(0.4, 0.3, 0.1)
     root.add(innerShell)
 
     const knot = new THREE.Mesh(
       new THREE.TorusKnotGeometry(1.23, 0.035, 170, 10, 2, 3),
-      new THREE.MeshBasicMaterial({ color: 0xb7b8ff, wireframe: true, transparent: true, opacity: 0.76 }),
+      new THREE.MeshBasicMaterial({ color: 0x9da8ff, wireframe: true, transparent: true, opacity: 0.76 }),
     )
     knot.rotation.set(0.4, -0.55, 0.25)
     root.add(knot)
@@ -159,7 +159,7 @@ function OrbitalScene() {
     const particles = new THREE.Points(particleGeometry, particleMaterial)
     root.add(particles)
 
-    const ringMaterial = new THREE.LineBasicMaterial({ color: 0x5557ff, transparent: true, opacity: 0.35 })
+    const ringMaterial = new THREE.LineBasicMaterial({ color: 0x1e32ed, transparent: true, opacity: 0.35 })
     const ringA = new THREE.LineLoop(new THREE.TorusGeometry(3.2, 0.008, 8, 96), ringMaterial)
     ringA.rotation.set(1.15, 0.16, 0.18)
     root.add(ringA)
@@ -182,7 +182,7 @@ function OrbitalScene() {
     starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3))
     const stars = new THREE.Points(
       starGeometry,
-      new THREE.PointsMaterial({ color: 0x6062ff, size: 0.012, transparent: true, opacity: 0.65 }),
+      new THREE.PointsMaterial({ color: 0x5268ff, size: 0.012, transparent: true, opacity: 0.65 }),
     )
     scene.add(stars)
 

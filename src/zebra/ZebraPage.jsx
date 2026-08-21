@@ -82,7 +82,7 @@ function Arrow({ direction = 'ne' }) {
 function ZebraMark({ className = '' }) {
   return (
     <svg className={`zc-mark ${className}`} viewBox="0 0 64 64" aria-hidden="true">
-      <rect width="64" height="64" fill="#6162ff" />
+      <rect width="64" height="64" fill="#0011e2" />
       <path d="M64 0v22L20 64H0z" fill="#f4f4f0" />
       <path d="M64 0v8L46 64h-8z" fill="#f4f4f0" opacity=".52" />
       <path d="M64 40v24H24z" fill="#f4f4f0" opacity=".2" />
@@ -176,7 +176,7 @@ function ZebraScene() {
     group.add(cloth)
 
     const wireMaterial = new THREE.MeshBasicMaterial({
-      color: 0x7778ff,
+      color: 0x0011e2,
       wireframe: true,
       transparent: true,
       opacity: 0.16,
@@ -202,7 +202,7 @@ function ZebraScene() {
     dotGeometry.setAttribute('position', new THREE.BufferAttribute(dotPositions, 3))
     const dots = new THREE.Points(
       dotGeometry,
-      new THREE.PointsMaterial({ color: 0x7778ff, size: 0.018, transparent: true, opacity: 0.65 }),
+      new THREE.PointsMaterial({ color: 0x5268ff, size: 0.018, transparent: true, opacity: 0.65 }),
     )
     scene.add(dots)
 
