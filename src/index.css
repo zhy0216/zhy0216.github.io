@@ -160,6 +160,33 @@ button { appearance: none; border: 0; background: transparent; font: inherit; pa
 .starwreck-card-mark { position: absolute; top: 20px; left: 22px; display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid rgba(255,255,255,.38); transform: rotate(45deg); }
 .starwreck-card-mark i { font: 300 18px/1 var(--mono); color: #ffb34c; font-style: normal; transform: rotate(-45deg); }
 .starwreck-card-code { position: absolute; left: 20px; bottom: 18px; padding: 8px 10px; background: #06060b; color: #e8e8ef; font: 400 9px/1 var(--mono); letter-spacing: .11em; }
+.project-art--trigger { background: #0a0a0d; color: #f4f4f0; }
+.trigger-card-rail { position: absolute; left: 8%; right: 8%; bottom: 34%; display: flex; align-items: flex-end; gap: 5px; height: 34%; }
+.trigger-card-cell { flex: 1; background: rgba(0,17,226,.24); transition: background .4s ease; }
+.trigger-card-cell--lit { background: var(--blue); }
+.trigger-card-cell--dim { background: rgba(82,104,255,.42); }
+.trigger-card-cell--gap { background: transparent; box-shadow: inset 0 0 0 1px rgba(82,104,255,.35); }
+.trigger-card-cell:nth-child(1) { height: 62%; }
+.trigger-card-cell:nth-child(2) { height: 48%; }
+.trigger-card-cell:nth-child(3) { height: 80%; }
+.trigger-card-cell:nth-child(4) { height: 56%; }
+.trigger-card-cell:nth-child(5) { height: 30%; }
+.trigger-card-cell:nth-child(6) { height: 70%; }
+.trigger-card-cell:nth-child(7) { height: 88%; }
+.trigger-card-cell:nth-child(8) { height: 50%; }
+.trigger-card-cell:nth-child(9) { height: 30%; }
+.trigger-card-cell:nth-child(10) { height: 64%; }
+.trigger-card-cell:nth-child(11) { height: 76%; }
+.trigger-card-base { position: absolute; left: 8%; right: 8%; bottom: 32%; height: 1px; background: rgba(82,104,255,.6); }
+.trigger-card-cursor { position: absolute; left: 9%; bottom: 31%; width: 3px; height: 40%; background: #f4f4f0; box-shadow: 0 0 18px rgba(82,104,255,.95); animation: trigger-scan 7s ease-in-out infinite paused; }
+@keyframes trigger-scan { 0%, 12% { left: 9%; } 88%, 100% { left: 88%; } }
+.trigger-card-mark { position: absolute; top: 17%; left: 18%; display: grid; place-items: center; width: 74px; height: 74px; background: var(--blue); border: 1px solid rgba(255,255,255,.7); transform: rotate(-4deg); box-shadow: 0 0 0 12px rgba(7,7,7,.3); }
+.trigger-card-mark i { font-style: normal; color: white; font: 300 34px/1 var(--sans); transform: rotate(4deg); }
+.trigger-card-code { position: absolute; left: 20px; bottom: 18px; padding: 8px 10px; background: #0a0a0d; color: #e8e8ef; font: 400 9px/1 var(--mono); letter-spacing: .11em; }
+.project-card:hover .trigger-card-cursor { animation-play-state: running; }
+.project-card:hover .trigger-card-cell--lit { background: var(--blue-bright); }
+.project-card:hover .trigger-card-cell--dim { background: rgba(82,104,255,.6); }
+.project-card:hover .trigger-card-cell--gap { box-shadow: inset 0 0 0 1px rgba(82,104,255,.6); }
 .project-art--field { background: #d7d7d2; color: #111; }
 .field-scanlines { position: absolute; inset: 0; opacity: .43; background: repeating-linear-gradient(0deg, transparent 0 6px, rgba(0,0,0,.08) 6px 7px), repeating-linear-gradient(90deg, transparent 0 19px, rgba(0,0,0,.07) 19px 20px); }
 .field-title { position: absolute; left: 8%; bottom: 11%; font-size: clamp(45px, 6vw, 88px); line-height: .79; letter-spacing: -.1em; font-weight: 300; }

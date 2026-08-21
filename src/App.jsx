@@ -28,6 +28,15 @@ const PROJECTS = [
   },
   {
     number: '03',
+    title: 'BETTER-TRIGGER',
+    type: 'OPEN SOURCE · DURABLE EXECUTION · 2026',
+    description: 'Durable execution for TypeScript on Postgres — replay, not snapshots. No Redis, no ClickHouse.',
+    tags: ['TypeScript', 'PostgreSQL', 'Open source'],
+    variant: 'trigger',
+    href: '/work/better-trigger/',
+  },
+  {
+    number: '04',
     title: 'FIELD NOTES',
     type: 'EDITORIAL PLATFORM · 2024',
     description: 'An editorial interface for curious people, quiet ideas, and long reads.',
@@ -36,7 +45,7 @@ const PROJECTS = [
     href: '#contact',
   },
   {
-    number: '04',
+    number: '05',
     title: 'AFTERIMAGE',
     type: 'INTERACTIVE INSTALLATION · 2024',
     description: 'A browser-native light study that turns a visitor into the material.',
@@ -45,7 +54,7 @@ const PROJECTS = [
     href: '#contact',
   },
   {
-    number: '05',
+    number: '06',
     title: 'COMMON GROUND',
     type: 'PRODUCT SYSTEM · 2023',
     description: 'A calmer way for distributed teams to make decisions together.',
@@ -328,6 +337,29 @@ function ProjectArt({ variant }) {
           <div className="art-cross art-cross--b" />
         </>
       )}
+      {variant === 'trigger' && (
+        <>
+          <div className="trigger-card-rail">
+            <span className="trigger-card-cell trigger-card-cell--lit" />
+            <span className="trigger-card-cell trigger-card-cell--lit" />
+            <span className="trigger-card-cell trigger-card-cell--lit" />
+            <span className="trigger-card-cell trigger-card-cell--dim" />
+            <span className="trigger-card-cell trigger-card-cell--gap" />
+            <span className="trigger-card-cell trigger-card-cell--lit" />
+            <span className="trigger-card-cell trigger-card-cell--lit" />
+            <span className="trigger-card-cell trigger-card-cell--dim" />
+            <span className="trigger-card-cell trigger-card-cell--gap" />
+            <span className="trigger-card-cell trigger-card-cell--lit" />
+            <span className="trigger-card-cell trigger-card-cell--lit" />
+          </div>
+          <div className="trigger-card-base" />
+          <div className="trigger-card-cursor" />
+          <div className="trigger-card-mark"><i>▸</i></div>
+          <span className="trigger-card-code">REPLAY / POS SEQ · POSTGRES</span>
+          <div className="art-cross art-cross--a" />
+          <div className="art-cross art-cross--b" />
+        </>
+      )}
       {variant === 'field' && (
         <>
           <div className="field-scanlines" />
@@ -352,7 +384,7 @@ function ProjectArt({ variant }) {
           <div className="ground-label">MAKE<br />ROOM</div>
         </>
       )}
-      <span className="art-index">{variant === 'zebra' || variant === 'nova' ? 'A / 01' : variant === 'starwreck' ? 'B / 02' : variant === 'field' ? 'C / 03' : variant === 'afterimage' ? 'D / 04' : 'E / 05'}</span>
+      <span className="art-index">{variant === 'zebra' || variant === 'nova' ? 'A / 01' : variant === 'starwreck' ? 'B / 02' : variant === 'trigger' ? 'C / 03' : variant === 'field' ? 'D / 04' : variant === 'afterimage' ? 'E / 05' : 'F / 06'}</span>
     </div>
   )
 }
@@ -420,7 +452,7 @@ function Hero() {
       <div className="hero-bottom frame">
         <span>SCROLL TO EXPLORE</span>
         <span className="hero-line" />
-        <span>01 / 05</span>
+        <span>01 / 06</span>
       </div>
     </section>
   )
@@ -474,7 +506,7 @@ function Work() {
             </article>
           ))}
         </div>
-        <div className="work-footer"><span>MORE IN THE ARCHIVE ↗</span><span className="work-footer-line" /><span>05 / 26</span></div>
+        <div className="work-footer"><span>MORE IN THE ARCHIVE ↗</span><span className="work-footer-line" /><span>06 / 26</span></div>
       </div>
     </section>
   )

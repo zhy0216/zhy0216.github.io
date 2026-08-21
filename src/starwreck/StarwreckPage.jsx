@@ -551,7 +551,7 @@ function StarwreckPage() {
       </main>
 
       <footer className="sw-footer">
-        <div className="sw-frame sw-footer-top"><a href="/#work"><Arrow direction="left" /> ALL PROJECTS</a><span>NEXT CASE / FIELD NOTES</span><a href="mailto:zhy0216@gmail.com">START A CONVERSATION <Arrow /></a></div>
+        <div className="sw-frame sw-footer-top"><a href="/#work"><Arrow direction="left" /> ALL PROJECTS</a><span>NEXT CASE / BETTER-TRIGGER</span><a href="mailto:zhy0216@gmail.com">START A CONVERSATION <Arrow /></a></div>
         <div className="sw-frame sw-footer-bottom"><span>© {new Date().getFullYear()} YANG / 0216</span><span>STARWRECK / CASE STUDY 02</span><span>BUILT WITH REACT + THREE.JS</span></div>
       </footer>
     </div>
