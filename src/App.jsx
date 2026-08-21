@@ -118,22 +118,67 @@ function OrbitalScene() {
     root.rotation.set(0.1, -0.25, -0.08)
     scene.add(root)
 
+    const ambient = new THREE.AmbientLight(0x3a4cff, 2.2)
+    scene.add(ambient)
+    const sunLight = new THREE.PointLight(0x9fb0ff, 95, 0, 2)
+    scene.add(sunLight)
+    const lightB = new THREE.PointLight(0xe6ebff, 32, 0, 2)
+    lightB.position.set(-2.2, -0.9, -1.6)
+    root.add(lightB)
+
+    const glowCanvas = document.createElement('canvas')
+    glowCanvas.width = glowCanvas.height = 128
+    const glowCtx = glowCanvas.getContext('2d')
+    const glowGradient = glowCtx.createRadialGradient(64, 64, 0, 64, 64, 64)
+    glowGradient.addColorStop(0, 'rgba(255,255,255,0.95)')
+    glowGradient.addColorStop(0.18, 'rgba(160,175,255,0.6)')
+    glowGradient.addColorStop(0.45, 'rgba(74,94,255,0.22)')
+    glowGradient.addColorStop(1, 'rgba(0,0,0,0)')
+    glowCtx.fillStyle = glowGradient
+    glowCtx.fillRect(0, 0, 128, 128)
+    const glowTexture = new THREE.CanvasTexture(glowCanvas)
+
+    const sunGroup = new THREE.Group()
+    sunGroup.position.set(0, 2.3, 0.9)
+    scene.add(sunGroup)
+
+    const sunCore = new THREE.Mesh(
+      new THREE.IcosahedronGeometry(0.3, 2),
+      new THREE.MeshBasicMaterial({ color: 0xffffff }),
+    )
+    sunGroup.add(sunCore)
+
+    const sunGlow = new THREE.Sprite(
+      new THREE.SpriteMaterial({ map: glowTexture, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.85 }),
+    )
+    sunGlow.scale.set(2.7, 2.7, 1)
+    sunGroup.add(sunGlow)
+
     const shell = new THREE.Mesh(
       new THREE.IcosahedronGeometry(2.5, 2),
-      new THREE.MeshBasicMaterial({ color: 0x0011e2, wireframe: true, transparent: true, opacity: 0.27 }),
+      new THREE.MeshStandardMaterial({
+        color: 0x0a1ee8, emissive: 0x0011e2, emissiveIntensity: 0.9,
+        wireframe: true, transparent: true, opacity: 0.42, roughness: 0.5, metalness: 0.35,
+      }),
     )
     root.add(shell)
 
     const innerShell = new THREE.Mesh(
       new THREE.IcosahedronGeometry(1.65, 2),
-      new THREE.MeshBasicMaterial({ color: 0x2638ff, wireframe: true, transparent: true, opacity: 0.24 }),
+      new THREE.MeshStandardMaterial({
+        color: 0x1e36ff, emissive: 0x2638ff, emissiveIntensity: 0.7,
+        wireframe: true, transparent: true, opacity: 0.38, roughness: 0.4, metalness: 0.4,
+      }),
     )
     innerShell.rotation.set(0.4, 0.3, 0.1)
     root.add(innerShell)
 
     const knot = new THREE.Mesh(
       new THREE.TorusKnotGeometry(1.23, 0.035, 170, 10, 2, 3),
-      new THREE.MeshBasicMaterial({ color: 0x9da8ff, wireframe: true, transparent: true, opacity: 0.76 }),
+      new THREE.MeshStandardMaterial({
+        color: 0xbfc9ff, emissive: 0x9da8ff, emissiveIntensity: 0.55,
+        wireframe: true, transparent: true, opacity: 0.85, roughness: 0.3, metalness: 0.5,
+      }),
     )
     knot.rotation.set(0.4, -0.55, 0.25)
     root.add(knot)
@@ -205,11 +250,51 @@ function OrbitalScene() {
     scene.add(stars)
 
     const pointer = { x: 0, y: 0 }
+    let dragging = false
+    const dragTarget = new THREE.Vector3(0, 2.3, 0.9)
+    const dragPlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), -0.9)
+    const dragRaycaster = new THREE.Raycaster()
+    const ndc = new THREE.Vector2()
+    const updateDragTarget = (event) => {
+      const rect = renderer.domElement.getBoundingClientRect()
+      ndc.set(
+        ((event.clientX - rect.left) / rect.width) * 2 - 1,
+        -((event.clientY - rect.top) / rect.height) * 2 + 1,
+      )
+      dragRaycaster.setFromCamera(ndc, camera)
+      const hit = new THREE.Vector3()
+      if (dragRaycaster.ray.intersectPlane(dragPlane, hit)) {
+        dragTarget.set(
+          THREE.MathUtils.clamp(hit.x, -3, 3),
+          THREE.MathUtils.clamp(hit.y, 0.4, 3.1),
+          dragTarget.z,
+        )
+      }
+    }
+    const onPointerDown = (event) => {
+      const rect = renderer.domElement.getBoundingClientRect()
+      const projected = sunGroup.position.clone().project(camera)
+      const sx = rect.left + (projected.x * 0.5 + 0.5) * rect.width
+      const sy = rect.top + (-projected.y * 0.5 + 0.5) * rect.height
+      if ((event.clientX - sx) ** 2 + (event.clientY - sy) ** 2 < 8100) {
+        dragging = true
+        mount.style.cursor = 'grabbing'
+        updateDragTarget(event)
+      }
+    }
+    const onPointerUp = () => {
+      dragging = false
+      mount.style.cursor = 'grab'
+    }
     const onPointerMove = (event) => {
       pointer.x = (event.clientX / window.innerWidth - 0.5) * 2
       pointer.y = (event.clientY / window.innerHeight - 0.5) * 2
+      if (dragging) updateDragTarget(event)
     }
     window.addEventListener('pointermove', onPointerMove, { passive: true })
+    window.addEventListener('pointerup', onPointerUp)
+    renderer.domElement.addEventListener('pointerdown', onPointerDown)
+    mount.style.cursor = 'grab'
 
     const resize = () => {
       const width = mount.clientWidth || 1
@@ -229,7 +314,7 @@ function OrbitalScene() {
       const elapsed = clock.getElapsedTime()
       if (!reducedMotion) {
         root.rotation.y += 0.0018
-        root.rotation.x = 0.1 + Math.sin(elapsed * 0.22) * 0.05
+        root.rotation.x = (0.1 + Math.sin(elapsed * 0.22) * 0.05) + (-pointer.y * 0.16 + 0.1 - root.rotation.x) * 0.05
         shell.rotation.z -= 0.0007
         innerShell.rotation.z += 0.0014
         knot.rotation.z += 0.003
@@ -238,8 +323,19 @@ function OrbitalScene() {
         ringB.rotation.x -= 0.0008
         particles.rotation.y -= 0.00055
         stars.rotation.y += 0.00015
-        camera.position.x += (pointer.x * 0.25 - camera.position.x) * 0.025
-        camera.position.y += (-pointer.y * 0.16 + 0.15 - camera.position.y) * 0.025
+        camera.position.x += (pointer.x * 0.85 - camera.position.x) * 0.08
+        camera.position.y += (-pointer.y * 0.55 + 0.15 - camera.position.y) * 0.08
+        root.rotation.z += ((pointer.x * 0.22 - 0.08) - root.rotation.z) * 0.05
+        const idleX = Math.sin(elapsed * 0.45) * 0.32
+        const idleY = 2.3 + Math.sin(elapsed * 0.7) * 0.16
+        const k = dragging ? 0.2 : 0.035
+        sunGroup.position.x += ((dragging ? dragTarget.x : idleX) - sunGroup.position.x) * k
+        sunGroup.position.y += ((dragging ? dragTarget.y : idleY) - sunGroup.position.y) * k
+        sunGroup.position.z = 0.9
+        sunLight.position.set(sunGroup.position.x, sunGroup.position.y, sunGroup.position.z - 1.6)
+        const sunPulse = 1 + Math.sin(elapsed * 1.8) * 0.09
+        sunGlow.scale.set(2.7 * sunPulse, 2.7 * sunPulse, 1)
+        sunGlow.material.opacity = 0.82 + Math.sin(elapsed * 1.8) * 0.12
         camera.lookAt(0, 0, 0)
       }
       renderer.render(scene, camera)
@@ -250,6 +346,8 @@ function OrbitalScene() {
     return () => {
       cancelAnimationFrame(frame)
       window.removeEventListener('pointermove', onPointerMove)
+      window.removeEventListener('pointerup', onPointerUp)
+      renderer.domElement.removeEventListener('pointerdown', onPointerDown)
       resizeObserver.disconnect()
       particleGeometry.dispose()
       particleMaterial.dispose()
@@ -265,6 +363,10 @@ function OrbitalScene() {
       ringA.material.dispose()
       ringB.geometry.dispose()
       ringB.material.dispose()
+      sunCore.geometry.dispose()
+      sunCore.material.dispose()
+      sunGlow.material.map.dispose()
+      sunGlow.material.dispose()
       renderer.dispose()
       if (renderer.domElement.parentNode === mount) mount.removeChild(renderer.domElement)
     }
@@ -440,13 +542,11 @@ function Hero() {
           </div>
         </div>
         <div className="hero-meta">
-          <div><span>LOCAL TIME</span><strong>21:16 <i>GMT+8</i></strong></div>
           <div><span>AVAILABLE FOR</span><strong>SELECTED PROJECTS</strong></div>
-          <div className="hero-meta-mark">↘</div>
         </div>
         <div className="hero-orb-wrap">
           <OrbitalScene />
-          <div className="orbital-caption"><span>ORBITAL STUDY / 001</span><span>MOVE YOUR CURSOR</span></div>
+          <div className="orbital-caption"><span>ORBITAL STUDY / 001</span></div>
         </div>
       </div>
       <div className="hero-bottom frame">
@@ -465,7 +565,6 @@ function About() {
         <aside className="section-aside">
           <SectionLabel>01 / about</SectionLabel>
           <p>My name is Yang,<br />I am a programmer.</p>
-          <span className="aside-code">YANG<br />EST. 2018—NOW</span>
         </aside>
         <div className="about-main">
           <h2>Good work starts<br />with a <span>strange question.</span></h2>
