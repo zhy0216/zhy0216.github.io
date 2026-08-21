@@ -1,0 +1,5 @@
+interface:
+  display_name: "Make Project Page"
+  short_description: "Build evidence-based portfolio project pages"
+  brand_color: "#0011E2"
+  default_prompt: "Use $make-proj to turn a local project into a polished portfolio case-study page."
