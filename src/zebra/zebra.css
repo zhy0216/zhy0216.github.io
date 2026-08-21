@@ -42,7 +42,6 @@
 .zc-hero-copy::before { content: ''; position: absolute; z-index: -1; inset: -32px -90px -55px -40px; background: linear-gradient(90deg, rgba(8,8,8,.97) 0%, rgba(8,8,8,.9) 58%, rgba(8,8,8,.48) 79%, transparent 100%); pointer-events: none; }
 .zc-title-lockup { display: flex; align-items: center; gap: 24px; margin-top: 32px; }
 .zc-title-lockup h1 { margin: 0; font-size: clamp(88px, 9.9vw, 146px); line-height: .78; letter-spacing: -.105em; word-spacing: .12em; font-weight: 300; }
-.zc-title-lockup h1 span { color: var(--zc-blue-light); }
 .zc-hero-lede { max-width: 470px; margin: 45px 0 0; font-size: clamp(25px, 2.45vw, 35px); line-height: 1.15; letter-spacing: -.05em; word-spacing: .07em; }
 .zc-hero-lede span { white-space: nowrap; }
 .zc-hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 40px; }

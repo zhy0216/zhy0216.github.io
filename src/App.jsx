@@ -12,7 +12,7 @@ const PROJECTS = [
     number: '01',
     title: 'ZEBRA',
     type: 'OPEN SOURCE FRAMEWORK · 2026',
-    description: 'A Bun-first TypeScript web framework with first-class dependency injection.',
+    description: 'A Bun-first TypeScript web framework with first-class dependency injection',
     tags: ['Bun', 'TypeScript', 'Open source'],
     variant: 'zebra',
     href: '/work/zebra/',
@@ -21,7 +21,7 @@ const PROJECTS = [
     number: '02',
     title: 'STARWRECK',
     type: 'SPACE-SURVIVAL ROGUELITE · 2026',
-    description: 'Weld a warship tile by tile, turn into the swarm, and bring a custom broadside to bear.',
+    description: 'Weld a warship tile by tile, turn into the swarm, and bring a custom broadside to bear',
     tags: ['TypeScript', 'PixiJS', 'Electron'],
     variant: 'starwreck',
     href: '/work/starwreck/',
@@ -30,8 +30,8 @@ const PROJECTS = [
     number: '03',
     title: 'BETTER-TRIGGER',
     type: 'OPEN SOURCE · DURABLE EXECUTION · 2026',
-    description: 'Durable execution for TypeScript on Postgres — replay, not snapshots. No Redis, no ClickHouse.',
-    tags: ['TypeScript', 'PostgreSQL', 'Open source'],
+    description: 'A TypeScript runtime that replays memoized steps across waits and crashes, backed by Postgres',
+    tags: ['TypeScript', 'PostgreSQL', 'Replay runtime'],
     variant: 'trigger',
     href: '/work/better-trigger/',
   },
@@ -39,7 +39,7 @@ const PROJECTS = [
     number: '04',
     title: 'FIELD NOTES',
     type: 'EDITORIAL PLATFORM · 2024',
-    description: 'An editorial interface for curious people, quiet ideas, and long reads.',
+    description: 'An editorial interface for curious people, quiet ideas, and long reads',
     tags: ['Product', 'Motion', 'Build'],
     variant: 'field',
     href: '#contact',
@@ -48,7 +48,7 @@ const PROJECTS = [
     number: '05',
     title: 'AFTERIMAGE',
     type: 'INTERACTIVE INSTALLATION · 2024',
-    description: 'A browser-native light study that turns a visitor into the material.',
+    description: 'A browser-native light study that turns a visitor into the material',
     tags: ['Three.js', 'Experience', 'Sound'],
     variant: 'afterimage',
     href: '#contact',
@@ -57,7 +57,7 @@ const PROJECTS = [
     number: '06',
     title: 'COMMON GROUND',
     type: 'PRODUCT SYSTEM · 2023',
-    description: 'A calmer way for distributed teams to make decisions together.',
+    description: 'A calmer way for distributed teams to make decisions together',
     tags: ['Strategy', 'UI system', 'Prototype'],
     variant: 'ground',
     href: '#contact',
@@ -414,23 +414,30 @@ function ProjectArt({ variant }) {
       )}
       {variant === 'trigger' && (
         <>
-          <div className="trigger-card-rail">
-            <span className="trigger-card-cell trigger-card-cell--lit" />
-            <span className="trigger-card-cell trigger-card-cell--lit" />
-            <span className="trigger-card-cell trigger-card-cell--lit" />
-            <span className="trigger-card-cell trigger-card-cell--dim" />
-            <span className="trigger-card-cell trigger-card-cell--gap" />
-            <span className="trigger-card-cell trigger-card-cell--lit" />
-            <span className="trigger-card-cell trigger-card-cell--lit" />
-            <span className="trigger-card-cell trigger-card-cell--dim" />
-            <span className="trigger-card-cell trigger-card-cell--gap" />
-            <span className="trigger-card-cell trigger-card-cell--lit" />
-            <span className="trigger-card-cell trigger-card-cell--lit" />
+          <div className="trigger-card-ledger">
+            <div className="trigger-card-pass">
+              <span>PASS 01</span>
+              <div className="trigger-card-track">
+                <i className="trigger-card-cell trigger-card-cell--done">00</i>
+                <i className="trigger-card-cell trigger-card-cell--wait">01</i>
+                <i className="trigger-card-cell trigger-card-cell--future">02</i>
+                <i className="trigger-card-cell trigger-card-cell--future">OUT</i>
+              </div>
+            </div>
+            <div className="trigger-card-bridge"><span>SUSPEND</span><b>↓</b><span>REPLAY</span></div>
+            <div className="trigger-card-pass">
+              <span>PASS 02</span>
+              <div className="trigger-card-track">
+                <i className="trigger-card-cell trigger-card-cell--cached">00</i>
+                <i className="trigger-card-cell trigger-card-cell--cached">01</i>
+                <i className="trigger-card-cell trigger-card-cell--active">02</i>
+                <i className="trigger-card-cell trigger-card-cell--terminal">OUT</i>
+                <b className="trigger-card-scan" />
+              </div>
+            </div>
           </div>
-          <div className="trigger-card-base" />
-          <div className="trigger-card-cursor" />
           <div className="trigger-card-mark"><i>▸</i></div>
-          <span className="trigger-card-code">REPLAY / POS SEQ · POSTGRES</span>
+          <span className="trigger-card-code">STEP MEMORY / FENCE +1 / POSTGRES</span>
           <div className="art-cross art-cross--a" />
           <div className="art-cross art-cross--b" />
         </>
@@ -507,8 +514,8 @@ function Hero() {
       <div className="frame hero-frame">
         <div className="hero-copy">
           <SectionLabel light>// independent programmer · shanghai / anywhere</SectionLabel>
-          <h1>I write software<br /><em>with a pulse.</em></h1>
-          <p className="hero-intro"><span>Interfaces, experiments, and small pieces of the future.</span></p>
+          <h1>I write software<br /><em>with a pulse</em></h1>
+          <p className="hero-intro"><span>Interfaces, experiments, and small pieces of the future</span></p>
           <div className="hero-actions">
             <SolidButton href="#work">EXPLORE SELECTED WORK</SolidButton>
             <a className="text-link text-link--light" href="#about">SCROLL TO DISCOVER <Arrow diagonal={false} /></a>
@@ -540,8 +547,8 @@ function About() {
           <p>My name is Yang,<br />I am a programmer.</p>
         </aside>
         <div className="about-main">
-          <h2>Good work starts<br />with a <span>strange question.</span></h2>
-          <p className="about-copy">From a rough idea to a working interface, I like making things that are clear enough to use and strange enough to remember. The projects below are a mix of shipped work, prototypes, and things I built simply because I had to know if they could exist.</p>
+          <h2>Good work starts<br />with a <span>strange question</span></h2>
+          <p className="about-copy">From a rough idea to a working interface, I like making things that are clear enough to use and strange enough to remember The projects below are a mix of shipped work, prototypes, and things I built simply because I had to know if they could exist</p>
           <div className="stat-row">
             <div><strong>07</strong><span>YEARS MAKING<br />ON THE WEB</span></div>
             <div><strong>26</strong><span>PROJECTS<br />SHIPPED</span></div>
@@ -561,8 +568,8 @@ function Work() {
     <section id="work" className="section-dark work-section">
       <div className="frame work-frame">
         <div className="section-heading-row">
-          <div><SectionLabel light>02 / selected work</SectionLabel><h2>Some things I&apos;ve<br /><span>made recently.</span></h2></div>
-          <p>Six studies in making<br />the invisible visible.</p>
+          <div><SectionLabel light>02 / selected work</SectionLabel><h2>Some things I&apos;ve<br /><span>made recently</span></h2></div>
+          <p>Six studies in making<br />the invisible visible</p>
         </div>
         <div className="project-grid">
           {PROJECTS.map((project, index) => (
@@ -585,15 +592,15 @@ function Work() {
 
 function Lab() {
   const capabilities = [
-    ['01', 'Creative direction', 'A clear point of view, from first thought to final frame.'],
-    ['02', 'Interface systems', 'Flexible visual languages that stay coherent at every scale.'],
-    ['03', '3D / WebGL', 'Spaces with depth, motion, and a little bit of physics.'],
-    ['04', 'Prototypes', 'Fast, tangible experiments to find what words cannot.'],
+    ['01', 'Creative direction', 'A clear point of view, from first thought to final frame'],
+    ['02', 'Interface systems', 'Flexible visual languages that stay coherent at every scale'],
+    ['03', '3D / WebGL', 'Spaces with depth, motion, and a little bit of physics'],
+    ['04', 'Prototypes', 'Fast, tangible experiments to find what words cannot'],
   ]
   return (
     <section id="lab" className="section-paper lab-section">
       <div className="frame lab-grid">
-        <div className="lab-intro"><SectionLabel>03 / the lab</SectionLabel><h2>A small practice<br />with a large appetite<br />for the <span>unknown.</span></h2><a className="text-link" href="#contact">START A CONVERSATION <Arrow /></a></div>
+        <div className="lab-intro"><SectionLabel>03 / the lab</SectionLabel><h2>A small practice<br />with a large appetite<br />for the <span>unknown</span></h2><a className="text-link" href="#contact">START A CONVERSATION <Arrow /></a></div>
         <div className="capability-list">{capabilities.map(([number, title, text]) => <div className="capability" key={number}><span className="capability-number">{number}</span><div><h3>{title}</h3><p>{text}</p></div><Arrow diagonal={false} /></div>)}</div>
       </div>
       <div className="frame lab-baseline"><span>TOOLS I LIKE TO THINK WITH</span><span>FIGMA · THREE.JS · REACT · AFTER EFFECTS · A GOOD NOTEBOOK</span></div>
@@ -606,7 +613,7 @@ function Contact() {
     <footer id="contact" className="section-dark contact-section">
       <div className="frame contact-frame">
         <div className="contact-topline"><SectionLabel light>04 / contact</SectionLabel><span>OPEN TO THE RIGHT KIND OF TROUBLE</span></div>
-        <div className="contact-body"><h2>Have a good idea?<br /><em>Let&apos;s give it a body.</em></h2><SolidButton light href="https://github.com/zhy0216">LET&apos;S TALK</SolidButton></div>
+        <div className="contact-body"><h2>Have a good idea?<br /><em>Let&apos;s give it a body</em></h2><SolidButton light href="https://github.com/zhy0216">LET&apos;S TALK</SolidButton></div>
         <div className="contact-links"><div><a href="https://github.com/zhy0216" target="_blank" rel="noreferrer">GITHUB <Arrow /></a><a href="https://www.linkedin.com/in/im-yang/" target="_blank" rel="noreferrer">LINKEDIN <Arrow /></a><a href="#top">BACK TO TOP ↑</a></div></div>
         <div className="contact-foot"><span>© {new Date().getFullYear()} YANG</span><span>MADE WITH CURIOSITY + THREE.JS</span><span>SHANGHAI — CHINA</span></div>
       </div>
