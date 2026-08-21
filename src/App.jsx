@@ -20,9 +20,9 @@ const PROJECTS = [
   {
     number: '02',
     title: 'STARWRECK',
-    type: 'GAME / ROGUELITE · 2026',
-    description: 'A space survivors-like where the build is a hull you weld — turn in the swarm to bring your broadside to bear.',
-    tags: ['TypeScript', 'PixiJS', 'Steam'],
+    type: 'SPACE-SURVIVAL ROGUELITE · 2026',
+    description: 'Weld a warship tile by tile, turn into the swarm, and bring a custom broadside to bear.',
+    tags: ['TypeScript', 'PixiJS', 'Electron'],
     variant: 'starwreck',
     href: '/work/starwreck/',
   },
@@ -375,25 +375,6 @@ function OrbitalScene() {
   return <div ref={mountRef} className="orbital-scene" aria-hidden="true" />
 }
 
-const SW_ROWS = [1, 3, 5, 7, 9, 9, 9, 9, 9, 7, 5, 3, 1]
-
-function buildStarwreckCells() {
-  const present = {}
-  SW_ROWS.forEach((w, r) => {
-    for (let o = 0; o < w; o += 1) present[`${r},${o - Math.floor(w / 2)}`] = true
-  })
-  const has = (r, c) => Boolean(present[`${r},${c}`])
-  const cells = []
-  SW_ROWS.forEach((w, r) => {
-    for (let o = 0; o < w; o += 1) {
-      const c = o - Math.floor(w / 2)
-      const missing = 4 - [has(r - 1, c), has(r + 1, c), has(r, c - 1), has(r, c + 1)].filter(Boolean).length
-      cells.push({ r, c, type: missing === 0 ? 0 : missing === 1 ? 1 : 2 })
-    }
-  })
-  return cells
-}
-
 function ProjectArt({ variant }) {
   return (
     <div className={`project-art project-art--${variant}`} aria-hidden="true">
@@ -419,22 +400,14 @@ function ProjectArt({ variant }) {
       )}
       {variant === 'starwreck' && (
         <>
-          <div className="starwreck-deck-wrap">
-            <svg className="starwreck-deck" viewBox="0 0 264 348" aria-hidden="true">
-              {buildStarwreckCells().map((cell) => (
-                <rect
-                  key={`${cell.r}-${cell.c}`}
-                  className={`sw-card-cell sw-card-cell--${cell.type === 0 ? 'core' : cell.type === 1 ? 'edge' : 'corner'}`}
-                  x={cell.c * 24 + 132 - 10}
-                  y={(cell.r - 6) * 24 + 174 - 10}
-                  width="20"
-                  height="20"
-                />
-              ))}
-            </svg>
-            <span className="starwreck-card-mark"><i>S</i></span>
-          </div>
-          <span className="starwreck-card-code">EDGE FIRE / CORE SUPPORT</span>
+          <img className="starwreck-card-boss" src="/starwreck/brood-carrier.webp" alt="" />
+          <img className="starwreck-card-ship" src="/starwreck/scrapper-hull.webp" alt="" />
+          <span className="starwreck-card-beam starwreck-card-beam--one" />
+          <span className="starwreck-card-beam starwreck-card-beam--two" />
+          <span className="starwreck-card-signal starwreck-card-signal--one" />
+          <span className="starwreck-card-signal starwreck-card-signal--two" />
+          <span className="starwreck-card-mark"><img src="/starwreck/mark.webp" alt="" /></span>
+          <span className="starwreck-card-code">TURN THE HULL / TURN THE FIGHT</span>
           <div className="art-cross art-cross--a" />
           <div className="art-cross art-cross--b" />
         </>
@@ -589,7 +562,7 @@ function Work() {
       <div className="frame work-frame">
         <div className="section-heading-row">
           <div><SectionLabel light>02 / selected work</SectionLabel><h2>Some things I&apos;ve<br /><span>made recently.</span></h2></div>
-          <p>Four studies in making<br />the invisible visible.</p>
+          <p>Six studies in making<br />the invisible visible.</p>
         </div>
         <div className="project-grid">
           {PROJECTS.map((project, index) => (

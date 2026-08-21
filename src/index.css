@@ -149,15 +149,23 @@ button { appearance: none; border: 0; background: transparent; font: inherit; pa
 .art-cross--a { left: 15%; top: 20%; }
 .art-cross--b { right: 18%; bottom: 17%; transform: rotate(180deg); }
 @keyframes orbit { to { transform: translate(-50%,-50%) rotate(334deg); } }
-.project-art--starwreck { background: radial-gradient(circle at 50% 42%, #10101f 0, #0a0a14 58%, #06060b 100%); }
-.starwreck-deck-wrap { position: absolute; inset: 0; display: grid; place-items: center; }
-.starwreck-deck { width: min(76%, 296px); height: auto; }
-.sw-card-cell--core { fill: #1b1b2a; stroke: rgba(255,255,255,.08); }
-.sw-card-cell--edge { fill: var(--blue); animation: sw-card-fire 1.6s ease-in-out infinite paused; }
-.sw-card-cell--corner { fill: var(--blue-bright); }
-@keyframes sw-card-fire { 0%, 100% { opacity: 1; } 50% { opacity: .42; } }
-.starwreck-card-mark { position: absolute; top: 20px; left: 22px; display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid rgba(255,255,255,.38); transform: rotate(45deg); }
-.starwreck-card-mark i { font: 300 18px/1 var(--mono); color: #ffb34c; font-style: normal; transform: rotate(-45deg); }
+.project-art--starwreck { background: #06080d url('/starwreck/nebula.webp') center / cover; }
+.project-art--starwreck::before { content: ''; position: absolute; z-index: 1; inset: 0; background: radial-gradient(circle at 42% 52%, rgba(0,17,226,.22), transparent 38%), linear-gradient(90deg, rgba(6,8,13,.08), rgba(6,8,13,.35)); }
+.starwreck-card-ship, .starwreck-card-boss { position: absolute; z-index: 3; pointer-events: none; transition: transform .65s cubic-bezier(.2,.75,.2,1), opacity .4s ease; }
+.starwreck-card-ship { left: 9%; top: 27%; width: 57%; transform: rotate(-9deg); filter: drop-shadow(0 20px 18px rgba(0,0,0,.4)); }
+.starwreck-card-boss { right: -8%; top: 4%; width: 51%; opacity: .72; filter: drop-shadow(0 0 30px rgba(255,49,88,.2)); }
+.project-card:hover .starwreck-card-ship { transform: translate(2%, -3%) rotate(-6deg) scale(1.035); }
+.project-card:hover .starwreck-card-boss { transform: translate(-2%, 2%) scale(1.035); opacity: .87; }
+.starwreck-card-beam { position: absolute; z-index: 4; left: 50%; top: 47%; width: 43%; height: 1px; background: linear-gradient(90deg, #8be8ff, rgba(139,232,255,.03)); box-shadow: 0 0 9px rgba(139,232,255,.95); transform-origin: left center; animation: starwreck-card-fire 2.2s ease-in-out infinite paused; }
+.starwreck-card-beam--one { transform: rotate(-14deg); }
+.starwreck-card-beam--two { top: 57%; transform: rotate(8deg); animation-delay: .34s; }
+.starwreck-card-signal { position: absolute; z-index: 2; width: 8px; height: 8px; border: 1px solid #ff3158; transform: rotate(45deg); animation: starwreck-card-signal 2.8s ease-in-out infinite paused; }
+.starwreck-card-signal--one { right: 24%; top: 20%; }
+.starwreck-card-signal--two { right: 15%; bottom: 23%; animation-delay: .8s; }
+@keyframes starwreck-card-fire { 0%, 58%, 100% { opacity: .08; } 65% { opacity: 1; } 74% { opacity: .25; } }
+@keyframes starwreck-card-signal { 0%, 100% { box-shadow: 0 0 0 0 rgba(255,49,88,.36); } 50% { box-shadow: 0 0 0 13px rgba(255,49,88,0); } }
+.starwreck-card-mark { position: absolute; z-index: 6; top: 18px; left: 20px; display: grid; place-items: center; width: 42px; height: 42px; border: 1px solid rgba(255,255,255,.28); background: rgba(6,8,13,.74); }
+.starwreck-card-mark img { width: 32px; height: 32px; object-fit: contain; }
 .starwreck-card-code { position: absolute; left: 20px; bottom: 18px; padding: 8px 10px; background: #06060b; color: #e8e8ef; font: 400 9px/1 var(--mono); letter-spacing: .11em; }
 .project-art--trigger { background: #0a0a0d; color: #f4f4f0; }
 .trigger-card-rail { position: absolute; left: 8%; right: 8%; bottom: 34%; display: flex; align-items: flex-end; gap: 5px; height: 34%; }
