@@ -451,7 +451,7 @@ const post = await client.getPost({
       </main>
 
       <footer className="zc-footer zc-dark-section">
-        <div className="zc-frame zc-footer-top"><a href="/#work"><Arrow direction="left" /> ALL PROJECTS</a><span>NEXT CASE / FIELD NOTES</span><a href="mailto:zhy0216@gmail.com">START A CONVERSATION <Arrow /></a></div>
+        <div className="zc-frame zc-footer-top"><a href="/#work"><Arrow direction="left" /> ALL PROJECTS</a><span>NEXT CASE / STARWRECK</span><a href="mailto:zhy0216@gmail.com">START A CONVERSATION <Arrow /></a></div>
         <div className="zc-frame zc-footer-bottom"><span>© {new Date().getFullYear()} YANG / 0216</span><span>ZEBRA / CASE STUDY 01</span><span>BUILT WITH REACT + THREE.JS</span></div>
       </footer>
     </div>

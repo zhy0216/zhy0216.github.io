@@ -150,6 +150,16 @@ button { appearance: none; border: 0; background: transparent; font: inherit; pa
 .art-cross--a { left: 15%; top: 20%; }
 .art-cross--b { right: 18%; bottom: 17%; transform: rotate(180deg); }
 @keyframes orbit { to { transform: translate(-50%,-50%) rotate(334deg); } }
+.project-art--starwreck { background: radial-gradient(circle at 50% 42%, #10101f 0, #0a0a14 58%, #06060b 100%); }
+.starwreck-deck-wrap { position: absolute; inset: 0; display: grid; place-items: center; }
+.starwreck-deck { width: min(76%, 296px); height: auto; }
+.sw-card-cell--core { fill: #1b1b2a; stroke: rgba(255,255,255,.08); }
+.sw-card-cell--edge { fill: var(--blue); animation: sw-card-fire 1.6s ease-in-out infinite paused; }
+.sw-card-cell--corner { fill: var(--blue-bright); }
+@keyframes sw-card-fire { 0%, 100% { opacity: 1; } 50% { opacity: .42; } }
+.starwreck-card-mark { position: absolute; top: 20px; left: 22px; display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid rgba(255,255,255,.38); transform: rotate(45deg); }
+.starwreck-card-mark i { font: 300 18px/1 var(--mono); color: #ffb34c; font-style: normal; transform: rotate(-45deg); }
+.starwreck-card-code { position: absolute; left: 20px; bottom: 18px; padding: 8px 10px; background: #06060b; color: #e8e8ef; font: 400 9px/1 var(--mono); letter-spacing: .11em; }
 .project-art--field { background: #d7d7d2; color: #111; }
 .field-scanlines { position: absolute; inset: 0; opacity: .43; background: repeating-linear-gradient(0deg, transparent 0 6px, rgba(0,0,0,.08) 6px 7px), repeating-linear-gradient(90deg, transparent 0 19px, rgba(0,0,0,.07) 19px 20px); }
 .field-title { position: absolute; left: 8%; bottom: 11%; font-size: clamp(45px, 6vw, 88px); line-height: .79; letter-spacing: -.1em; font-weight: 300; }

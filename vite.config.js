@@ -13,6 +13,7 @@ export default defineConfig({
       input: {
         main: resolve(rootDir, 'index.html'),
         zebra: resolve(rootDir, 'work/zebra/index.html'),
+        starwreck: resolve(rootDir, 'work/starwreck/index.html'),
       },
       output: {
         manualChunks(id) {

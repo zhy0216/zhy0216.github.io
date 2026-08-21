@@ -19,6 +19,15 @@ const PROJECTS = [
   },
   {
     number: '02',
+    title: 'STARWRECK',
+    type: 'GAME / ROGUELITE · 2026',
+    description: 'A space survivors-like where the build is a hull you weld — turn in the swarm to bring your broadside to bear.',
+    tags: ['TypeScript', 'PixiJS', 'Steam'],
+    variant: 'starwreck',
+    href: '/work/starwreck/',
+  },
+  {
+    number: '03',
     title: 'FIELD NOTES',
     type: 'EDITORIAL PLATFORM · 2024',
     description: 'An editorial interface for curious people, quiet ideas, and long reads.',
@@ -27,7 +36,7 @@ const PROJECTS = [
     href: '#contact',
   },
   {
-    number: '03',
+    number: '04',
     title: 'AFTERIMAGE',
     type: 'INTERACTIVE INSTALLATION · 2024',
     description: 'A browser-native light study that turns a visitor into the material.',
@@ -36,7 +45,7 @@ const PROJECTS = [
     href: '#contact',
   },
   {
-    number: '04',
+    number: '05',
     title: 'COMMON GROUND',
     type: 'PRODUCT SYSTEM · 2023',
     description: 'A calmer way for distributed teams to make decisions together.',
@@ -255,6 +264,25 @@ function OrbitalScene() {
   return <div ref={mountRef} className="orbital-scene" aria-hidden="true" />
 }
 
+const SW_ROWS = [1, 3, 5, 7, 9, 9, 9, 9, 9, 7, 5, 3, 1]
+
+function buildStarwreckCells() {
+  const present = {}
+  SW_ROWS.forEach((w, r) => {
+    for (let o = 0; o < w; o += 1) present[`${r},${o - Math.floor(w / 2)}`] = true
+  })
+  const has = (r, c) => Boolean(present[`${r},${c}`])
+  const cells = []
+  SW_ROWS.forEach((w, r) => {
+    for (let o = 0; o < w; o += 1) {
+      const c = o - Math.floor(w / 2)
+      const missing = 4 - [has(r - 1, c), has(r + 1, c), has(r, c - 1), has(r, c + 1)].filter(Boolean).length
+      cells.push({ r, c, type: missing === 0 ? 0 : missing === 1 ? 1 : 2 })
+    }
+  })
+  return cells
+}
+
 function ProjectArt({ variant }) {
   return (
     <div className={`project-art project-art--${variant}`} aria-hidden="true">
@@ -274,6 +302,28 @@ function ProjectArt({ variant }) {
           <div className="nova-orbit nova-orbit--one" />
           <div className="nova-orbit nova-orbit--two" />
           <div className="nova-core">N</div>
+          <div className="art-cross art-cross--a" />
+          <div className="art-cross art-cross--b" />
+        </>
+      )}
+      {variant === 'starwreck' && (
+        <>
+          <div className="starwreck-deck-wrap">
+            <svg className="starwreck-deck" viewBox="0 0 264 348" aria-hidden="true">
+              {buildStarwreckCells().map((cell) => (
+                <rect
+                  key={`${cell.r}-${cell.c}`}
+                  className={`sw-card-cell sw-card-cell--${cell.type === 0 ? 'core' : cell.type === 1 ? 'edge' : 'corner'}`}
+                  x={cell.c * 24 + 132 - 10}
+                  y={(cell.r - 6) * 24 + 174 - 10}
+                  width="20"
+                  height="20"
+                />
+              ))}
+            </svg>
+            <span className="starwreck-card-mark"><i>S</i></span>
+          </div>
+          <span className="starwreck-card-code">EDGE FIRE / CORE SUPPORT</span>
           <div className="art-cross art-cross--a" />
           <div className="art-cross art-cross--b" />
         </>
@@ -302,7 +352,7 @@ function ProjectArt({ variant }) {
           <div className="ground-label">MAKE<br />ROOM</div>
         </>
       )}
-      <span className="art-index">{variant === 'zebra' || variant === 'nova' ? 'A / 01' : variant === 'field' ? 'B / 02' : variant === 'afterimage' ? 'C / 03' : 'D / 04'}</span>
+      <span className="art-index">{variant === 'zebra' || variant === 'nova' ? 'A / 01' : variant === 'starwreck' ? 'B / 02' : variant === 'field' ? 'C / 03' : variant === 'afterimage' ? 'D / 04' : 'E / 05'}</span>
     </div>
   )
 }
@@ -424,7 +474,7 @@ function Work() {
             </article>
           ))}
         </div>
-        <div className="work-footer"><span>MORE IN THE ARCHIVE ↗</span><span className="work-footer-line" /><span>04 / 26</span></div>
+        <div className="work-footer"><span>MORE IN THE ARCHIVE ↗</span><span className="work-footer-line" /><span>05 / 26</span></div>
       </div>
     </section>
   )
