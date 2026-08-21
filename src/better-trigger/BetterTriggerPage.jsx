@@ -8,35 +8,30 @@ const PRINCIPLES = [
   {
     number: '01',
     title: 'Replay, not snapshots.',
-    cn: '重放,而非快照',
     text: 'Completed steps are memoized in Postgres. After a crash or a long wait, the task function re-runs from the top and cached steps return instantly — your code stays a straight-line async function.',
     detail: 'STEP MEMORY / POS SEQ',
   },
   {
     number: '02',
     title: 'Postgres is the whole stack.',
-    cn: 'Postgres 就是全部基础设施',
     text: 'Queue, orchestrator loops and the replay executor live in the runtime and coordinate with FOR UPDATE SKIP LOCKED. Run N daemons against one database — no leader election.',
     detail: 'ONE DATABASE / NO REDIS',
   },
   {
     number: '03',
     title: 'The SDK never opens a database.',
-    cn: 'SDK 从不打开数据库',
     text: 'better-trigger ships task() and an HTTP client with zero runtime dependencies. It is safe to import into a web server, a CLI, an edge function, or a browser bundle.',
     detail: 'ZERO-DEP CLIENT',
   },
   {
     number: '04',
     title: 'One process, or many.',
-    cn: '一个进程,或很多个',
     text: 'Run the worker as a standalone daemon, or embed the same runtime in a long-lived Node/Bun app with createEmbeddedRuntime. No second port, no second execution model.',
     detail: 'DAEMON + EMBEDDED',
   },
   {
     number: '05',
     title: 'Crash-safe by construction.',
-    cn: '崩溃安全是构造出来的',
     text: 'Persistent leases plus a monotonic fencing token reject late writes from a dead worker. Step history stays exactly-once even across SIGKILL.',
     detail: 'LEASE + FENCING TOKEN',
   },
@@ -465,7 +460,7 @@ function BetterTriggerPage() {
     <div className="better-trigger-page">
       <header className="bt-nav">
         <div className="bt-nav-inner">
-          <a className="bt-wordmark" href="/">YANG<span>/</span>0216</a>
+          <a className="bt-wordmark" href="/">YANG</a>
           <span className="bt-nav-case">CASE STUDY <i>/</i> 03</span>
           <a className="bt-nav-back" href="/#work"><Arrow direction="left" /> BACK TO INDEX</a>
         </div>
@@ -480,7 +475,6 @@ function BetterTriggerPage() {
               <CaseLabel light>Selected work / open source · durable execution / 2026</CaseLabel>
               <div className="bt-title-lockup"><BtMark /><h1>BETTER-<br /><span>TRIGGER</span><i>.</i></h1></div>
               <p className="bt-hero-lede">Durable execution for TypeScript,<br /><span>on Postgres.</span></p>
-              <p className="bt-hero-cn">把后台任务写成直线 async:等待、崩溃、重试、cron、扇出——都交给一个 Postgres。没有 Redis,没有 ClickHouse。</p>
               <div className="bt-hero-actions">
                 <CaseButton href={GITHUB_URL}>VIEW ON GITHUB</CaseButton>
                 <CaseButton href={DOCS_URL} light>READ THE DOCS</CaseButton>
@@ -504,7 +498,6 @@ function BetterTriggerPage() {
               <h2>Why does a queue <em>stop being enough</em><br />the moment a job waits?</h2>
               <div className="bt-premise-copy">
                 <p>Background jobs start simple — enqueue, run, done. Then one job needs to wait a day, another needs three retries, a third must fan out and rejoin. Keep that state in the queue and you are building a job scheduler by hand. better-trigger starts from a different premise: the task function is durable, so the whole execution model can live in one Postgres and nothing else.</p>
-                <p>一旦任务要等待、要重试、要跨崩溃继续,普通队列就不再够用。better-trigger 的核心主张:任务函数本身是可持久化的——步骤结果记忆在 Postgres 里,崩溃后从头重放,命中的 step 直接返回缓存。代码始终是一段直线 async。</p>
               </div>
             </div>
           </div>
@@ -518,7 +511,6 @@ function BetterTriggerPage() {
                 <article className="bt-principle" key={item.number}>
                   <div className="bt-principle-top"><span>{item.number}</span><span>{item.detail}</span></div>
                   <h3>{item.title}</h3>
-                  <p className="bt-principle-cn">{item.cn}</p>
                   <p className="bt-principle-text">{item.text}</p>
                   <span className="bt-principle-arrow">↘</span>
                 </article>
@@ -595,7 +587,7 @@ await runtime.stop();`}</CodePanel>
 
         <section className="bt-decisions">
           <div className="bt-frame bt-decisions-grid">
-            <div className="bt-decisions-title"><CaseLabel>06 / engineering decisions</CaseLabel><h2>The honest limits<br />are the <span>design.</span></h2><p>每一项取舍都写成了承诺,而不是留给事故去发现。</p></div>
+            <div className="bt-decisions-title"><CaseLabel>06 / engineering decisions</CaseLabel><h2>The honest limits<br />are the <span>design.</span></h2></div>
             <div className="bt-decision-list">
               {DECISIONS.map((item) => <article key={item.number}><span>{item.number}</span><div><h3>{item.title}</h3><p>{item.text}</p></div></article>)}
             </div>
@@ -616,16 +608,15 @@ await runtime.stop();`}</CodePanel>
           <div className="bt-frame bt-outro-inner">
             <CaseLabel light>08 / run it</CaseLabel>
             <h2>Define the task.<br /><span>Forget the infrastructure.</span></h2>
-            <p>任务只管写成直线 async,剩下的交给 Postgres。一条 docker compose 命令就能看到一个正在执行的 daemon:示例任务已经内置,cron 每两秒触发一次。</p>
             <div className="bt-outro-actions"><CaseButton href={GITHUB_URL}>VIEW ON GITHUB</CaseButton><CaseButton href={DOCS_URL} light>READ THE DOCUMENTATION</CaseButton></div>
-            <span className="bt-outro-note">TYPESCRIPT-FIRST · POSTGRES-BACKED · MIT · ENGLISH DOCS + 简体中文 DOCS</span>
+            <span className="bt-outro-note">TYPESCRIPT-FIRST · POSTGRES-BACKED · MIT · ENGLISH DOCS + SIMPLIFIED CHINESE DOCS</span>
           </div>
         </section>
       </main>
 
       <footer className="bt-footer bt-dark-section">
-        <div className="bt-frame bt-footer-top"><a href="/#work"><Arrow direction="left" /> ALL PROJECTS</a><span>NEXT CASE / FIELD NOTES</span><a href="mailto:zhy0216@gmail.com">START A CONVERSATION <Arrow /></a></div>
-        <div className="bt-frame bt-footer-bottom"><span>© {new Date().getFullYear()} YANG / 0216</span><span>BETTER-TRIGGER / CASE STUDY 03</span><span>BUILT WITH REACT + THREE.JS</span></div>
+        <div className="bt-frame bt-footer-top"><a href="/#work"><Arrow direction="left" /> ALL PROJECTS</a><span>NEXT CASE / FIELD NOTES</span><a href="/#contact">START A CONVERSATION <Arrow /></a></div>
+        <div className="bt-frame bt-footer-bottom"><span>© {new Date().getFullYear()} YANG</span><span>BETTER-TRIGGER / CASE STUDY 03</span><span>BUILT WITH REACT + THREE.JS</span></div>
       </footer>
     </div>
   )

@@ -9,21 +9,18 @@ const PILLARS = [
   {
     number: '01',
     title: 'Positioning is fire control.',
-    cn: '走位即火控',
     text: 'A turret fires where its side faces. Turning is not dodging — it is choosing which hull to present to the swarm. Movement is aim.',
     detail: 'P1 / MOVEMENT = AIM',
   },
   {
     number: '02',
     title: 'The deck is the build.',
-    cn: '甲板即 Build',
     text: 'Edge cells mount guns, interior cells feed them. Where a plate sits, what touches it, and what shape it forms replace the stat panel.',
     detail: 'P2 / LAYOUT = LOADOUT',
   },
   {
     number: '03',
     title: 'The shape is the progress.',
-    cn: '船形即成长',
     text: 'Every expansion changes the silhouette. The ship you end a run with is a photograph of every choice you made.',
     detail: 'P3 / SILHOUETTE = PROGRESS',
   },
@@ -76,18 +73,18 @@ const DECISIONS = [
 ]
 
 const LOOP = [
-  ['01', 'COLLECT', '残骸磁吸拾取'],
-  ['02', 'LEVEL', '攒满触发升级'],
-  ['03', 'CHOOSE', '塔 / 设施 / 拼块 / 法令'],
-  ['04', 'WELD', '时停焊入空格'],
-  ['05', 'BROADSIDE', '转舵 · 整舷齐射'],
+  ['01', 'COLLECT', 'Magnetic pickup of wreckage'],
+  ['02', 'LEVEL', 'Max out to trigger an upgrade'],
+  ['03', 'CHOOSE', 'Tower / facility / plate / decree'],
+  ['04', 'WELD', 'Time-stop weld into an empty cell'],
+  ['05', 'BROADSIDE', 'Turn · whole-deck broadside'],
 ]
 
 const NOW_ITEMS = [
   'Playable MVP on the web (Cloudflare Workers) and a Windows x64 desktop ZIP',
   'Seeded starts, four combat legs + elite + boss, three-choice upgrades + dry-dock refit every two minutes',
   'Codex + conditional meta unlocks; run saves carry the full world state with a checksum',
-  '简体中文 + English, offline-first desktop saves',
+  'English + Simplified Chinese, offline-first desktop saves',
 ]
 
 const NEXT_ITEMS = [
@@ -414,7 +411,7 @@ function StarwreckPage() {
     <div className="starwreck-page">
       <header className="sw-nav">
         <div className="sw-nav-inner">
-          <a className="sw-wordmark" href="/">YANG<span>/</span>0216</a>
+          <a className="sw-wordmark" href="/">YANG</a>
           <span className="sw-nav-case">CASE STUDY <i>/</i> 02</span>
           <a className="sw-nav-back" href="/#work"><Arrow direction="left" /> BACK TO INDEX</a>
         </div>
@@ -428,9 +425,7 @@ function StarwreckPage() {
             <div className="sw-hero-copy">
               <CaseLabel light>Selected work / game · roguelite / 2026</CaseLabel>
               <div className="sw-title-lockup"><SwMark /><h1>STARWRECK<span>.</span></h1></div>
-              <p className="sw-hero-cn-name">《星骸》</p>
               <p className="sw-hero-lede">A warship you weld together tile by tile, turning in an endless swarm to bring your <span>broadside</span> to bear.</p>
-              <p className="sw-hero-cn">你是一艘船的全部:船长、舵手、总工程师。边缘格开火,内部格供能——转舵,就是火控。</p>
               <div className="sw-hero-actions">
                 <CaseButton href={PLAY_URL}>PLAY THE BUILD</CaseButton>
                 <TextLink light href="#premise">WHY I BUILT IT</TextLink>
@@ -455,7 +450,6 @@ function StarwreckPage() {
               <h2>What if the build<br />was a hull you <span>could see?</span></h2>
               <div className="sw-premise-copy">
                 <p>Plenty of games let you mow down hundreds of enemies. Almost none make your build a firing, directional space puzzle. STARWRECK starts from one constraint: the deck is a grid, edge cells fire outward, interior cells feed the guns — so every choice stays visible on the ship&apos;s silhouette.</p>
-                <p>市面上的割草生存把成长藏在数值面板里。《星骸》把 build 长在船的轮廓上:每一块甲板都朝向、都会开火、都改变剪影。一局打完,船的轮廓就是这 25 分钟所有选择的合影。</p>
               </div>
             </div>
           </div>
@@ -469,7 +463,6 @@ function StarwreckPage() {
                 <article className="sw-pillar" key={item.number}>
                   <div className="sw-pillar-top"><span>{item.number}</span><span>{item.detail}</span></div>
                   <h3>{item.title}</h3>
-                  <p className="sw-pillar-cn">{item.cn}</p>
                   <p className="sw-pillar-text">{item.text}</p>
                   <span className="sw-pillar-arrow">↘</span>
                 </article>
@@ -480,11 +473,10 @@ function StarwreckPage() {
 
         <section className="sw-system">
           <div className="sw-frame sw-system-grid">
-            <div className="sw-system-intro"><CaseLabel>03 / the deck rule</CaseLabel><h2>One rule.<br /><span>Two kinds of tile.</span></h2><p>边缘格开火,内部格供能。整场游戏只需要记住这一条。</p><DeckDiagram /><div className="sw-deck-legend"><span><i className="sw-legend-edge" />EDGE CELLS FIRE</span><span><i className="sw-legend-corner" />CORNER = TWO ARCS</span><span><i className="sw-legend-core" />CORE CELLS POWER</span></div></div>
+            <div className="sw-system-intro"><CaseLabel>03 / the deck rule</CaseLabel><h2>One rule.<br /><span>Two kinds of tile.</span></h2><DeckDiagram /><div className="sw-deck-legend"><span><i className="sw-legend-edge" />EDGE CELLS FIRE</span><span><i className="sw-legend-corner" />CORNER = TWO ARCS</span><span><i className="sw-legend-core" />CORE CELLS POWER</span></div></div>
             <div className="sw-system-body">
               <div className="sw-weld-note">
                 <p>Welding a new plate internalizes an old edge — an ex-emplacement becomes guts and its gun goes dark until you reshuffle at the dry-dock. <strong>Expansion is always a paid choice, never free size.</strong></p>
-                <span>焊板会内化旧边缘格 / 炮位变内脏位</span>
               </div>
               <div className="sw-loop" aria-label="Starwreck minute loop">
                 {LOOP.map(([number, title, text], index) => (
@@ -523,7 +515,7 @@ function StarwreckPage() {
 
         <section className="sw-decisions">
           <div className="sw-frame sw-decisions-grid">
-            <div className="sw-decisions-title"><CaseLabel>06 / engineering decisions</CaseLabel><h2>The invisible work<br />is the <span>fleet.</span></h2><p>框架的取舍决定了船能开多快、多稳。</p></div>
+            <div className="sw-decisions-title"><CaseLabel>06 / engineering decisions</CaseLabel><h2>The invisible work<br />is the <span>fleet.</span></h2></div>
             <div className="sw-decision-list">
               {DECISIONS.map((item) => <article key={item.number}><span>{item.number}</span><div><h3>{item.title}</h3><p>{item.text}</p></div></article>)}
             </div>
@@ -543,16 +535,15 @@ function StarwreckPage() {
           <div className="sw-frame sw-outro-inner">
             <CaseLabel light>08 / play it</CaseLabel>
             <h2>Turn the hull.<br /><span>Bring the broadside</span> to bear.</h2>
-            <p>转舵,就是火控。试着在浏览器里打一局:开局两座塔来自同一颗种子,每一块甲板都是你自己的焊接方案。</p>
-            <div className="sw-outro-actions"><CaseButton href={PLAY_URL}>PLAY THE BUILD</CaseButton><CaseButton href="mailto:zhy0216@gmail.com" light>START A CONVERSATION</CaseButton></div>
-            <span className="sw-outro-note">WEB PROTOTYPE ON CLOUDFLARE WORKERS · STEAM BUILD WINDOWS X64 · 简体中文 + ENGLISH</span>
+            <div className="sw-outro-actions"><CaseButton href={PLAY_URL}>PLAY THE BUILD</CaseButton><CaseButton href="/#contact" light>START A CONVERSATION</CaseButton></div>
+            <span className="sw-outro-note">WEB PROTOTYPE ON CLOUDFLARE WORKERS · STEAM BUILD WINDOWS X64 · ENGLISH + SIMPLIFIED CHINESE</span>
           </div>
         </section>
       </main>
 
       <footer className="sw-footer">
-        <div className="sw-frame sw-footer-top"><a href="/#work"><Arrow direction="left" /> ALL PROJECTS</a><span>NEXT CASE / BETTER-TRIGGER</span><a href="mailto:zhy0216@gmail.com">START A CONVERSATION <Arrow /></a></div>
-        <div className="sw-frame sw-footer-bottom"><span>© {new Date().getFullYear()} YANG / 0216</span><span>STARWRECK / CASE STUDY 02</span><span>BUILT WITH REACT + THREE.JS</span></div>
+        <div className="sw-frame sw-footer-top"><a href="/#work"><Arrow direction="left" /> ALL PROJECTS</a><span>NEXT CASE / BETTER-TRIGGER</span><a href="/#contact">START A CONVERSATION <Arrow /></a></div>
+        <div className="sw-frame sw-footer-bottom"><span>© {new Date().getFullYear()} YANG</span><span>STARWRECK / CASE STUDY 02</span><span>BUILT WITH REACT + THREE.JS</span></div>
       </footer>
     </div>
   )

@@ -401,7 +401,7 @@ function Nav({ activeSection }) {
     <header className="site-nav">
       <div className="frame nav-inner">
         <button className="wordmark" onClick={() => jumpTo('top')} aria-label="Back to top">
-          YANG<span>/</span>0216
+          YANG
         </button>
         <nav className="desktop-nav" aria-label="Primary navigation">
           {NAV_ITEMS.map((item, index) => (
@@ -410,7 +410,7 @@ function Nav({ activeSection }) {
             </button>
           ))}
         </nav>
-        <a className="nav-contact" href="mailto:zhy0216@gmail.com">LET&apos;S TALK <Arrow /></a>
+        <a className="nav-contact" href="#contact">LET&apos;S TALK <Arrow /></a>
         <button className={`menu-toggle ${menuOpen ? 'is-open' : ''}`} onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu" aria-expanded={menuOpen}>
           <span /><span />
         </button>
@@ -419,7 +419,7 @@ function Nav({ activeSection }) {
         {NAV_ITEMS.map((item, index) => (
           <button key={item.id} onClick={() => jumpTo(item.id)}><span>0{index + 1}</span>{item.label}</button>
         ))}
-        <a href="mailto:zhy0216@gmail.com">LET&apos;S TALK <Arrow /></a>
+        <a href="#contact">LET&apos;S TALK <Arrow /></a>
       </div>
     </header>
   )
@@ -433,7 +433,7 @@ function Hero() {
         <div className="hero-copy">
           <SectionLabel light>// independent programmer · shanghai / anywhere</SectionLabel>
           <h1>I write software<br /><em>with a pulse.</em></h1>
-          <p className="hero-intro">我是 Yang，一名程序员。喜欢把想法变成可运行、可交互、值得记住的东西。<br /><span>Interfaces, experiments, and small pieces of the future.</span></p>
+          <p className="hero-intro"><span>Interfaces, experiments, and small pieces of the future.</span></p>
           <div className="hero-actions">
             <SolidButton href="#work">EXPLORE SELECTED WORK</SolidButton>
             <a className="text-link text-link--light" href="#about">SCROLL TO DISCOVER <Arrow diagonal={false} /></a>
@@ -465,11 +465,10 @@ function About() {
         <aside className="section-aside">
           <SectionLabel>01 / about</SectionLabel>
           <p>My name is Yang,<br />I am a programmer.</p>
-          <span className="aside-code">YANG—0216<br />EST. 2018—NOW</span>
+          <span className="aside-code">YANG<br />EST. 2018—NOW</span>
         </aside>
         <div className="about-main">
           <h2>Good work starts<br />with a <span>strange question.</span></h2>
-          <p className="about-lede">我是一名独立程序员，喜欢在产品、交互和实验之间来回穿梭。我的工作不是给答案加上装饰，而是找到那个让人愿意停下来多看一秒的核心。</p>
           <p className="about-copy">From a rough idea to a working interface, I like making things that are clear enough to use and strange enough to remember. The projects below are a mix of shipped work, prototypes, and things I built simply because I had to know if they could exist.</p>
           <div className="stat-row">
             <div><strong>07</strong><span>YEARS MAKING<br />ON THE WEB</span></div>
@@ -522,7 +521,7 @@ function Lab() {
   return (
     <section id="lab" className="section-paper lab-section">
       <div className="frame lab-grid">
-        <div className="lab-intro"><SectionLabel>03 / the lab</SectionLabel><h2>A small practice<br />with a large appetite<br />for the <span>unknown.</span></h2><p>不是每个想法都要变成产品。有些只需要被认真地做出来。</p><a className="text-link" href="mailto:zhy0216@gmail.com">START A CONVERSATION <Arrow /></a></div>
+        <div className="lab-intro"><SectionLabel>03 / the lab</SectionLabel><h2>A small practice<br />with a large appetite<br />for the <span>unknown.</span></h2><a className="text-link" href="#contact">START A CONVERSATION <Arrow /></a></div>
         <div className="capability-list">{capabilities.map(([number, title, text]) => <div className="capability" key={number}><span className="capability-number">{number}</span><div><h3>{title}</h3><p>{text}</p></div><Arrow diagonal={false} /></div>)}</div>
       </div>
       <div className="frame lab-baseline"><span>TOOLS I LIKE TO THINK WITH</span><span>FIGMA · THREE.JS · REACT · AFTER EFFECTS · A GOOD NOTEBOOK</span></div>
@@ -535,9 +534,9 @@ function Contact() {
     <footer id="contact" className="section-dark contact-section">
       <div className="frame contact-frame">
         <div className="contact-topline"><SectionLabel light>04 / contact</SectionLabel><span>OPEN TO THE RIGHT KIND OF TROUBLE</span></div>
-        <div className="contact-body"><h2>Have a good idea?<br /><em>Let&apos;s give it a body.</em></h2><SolidButton light href="mailto:zhy0216@gmail.com">ZHY0216@GMAIL.COM</SolidButton></div>
-        <div className="contact-links"><a href="mailto:zhy0216@gmail.com">zhy0216@gmail.com</a><div><a href="https://github.com/zhy0216" target="_blank" rel="noreferrer">GITHUB <Arrow /></a><a href="https://www.linkedin.com/in/im-yang/" target="_blank" rel="noreferrer">LINKEDIN <Arrow /></a><a href="#top">BACK TO TOP ↑</a></div></div>
-        <div className="contact-foot"><span>© {new Date().getFullYear()} YANG / 0216</span><span>MADE WITH CURIOSITY + THREE.JS</span><span>SHANGHAI — CHINA</span></div>
+        <div className="contact-body"><h2>Have a good idea?<br /><em>Let&apos;s give it a body.</em></h2><SolidButton light href="https://github.com/zhy0216">LET&apos;S TALK</SolidButton></div>
+        <div className="contact-links"><div><a href="https://github.com/zhy0216" target="_blank" rel="noreferrer">GITHUB <Arrow /></a><a href="https://www.linkedin.com/in/im-yang/" target="_blank" rel="noreferrer">LINKEDIN <Arrow /></a><a href="#top">BACK TO TOP ↑</a></div></div>
+        <div className="contact-foot"><span>© {new Date().getFullYear()} YANG</span><span>MADE WITH CURIOSITY + THREE.JS</span><span>SHANGHAI — CHINA</span></div>
       </div>
     </footer>
   )

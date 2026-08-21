@@ -289,7 +289,7 @@ function ZebraPage() {
     <div className="zebra-page">
       <header className="zc-nav">
         <div className="zc-nav-inner">
-          <a className="zc-wordmark" href="/">YANG<span>/</span>0216</a>
+          <a className="zc-wordmark" href="/">YANG</a>
           <span className="zc-nav-case">CASE STUDY <i>/</i> 01</span>
           <a className="zc-nav-back" href="/#work"><Arrow direction="left" /> BACK TO INDEX</a>
         </div>
@@ -304,7 +304,6 @@ function ZebraPage() {
               <CaseLabel light>Selected work / open source / 2026</CaseLabel>
               <div className="zc-title-lockup"><ZebraMark /><h1>Zebra<span>.</span></h1></div>
               <p className="zc-hero-lede">A Bun-first TypeScript web framework with <span>first-class DI.</span></p>
-              <p className="zc-hero-cn">从容器、路由到契约与客户端，把类型安全贯穿一次请求的完整生命周期。</p>
               <div className="zc-hero-actions">
                 <CaseButton href={GITHUB_URL}>VIEW ON GITHUB</CaseButton>
                 <CaseButton href={DOCS_URL} light>READ THE DOCS</CaseButton>
@@ -327,7 +326,6 @@ function ZebraPage() {
             <div className="zc-premise-main">
               <h2>What if dependency injection <em>wasn&apos;t bolted on?</em></h2>
               <div className="zc-premise-copy">
-                <p>Zebra 从一个简单的问题开始：如果依赖注入、类型契约和结构化错误不是后装插件，而是在同一套系统中一起设计，一个 TypeScript Web Framework 会是什么样子？</p>
                 <p>The answer is a small but opinionated framework where routes declare what they need, the container proves that graph before boot, and the same contract can drive the server, client, validation, and tests.</p>
               </div>
             </div>
@@ -431,7 +429,7 @@ const post = await client.getPost({
 
         <section className="zc-decisions">
           <div className="zc-frame zc-decisions-grid">
-            <div className="zc-decisions-title"><CaseLabel>06 / engineering decisions</CaseLabel><h2>The invisible work<br />is the <span>product.</span></h2><p>框架的品质，往往藏在用户不会直接看到的地方。</p></div>
+            <div className="zc-decisions-title"><CaseLabel>06 / engineering decisions</CaseLabel><h2>The invisible work<br />is the <span>product.</span></h2></div>
             <div className="zc-decision-list">
               {DECISIONS.map((item) => <article key={item.number}><span>{item.number}</span><div><h3>{item.title}</h3><p>{item.text}</p></div></article>)}
             </div>
@@ -444,15 +442,14 @@ const post = await client.getPost({
           <div className="zc-frame zc-outro-inner">
             <CaseLabel light>07 / current state</CaseLabel>
             <h2>Not a wrapper around Node.<br /><span>An opinion about Bun.</span></h2>
-            <p>Zebra 已经完成 v1 API freeze，并持续在性能、安全、可观测性和工具协议上扩展。它既是一个可使用的框架，也是一次关于“基础设施应该多早暴露错误”的长期实验。</p>
             <div className="zc-outro-actions"><CaseButton href={GITHUB_URL}>EXPLORE THE SOURCE</CaseButton><CaseButton href={DOCS_URL} light>OPEN DOCUMENTATION</CaseButton></div>
           </div>
         </section>
       </main>
 
       <footer className="zc-footer zc-dark-section">
-        <div className="zc-frame zc-footer-top"><a href="/#work"><Arrow direction="left" /> ALL PROJECTS</a><span>NEXT CASE / STARWRECK</span><a href="mailto:zhy0216@gmail.com">START A CONVERSATION <Arrow /></a></div>
-        <div className="zc-frame zc-footer-bottom"><span>© {new Date().getFullYear()} YANG / 0216</span><span>ZEBRA / CASE STUDY 01</span><span>BUILT WITH REACT + THREE.JS</span></div>
+        <div className="zc-frame zc-footer-top"><a href="/#work"><Arrow direction="left" /> ALL PROJECTS</a><span>NEXT CASE / STARWRECK</span><a href="/#contact">START A CONVERSATION <Arrow /></a></div>
+        <div className="zc-frame zc-footer-bottom"><span>© {new Date().getFullYear()} YANG</span><span>ZEBRA / CASE STUDY 01</span><span>BUILT WITH REACT + THREE.JS</span></div>
       </footer>
     </div>
   )
