@@ -217,6 +217,21 @@ button { appearance: none; border: 0; background: transparent; font: inherit; pa
 .trigger-card-code { position: absolute; z-index: 5; left: 20px; bottom: 18px; padding: 8px 10px; background: rgba(10,10,13,.92); color: #e8e8ef; font: 400 9px/1 var(--mono); letter-spacing: .11em; }
 .project-card:hover .trigger-card-mark { transform: translateY(-3px) scale(1.05); box-shadow: 0 0 0 8px rgba(7,7,7,.35), 0 0 46px rgba(0,17,226,.58); }
 .project-card:hover .trigger-card-cell--cached { background: rgba(82,104,255,.34); color: white; }
+.project-art--sangota { background: #15131a url('/sangota/map-bg.jpg') center 34% / cover; color: #f4f4f0; }
+.project-art--sangota::before { content: ''; position: absolute; z-index: 1; inset: 0; background: linear-gradient(90deg, rgba(8,8,8,.78), rgba(8,8,8,.24) 54%, rgba(8,8,8,.6)), linear-gradient(0deg, rgba(8,8,8,.8), transparent 54%); }
+.sangota-card-map { position: absolute; z-index: 2; inset: 0; opacity: .26; background-image: linear-gradient(rgba(143,154,255,.32) 1px, transparent 1px), linear-gradient(90deg, rgba(143,154,255,.32) 1px, transparent 1px); background-size: 33px 33px; mask-image: radial-gradient(circle at 55% 49%, #000 0 36%, transparent 78%); }
+.sangota-card-route { --route-angle: 0deg; position: absolute; z-index: 3; height: 1px; transform: scaleX(.82) rotate(var(--route-angle)); transform-origin: left center; background: linear-gradient(90deg, var(--blue-bright), rgba(143,154,255,.05)); box-shadow: 0 0 9px rgba(143,154,255,.85); opacity: .85; animation: sangota-route 3.6s ease-in-out infinite paused; }
+.sangota-card-route--one { --route-angle: -24deg; left: 18%; top: 64%; width: 56%; }
+.sangota-card-route--two { --route-angle: 26deg; left: 29%; top: 44%; width: 45%; animation-delay: .8s; }
+.sangota-card-route--three { --route-angle: -7deg; left: 42%; top: 73%; width: 36%; animation-delay: 1.4s; }
+.sangota-card-hero { position: absolute; z-index: 4; right: -3%; bottom: -24%; width: 55%; max-height: 132%; object-fit: contain; object-position: bottom; filter: drop-shadow(0 22px 18px rgba(0,0,0,.48)) saturate(.88); transition: transform .7s cubic-bezier(.2,.75,.2,1), filter .4s ease; }
+.sangota-card-token { position: absolute; z-index: 5; left: 30%; top: 58%; width: 11px; height: 11px; border: 1px solid #f0d67a; background: var(--blue); box-shadow: 0 0 0 6px rgba(0,17,226,.16), 0 0 18px rgba(240,214,122,.8); transform: rotate(45deg); animation: sangota-token 2.8s ease-in-out infinite paused; }
+.sangota-card-code { position: absolute; z-index: 6; left: 20px; bottom: 18px; padding: 8px 10px; background: rgba(8,8,8,.88); color: #e8e8ef; font: 400 9px/1 var(--mono); letter-spacing: .11em; }
+@keyframes sangota-route { 0%, 100% { opacity: .28; transform: scaleX(.82) rotate(var(--route-angle)); } 50% { opacity: 1; transform: scaleX(1) rotate(var(--route-angle)); } }
+@keyframes sangota-token { 0%, 100% { transform: translate(0, 0) rotate(45deg); box-shadow: 0 0 0 6px rgba(0,17,226,.16), 0 0 18px rgba(240,214,122,.8); } 50% { transform: translate(18px, -12px) rotate(45deg); box-shadow: 0 0 0 11px rgba(0,17,226,0), 0 0 26px rgba(240,214,122,1); } }
+.project-card:hover .project-art--sangota .sangota-card-route,
+.project-card:hover .project-art--sangota .sangota-card-token { animation-play-state: running; }
+.project-card:hover .sangota-card-hero { transform: translate(-2%, -2%) scale(1.035); filter: drop-shadow(0 25px 22px rgba(0,0,0,.55)) saturate(1); }
 
 /* Lab */
 .lab-section { overflow: hidden; }
@@ -468,6 +483,8 @@ button { appearance: none; border: 0; background: transparent; font: inherit; pa
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .project-art--trigger * { animation: none !important; }
+  .project-art--sangota .sangota-card-route,
+  .project-art--sangota .sangota-card-token { animation: none !important; }
   .project-art--trigger .trigger-card-pass--first,
   .project-art--trigger .trigger-card-pass--replay { opacity: 1; transform: none; }
   .project-art--trigger .trigger-card-scan { left: 62%; opacity: .85; }

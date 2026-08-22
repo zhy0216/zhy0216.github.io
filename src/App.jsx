@@ -40,6 +40,15 @@ const PROJECTS = [
     variant: 'trigger',
     href: '/work/better-trigger/',
   },
+  {
+    number: '04',
+    title: 'SANGOTA',
+    type: 'THREE KINGDOMS ROGUELIKE · 2026',
+    description: 'Choose a general, read the road, and make the next fight yours',
+    tags: ['Phaser 3', 'TypeScript', 'Game systems'],
+    variant: 'sangota',
+    href: '/work/sangota/',
+  },
 ]
 
 const Arrow = ({ diagonal = true }) => (
@@ -387,7 +396,20 @@ function ProjectArt({ variant }) {
           <div className="art-cross art-cross--b" />
         </>
       )}
-      <span className="art-index">{variant === 'zebra' || variant === 'nova' ? 'A / 01' : variant === 'starwreck' ? 'B / 02' : 'C / 03'}</span>
+      {variant === 'sangota' && (
+        <>
+          <div className="sangota-card-map" />
+          <div className="sangota-card-route sangota-card-route--one" />
+          <div className="sangota-card-route sangota-card-route--two" />
+          <div className="sangota-card-route sangota-card-route--three" />
+          <img className="sangota-card-hero" src="/sangota/guanyu-full.png" alt="" />
+          <span className="sangota-card-token" />
+          <span className="sangota-card-code">MAP / DECK / COMBAT / SPOILS</span>
+          <div className="art-cross art-cross--a" />
+          <div className="art-cross art-cross--b" />
+        </>
+      )}
+      <span className="art-index">{variant === 'zebra' || variant === 'nova' ? 'A / 01' : variant === 'starwreck' ? 'B / 02' : variant === 'trigger' ? 'C / 03' : 'D / 04'}</span>
     </div>
   )
 }
@@ -502,11 +524,11 @@ function Work() {
       <div className="frame work-frame">
         <div className="section-heading-row">
           <div><SectionLabel light>02 / selected work</SectionLabel><h2>Some things I&apos;ve<br /><span>made recently</span></h2></div>
-          <p>Three studies in making<br />the invisible visible</p>
+          <p>Four studies in making<br />the invisible visible</p>
         </div>
         <div className="project-grid">
           {PROJECTS.map((project, index) => (
-            <article key={project.number} className={`project-card project-card--${index === 0 ? 'featured' : 'standard'}`}>
+            <article key={project.number} className={`project-card project-card--${index === 0 || project.variant === 'sangota' ? 'featured' : 'standard'}`}>
               <a href={project.href} aria-label={`View ${project.title} case study`}><ProjectArt variant={project.variant} /></a>
               <div className="project-info">
                 <div className="project-topline"><span>{project.number}</span><span>{project.type}</span></div>
@@ -517,7 +539,7 @@ function Work() {
             </article>
           ))}
         </div>
-        <div className="work-footer"><span>MORE IN THE ARCHIVE ↗</span><span className="work-footer-line" /><span>03 / 26</span></div>
+        <div className="work-footer"><span>MORE IN THE ARCHIVE ↗</span><span className="work-footer-line" /><span>04 / 26</span></div>
       </div>
     </section>
   )

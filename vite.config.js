@@ -15,6 +15,7 @@ export default defineConfig({
         zebra: resolve(rootDir, 'work/zebra/index.html'),
         starwreck: resolve(rootDir, 'work/starwreck/index.html'),
         betterTrigger: resolve(rootDir, 'work/better-trigger/index.html'),
+        sangota: resolve(rootDir, 'work/sangota/index.html'),
       },
       output: {
         manualChunks(id) {
