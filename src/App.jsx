@@ -476,7 +476,7 @@ function About() {
         <div className="about-main">
           <div className="about-intro">
             <h2>Good work starts<br />with a <span>strange question</span></h2>
-            <p className="about-copy">From a rough idea to a working interface, I like making things that are clear enough to use and strange enough to remember The projects below are a mix of shipped work, prototypes, and things I built simply because I had to know if they could exist</p>
+            <p className="about-copy">From a rough idea to a working interface, I like making things that are clear enough to use and strange enough to remember. The projects below are a mix of shipped work, prototypes, and things I built simply because I had to know if they could exist.</p>
           </div>
           <div className="stat-row">
             <div><strong>10+</strong><span>YEARS MAKING<br />ON THE WEB</span></div>
