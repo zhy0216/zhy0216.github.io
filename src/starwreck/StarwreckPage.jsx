@@ -18,17 +18,17 @@ const PILLARS = [
   {
     number: '01',
     title: 'Turning is aiming',
-    text: 'A weapon fires through the edge it faces Steering is a continuous decision about which broadside meets the swarm',
+    text: 'A weapon fires through the edge it faces. Steering is a continuous decision about which broadside meets the swarm.',
   },
   {
     number: '02',
     title: 'The deck is the build',
-    text: 'Weapons occupy exposed cells; support modules work from the interior Layout replaces an invisible stack of bonuses',
+    text: 'Weapons occupy exposed cells; support modules work from the interior. Layout replaces an invisible stack of bonuses.',
   },
   {
     number: '03',
     title: 'Growth leaves a silhouette',
-    text: 'Every welded plate changes the firing plan and the outline The final hull is a record of the run that made it',
+    text: 'Every welded plate changes the firing plan and the outline. The final hull is a record of the run that made it.',
   },
 ]
 
@@ -44,19 +44,19 @@ const ENGINE_LAWS = [
   {
     number: '01',
     title: 'The simulation stays pure',
-    text: 'The sim layer imports neither Pixi nor the DOM Rules can run under Node while rendering remains a replaceable view',
+    text: 'The sim layer imports neither Pixi nor the DOM. Rules can run under Node while rendering remains a replaceable view.',
     tag: 'SIM / DATA ONLY',
   },
   {
     number: '02',
     title: 'Time advances at 60 Hz',
-    text: 'A fixed timestep owns combat truth; the renderer interpolates between previous and current positions for a smooth frame',
+    text: 'A fixed timestep owns combat truth; the renderer interpolates between previous and current positions for a smooth frame.',
     tag: 'FIXED STEP / INTERPOLATED VIEW',
   },
   {
     number: '03',
     title: 'A save carries the whole run',
-    text: 'The RNG cursor and every checksum-relevant entity are captured Restore is accepted only when the world stays identical frame after frame',
+    text: 'The RNG cursor and every checksum-relevant entity are captured. Restore is accepted only when the world stays identical frame after frame.',
     tag: 'CAPTURE / RESTORE / CHECKSUM',
   },
 ]
@@ -425,7 +425,7 @@ function StarwreckPage() {
                 <h1>STAR<br /><span>WRECK</span></h1>
               </div>
               <div className="sw-hero-name-row"><span>V0.1.0 / PLAYABLE MVP</span></div>
-              <p className="sw-hero-lede">Weld a warship tile by tile Turn into the swarm Bring your <em>broadside</em> to bear</p>
+              <p className="sw-hero-lede">Weld a warship, tile by tile.<br />Turn into the swarm.<br />Bring your <em>broadside</em> to bear.</p>
               <div className="sw-hero-actions">
                 <CaseButton href={PLAY_URL}>PLAY THE WEB BUILD</CaseButton>
                 <TextLink light href="#artifact">SEE THE REAL BUILD</TextLink>
@@ -456,7 +456,7 @@ function StarwreckPage() {
             <div className="sw-premise-main">
               <h2>What if your build<br />cast a <span>silhouette?</span></h2>
               <div className="sw-premise-copy">
-                <p>Most survivors-likes hide growth in a stat stack STARWRECK makes every choice physical: weapons need exposed edges, support belongs inside, and a new plate can turn yesterday&apos;s gun position into dead interior</p>
+                <p>Most survivors-likes hide growth in a stat stack. STARWRECK makes every choice physical: weapons need exposed edges, support belongs inside, and a new plate can turn yesterday&apos;s gun position into dead interior.</p>
               </div>
               <div className="sw-fact-strip" aria-label="Project facts">
                 <div><strong>04</strong><span>COMBAT LEGS<br />+ ELITE + BOSS</span></div>
@@ -478,7 +478,7 @@ function StarwreckPage() {
               <div className="sw-rule-copy">
                 <span className="sw-rule-index">DECK / LIVE SCHEMATIC</span>
                 <h3>The hull is a weapon<br />with a direction</h3>
-                <p>Exposed cells mount guns Interior cells carry support Weld outward and old edges become core, so expansion always changes the firing plan</p>
+                <p>Exposed cells mount guns. Interior cells carry support. Weld outward and old edges become core, so expansion always changes the firing plan.</p>
                 <div className="sw-rule-legend">
                   <span><i className="is-edge" /> EDGE / FIRE</span>
                   <span><i className="is-corner" /> CORNER / WIDE ARC</span>
@@ -509,7 +509,7 @@ function StarwreckPage() {
             <div className="sw-loop-intro">
               <CaseLabel>03 / the run</CaseLabel>
               <h2>Fight<br />Weld<br /><span>Turn again</span></h2>
-              <p>The action loop stays simple; the spatial consequences accumulate Every two minutes, the dry-dock gives the puzzle room to breathe</p>
+              <p>The action loop stays simple; the spatial consequences accumulate. Every two minutes, the dry-dock gives the puzzle room to breathe.</p>
             </div>
             <div className="sw-loop-list" aria-label="STARWRECK run loop">
               {RUN_LOOP.map(([number, title, text], index) => (
@@ -522,7 +522,7 @@ function StarwreckPage() {
             </div>
             <figure className="sw-dock-figure">
               <img src="/starwreck/dry-dock.webp" alt="STARWRECK dry-dock environment art" />
-              <figcaption><span>DRY-DOCK / PRODUCTION ASSET</span><p>Battle only accepts new pieces in empty cells Re-arrangement belongs here: free, deliberate, and separate from the swarm</p></figcaption>
+              <figcaption><span>DRY-DOCK / PRODUCTION ASSET</span><p>Battle only accepts new pieces in empty cells. Re-arrangement belongs here: free, deliberate, and separate from the swarm.</p></figcaption>
             </figure>
           </div>
         </section>
@@ -539,14 +539,14 @@ function StarwreckPage() {
                 alt="STARWRECK combat build with player ship, enemies, and HUD"
                 index="A / 01"
                 title="A live combat leg"
-                detail="The ship, threat direction, run timer, hull state, and enemy pressure share one field The original tuning panel is cropped out"
+                detail="The ship, threat direction, run timer, hull state, and enemy pressure share one field. The original tuning panel is cropped out."
               />
               <ArtifactFigure
                 src="/starwreck/upgrade-capture.webp"
                 alt="STARWRECK three-choice upgrade screen over the deck"
                 index="A / 02"
                 title="The build becomes spatial"
-                detail="Three choices pause the world and land back on the deck: weapon arcs, support adjacency, or a rule that changes the whole hull"
+                detail="Three choices pause the world and land back on the deck: weapon arcs, support adjacency, or a rule that changes the whole hull."
               />
             </div>
 
@@ -554,7 +554,7 @@ function StarwreckPage() {
               <div className="sw-asset-copy">
                 <CaseLabel light>Repository-owned production assets</CaseLabel>
                 <h3>Cold scrap<br />Warm swarm</h3>
-                <p>The ship stays in steel, cyan, and electric blue; the enemy field lives in red and organic magenta Readability comes from opposing material families before it comes from outlines</p>
+                <p>The ship stays in steel, cyan, and electric blue; the enemy field lives in red and organic magenta. Readability comes from opposing material families before it comes from outlines.</p>
                 <span>SHIP / SCRAPPER HULL<br />BOSS / BROOD CARRIER<br />WEAPONS / AUTO · ARC · RAIL</span>
               </div>
               <img className="sw-asset-ship" src="/starwreck/scrapper-hull.webp" alt="" />
@@ -574,7 +574,7 @@ function StarwreckPage() {
           <div className="sw-frame">
             <div className="sw-engine-head">
               <div><CaseLabel light>05 / making the run trustworthy</CaseLabel><h2>Save the truth,<br />not a <span>picture of it</span></h2></div>
-              <p>A seeded game is only useful if pause, restore, language, and rendering cannot quietly fork it into another run</p>
+              <p>A seeded game is only useful if pause, restore, language, and rendering cannot quietly fork it into another run.</p>
             </div>
 
             <div className="sw-checksum-flow" aria-label="Deterministic run architecture">
@@ -602,7 +602,7 @@ function StarwreckPage() {
               <div><strong>60</strong><span>LOGIC TICKS<br />PER SECOND</span></div>
               <div><strong>03</strong><span>INDEPENDENT KEYS<br />RUN · META · SETTINGS</span></div>
               <div><strong>00</strong><span>AUTOMATIC LOG<br />UPLOADS ON WEB</span></div>
-              <p>On desktop, run logs only export to a local JSON file On web, a log is sent only after an explicit player action</p>
+              <p>On desktop, run logs only export to a local JSON file. On web, a log is sent only after an explicit player action.</p>
             </div>
           </div>
         </section>
@@ -612,7 +612,7 @@ function StarwreckPage() {
             <div className="sw-state-title">
               <CaseLabel>06 / current state</CaseLabel>
               <h2>Playable now<br /><span>Steam next</span></h2>
-              <p>The repository describes a complete playable MVP and a Windows desktop path The store page and Steam release are not published yet</p>
+              <p>The repository describes a complete playable MVP and a Windows desktop path. The store page and Steam release are not published yet.</p>
             </div>
             <div className="sw-state-column">
               <div><span>NOW / VERIFIED IN REPOSITORY</span><i /></div>

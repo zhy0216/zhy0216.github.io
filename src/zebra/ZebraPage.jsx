@@ -8,25 +8,25 @@ const PRINCIPLES = [
   {
     number: '01',
     title: 'Bun, without apology',
-    text: 'Built directly on Bun.serve, Bun.file, and Web Standard Request / Response No Node compatibility layer hiding underneath',
+    text: 'Built directly on Bun.serve, Bun.file, and Web Standard Request / Response. No Node compatibility layer hiding underneath.',
     detail: 'RUNTIME / NATIVE',
   },
   {
     number: '02',
     title: 'DI is the architecture',
-    text: 'Every application owns a Container Route dependencies are explicit, scopes are real, and the entire graph is checked before traffic arrives',
+    text: 'Every application owns a Container. Route dependencies are explicit, scopes are real, and the entire graph is checked before traffic arrives.',
     detail: 'GRAPH / VALIDATED',
   },
   {
     number: '03',
     title: 'One contract, three surfaces',
-    text: 'A single immutable contract drives server implementation, runtime validation, and a type-safe client without repeating the schema',
+    text: 'A single immutable contract drives server implementation, runtime validation, and a type-safe client without repeating the schema.',
     detail: 'SERVER / CLIENT / TEST',
   },
   {
     number: '04',
     title: 'Failure has a shape',
-    text: 'Errors are part of the protocol Zebra defaults to RFC 9457 Problem+Json instead of turning every failure into an improvised response',
+    text: 'Errors are part of the protocol. Zebra defaults to RFC 9457 Problem+Json instead of turning every failure into an improvised response.',
     detail: 'RFC 9457 / ERRORS',
   },
 ]
@@ -52,22 +52,22 @@ const DECISIONS = [
   {
     number: 'A',
     title: 'Validate before listen()',
-    text: 'Missing bindings, circular dependencies, and illegal scope relationships surface at boot—not halfway through a production request',
+    text: 'Missing bindings, circular dependencies, and illegal scope relationships surface at boot—not halfway through a production request.',
   },
   {
     number: 'B',
     title: 'Keep the common path empty',
-    text: 'Routes without DI or sessions skip child-container creation Dependency scanning and middleware wrapping move to boot-time compilation',
+    text: 'Routes without DI or sessions skip child-container creation. Dependency scanning and middleware wrapping move to boot-time compilation.',
   },
   {
     number: 'C',
     title: 'Publish source, verify the package',
-    text: 'Bun runs the TypeScript source directly Every publishable package is packed, installed into a clean project, imported, and typechecked',
+    text: 'Bun runs the TypeScript source directly. Every publishable package is packed, installed into a clean project, imported, and typechecked.',
   },
   {
     number: 'D',
     title: 'Test without the socket',
-    text: 'The testing package connects a contract-aware client directly to an in-process app, keeping integration tests fast and fully typed',
+    text: 'The testing package connects a contract-aware client directly to an in-process app, keeping integration tests fast and fully typed.',
   },
 ]
 
@@ -322,11 +322,11 @@ function ZebraPage() {
 
         <section className="zc-premise">
           <div className="zc-frame zc-premise-grid">
-            <aside className="zc-aside"><CaseLabel>01 / the premise</CaseLabel><p>Frameworks usually add dependency injection later Zebra starts there</p><span>REWRITE / V2<br />API FREEZE / V1.0</span></aside>
+            <aside className="zc-aside"><CaseLabel>01 / the premise</CaseLabel><p>Frameworks usually add dependency injection later. Zebra starts there.</p><span>REWRITE / V2<br />API FREEZE / V1.0</span></aside>
             <div className="zc-premise-main">
               <h2>What if dependency injection <em>wasn&apos;t bolted on?</em></h2>
               <div className="zc-premise-copy">
-                <p>The answer is a small but opinionated framework where routes declare what they need, the container proves that graph before boot, and the same contract can drive the server, client, validation, and tests</p>
+                <p>The answer is a small but opinionated framework where routes declare what they need, the container proves that graph before boot, and the same contract can drive the server, client, validation, and tests.</p>
               </div>
             </div>
           </div>
@@ -350,7 +350,7 @@ function ZebraPage() {
 
         <section className="zc-system">
           <div className="zc-frame">
-            <div className="zc-system-intro"><CaseLabel>03 / request anatomy</CaseLabel><h2>One request<br /><span>One legible path</span></h2><p>Every layer has a job, an explicit boundary, and a predictable failure mode</p></div>
+            <div className="zc-system-intro"><CaseLabel>03 / request anatomy</CaseLabel><h2>One request<br /><span>One legible path</span></h2><p>Every layer has a job, an explicit boundary, and a predictable failure mode.</p></div>
             <div className="zc-flow" aria-label="Zebra request flow">
               {FLOW.map(([number, title, text], index) => (
                 <div className="zc-flow-node" key={number}>
@@ -367,7 +367,7 @@ function ZebraPage() {
 
         <section className="zc-code-section zc-dark-section">
           <div className="zc-frame">
-            <div className="zc-code-intro"><div><CaseLabel light>04 / the interface</CaseLabel><h2>Explicit enough to read<br /><span>Typed enough to trust</span></h2></div><p>The public API keeps dependencies visible and lets TypeScript carry information across boundaries</p></div>
+            <div className="zc-code-intro"><div><CaseLabel light>04 / the interface</CaseLabel><h2>Explicit enough to read<br /><span>Typed enough to trust</span></h2></div><p>The public API keeps dependencies visible and lets TypeScript carry information across boundaries.</p></div>
             <div className="zc-code-grid">
               <CodePanel number="01" label="NAMED-OBJECT ROUTE DI">{`import "reflect-metadata";
 import { Zebra, injectable } from "zebra";
@@ -419,7 +419,7 @@ const post = await client.getPost({
               <div><strong>95.7K</strong><span>STATIC REQ/S<br />LOCAL BASELINE*</span></div>
             </div>
             <div className="zc-performance">
-              <div className="zc-performance-copy"><h3>Fast enough to keep the architecture honest</h3><p>The benchmark suite runs real Bun HTTP servers and checks response bodies The goal is not a trophy; it is a regression gate that makes abstractions pay their way</p><span>* SINGLE-PROCESS LOOPBACK MACHINE-SPECIFIC, NOT A CROSS-SYSTEM CLAIM</span></div>
+              <div className="zc-performance-copy"><h3>Fast enough to keep the architecture honest</h3><p>The benchmark suite runs real Bun HTTP servers and checks response bodies. The goal is not a trophy; it is a regression gate that makes abstractions pay their way.</p><span>* SINGLE-PROCESS LOOPBACK MACHINE-SPECIFIC, NOT A CROSS-SYSTEM CLAIM</span></div>
               <div className="zc-bars">
                 {PERFORMANCE.map(([label, value]) => <div className="zc-bar" key={label}><span>{label}</span><div><i style={{ width: `${value}%` }} /></div><strong>{value.toFixed(1)}K</strong></div>)}
               </div>

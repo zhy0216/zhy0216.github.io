@@ -9,31 +9,31 @@ const PRINCIPLES = [
   {
     number: '01',
     title: 'Replay, not snapshots',
-    text: 'Completed steps are memoized in Postgres After a crash or a long wait, the task function re-runs from the top and cached steps return instantly — your code stays a straight-line async function',
+    text: 'Completed steps are memoized in Postgres. After a crash or a long wait, the task function re-runs from the top and cached steps return instantly — your code stays a straight-line async function.',
     detail: 'STEP MEMORY / POS SEQ',
   },
   {
     number: '02',
     title: 'Postgres is the whole stack',
-    text: 'Queue, orchestrator loops and the replay executor live in the runtime and coordinate with FOR UPDATE SKIP LOCKED Run N daemons against one database — no leader election',
+    text: 'Queue, orchestrator loops and the replay executor live in the runtime and coordinate with FOR UPDATE SKIP LOCKED. Run N daemons against one database — no leader election.',
     detail: 'ONE DATABASE / NO REDIS',
   },
   {
     number: '03',
     title: 'The SDK cannot reach Postgres',
-    text: 'The app-facing package speaks HTTP and depends only on the zero-dependency core package CI fails if pg — or any extra runtime dependency — crosses that boundary',
+    text: 'The app-facing package speaks HTTP and depends only on the zero-dependency core package. CI fails if pg — or any extra runtime dependency — crosses that boundary.',
     detail: 'HTTP CLIENT / NO PG',
   },
   {
     number: '04',
     title: 'One process, or many',
-    text: 'Run the worker as a standalone daemon, or embed the same runtime in a long-lived Node/Bun app with createEmbeddedRuntime No second port, no second execution model',
+    text: 'Run the worker as a standalone daemon, or embed the same runtime in a long-lived Node/Bun app with createEmbeddedRuntime. No second port, no second execution model.',
     detail: 'DAEMON + EMBEDDED',
   },
   {
     number: '05',
     title: 'Crash-safe by construction',
-    text: 'Persistent leases plus a monotonic fencing token reject late writes from a dead worker Step history stays exactly-once even across SIGKILL',
+    text: 'Persistent leases plus a monotonic fencing token reject late writes from a dead worker. Step history stays exactly-once even across SIGKILL.',
     detail: 'LEASE + FENCING TOKEN',
   },
 ]
@@ -76,27 +76,27 @@ const DECISIONS = [
   {
     number: 'A',
     title: 'History exactly-once, side effects at-least-once',
-    text: 'The ledger never records a step twice, but an external call may run more than once after a crash Idempotency keys are the caller\u2019s lever — LLM calls cost money, so bring a key',
+    text: 'The ledger never records a step twice, but an external call may run more than once after a crash. Idempotency keys are the caller\u2019s lever — LLM calls cost money, so bring a key.',
   },
   {
     number: 'B',
     title: 'Notify for speed, poll for correctness',
-    text: 'pg_notify wakes idle claim loops and terminal result waiters Every consumer still keeps a bounded polling fallback, so a dropped notification changes latency — never the outcome',
+    text: 'pg_notify wakes idle claim loops and terminal result waiters. Every consumer still keeps a bounded polling fallback, so a dropped notification changes latency — never the outcome.',
   },
   {
     number: 'C',
     title: 'Determinism is the contract',
-    text: 'Code between steps re-runs on every replay, so it must be deterministic ctx.now / ctx.random / ctx.uuid are memoized; fingerprint drift fails loud as NonDeterminismError',
+    text: 'Code between steps re-runs on every replay, so it must be deterministic. ctx.now / ctx.random / ctx.uuid are memoized; fingerprint drift fails loud as NonDeterminismError.',
   },
   {
     number: 'D',
     title: 'State is durable, compute needs a host',
-    text: 'With no daemon online, nothing executes — timers and cron included, and missed cron windows are not backfilled The shutdown semantics are a documented promise, not an accident',
+    text: 'With no daemon online, nothing executes — timers and cron included, and missed cron windows are not backfilled. The shutdown semantics are a documented promise, not an accident.',
   },
   {
     number: 'E',
     title: 'One binary, every shape',
-    text: '--tasks and --no-serve are independent: all-in-one, API-only, or executor-only from the same build Embedded shares the host\u2019s failure domain by explicit choice',
+    text: '--tasks and --no-serve are independent: all-in-one, API-only, or executor-only from the same build. Embedded shares the host\u2019s failure domain by explicit choice.',
   },
 ]
 
@@ -123,7 +123,7 @@ function Arrow({ direction = 'ne' }) {
 }
 
 function CaseLabel({ children, light = false }) {
-  return <span className={`bt-label ${light ? 'bt-label--light' : ''}`}>{children}</span>
+  return <span className={`bt-label ${light ? 'bt-label--light' : ''}`}><span>{children}</span></span>
 }
 
 function CaseButton({ children, href, light = false }) {
@@ -552,12 +552,12 @@ function BetterTriggerPage() {
 
         <section className="bt-premise">
           <div className="bt-frame bt-premise-grid">
-            <aside className="bt-aside"><CaseLabel>01 / the premise</CaseLabel><p>Durable execution usually means adding infrastructure What if the database you already run were enough?</p><span>REPLAY MODEL<br />POSTGRES-ONLY V1</span></aside>
+            <aside className="bt-aside"><CaseLabel>01 / the premise</CaseLabel><p>Durable execution usually means adding infrastructure. What if the database you already run were enough?</p><span>REPLAY MODEL<br />POSTGRES-ONLY V1</span></aside>
             <div className="bt-premise-main">
               <h2>Why does a queue <em>stop being enough</em><br />the moment a job waits?</h2>
               <div className="bt-premise-copy">
-                <p>Background jobs start simple — enqueue, run, done Then one job needs to wait a day, another needs three retries, a third must fan out and rejoin Keep that state in the queue and you are building a job scheduler by hand better-trigger starts from a different premise: the task function is durable, so the whole execution model can live in one Postgres and nothing else</p>
-                <p>The runtime never serializes a call stack It stores payload, position and completed results; after a wait or crash, the function starts again and moves through its old steps as cache hits The code stays readable because Postgres remembers what already happened</p>
+                <p>Background jobs start simple — enqueue, run, done. Then one job needs to wait a day, another needs three retries, a third must fan out and rejoin. Keep that state in the queue and you are building a job scheduler by hand. better-trigger starts from a different premise: the task function is durable, so the whole execution model can live in one Postgres and nothing else.</p>
+                <p>The runtime never serializes a call stack. It stores payload, position and completed results; after a wait or crash, the function starts again and moves through its old steps as cache hits. The code stays readable because Postgres remembers what already happened.</p>
               </div>
             </div>
           </div>
@@ -581,7 +581,7 @@ function BetterTriggerPage() {
 
         <section className="bt-system">
           <div className="bt-frame">
-            <div className="bt-system-intro"><CaseLabel>03 / replay anatomy</CaseLabel><h2>One function<br /><span>Two passes</span></h2><p>The first pass commits durable boundaries The second pass re-enters the same code, reads completed positions from memory, and continues</p></div>
+            <div className="bt-system-intro"><CaseLabel>03 / replay anatomy</CaseLabel><h2>One function<br /><span>Two passes</span></h2><p>The first pass commits durable boundaries. The second pass re-enters the same code, reads completed positions from memory, and continues.</p></div>
             <div className="bt-replay-stage" aria-label="A task suspends during its first execution, then replays completed steps and continues during its second execution">
               <div className="bt-replay-grid" aria-hidden="true" />
               <ReplayPass pass={REPLAY_PASSES[0]} />
@@ -604,7 +604,7 @@ function BetterTriggerPage() {
 
         <section className="bt-code-section bt-dark-section">
           <div className="bt-frame">
-            <div className="bt-code-intro"><div><CaseLabel light>04 / the interface</CaseLabel><h2>Write a straight line<br /><span>The runtime keeps the ledger</span></h2></div><p>ctx.step memoizes, ctx.wait suspends, retries and cron are declared The code you read is the shape of the run</p></div>
+            <div className="bt-code-intro"><div><CaseLabel light>04 / the interface</CaseLabel><h2>Write a straight line<br /><span>The runtime keeps the ledger</span></h2></div><p>ctx.step memoizes, ctx.wait suspends, retries and cron are declared. The code you read is the shape of the run.</p></div>
             <div className="bt-code-grid">
               <CodePanel number="01" label="DEFINE + TRIGGER">{`import { task } from "better-trigger";
 
@@ -677,7 +677,7 @@ await runtime.stop();`}</CodePanel>
           <div className="bt-frame bt-outro-inner">
             <CaseLabel light>08 / run it</CaseLabel>
             <h2>Keep the code linear<br /><span>Let Postgres remember</span></h2>
-            <p>Use the daemon when execution should scale independently Embed the same runtime when one long-lived process is the product</p>
+            <p>Use the daemon when execution should scale independently. Embed the same runtime when one long-lived process is the product.</p>
             <div className="bt-outro-actions"><CaseButton href={GITHUB_URL}>VIEW ON GITHUB</CaseButton><CaseButton href={DOCS_URL} light>READ THE DOCUMENTATION</CaseButton></div>
             <span className="bt-outro-note">TYPESCRIPT-FIRST · POSTGRES-BACKED · MIT · ENGLISH DOCS + SIMPLIFIED CHINESE DOCS</span>
           </div>
