@@ -264,8 +264,6 @@ export default function RepositoryField() {
       const rect = viewport.getBoundingClientRect()
       const x = latestEvent.clientX - rect.left
       const y = latestEvent.clientY - rect.top
-      viewport.style.setProperty('--scan-x', `${x}px`)
-      viewport.style.setProperty('--scan-y', `${y}px`)
 
       let closestName = null
       let closestDistance = 128
@@ -292,11 +290,9 @@ export default function RepositoryField() {
       if (!frame) frame = requestAnimationFrame(applyPointer)
     }
     const onPointerEnter = () => {
-      viewport.classList.add('is-scanning')
       measure()
     }
     const onPointerLeave = () => {
-      viewport.classList.remove('is-scanning')
       nodePositions.forEach((item) => item.node.style.setProperty('--heat', '0'))
       if (!viewport.contains(document.activeElement)) {
         activeNameRef.current = null
@@ -353,7 +349,6 @@ export default function RepositoryField() {
 
       <div ref={viewportRef} className="repository-viewport">
         <RepositoryFieldScene />
-        <div className="repository-scan" aria-hidden="true"><span>SCAN</span></div>
         <div ref={cloudRef} className="repository-cloud">
           {visibleRepositories.map((repository) => {
             const index = repositoryIndices.get(repository.name) || 0

@@ -238,7 +238,7 @@ button { appearance: none; border: 0; background: transparent; font: inherit; pa
 .repository-filters button:hover { color: var(--blue); }
 .repository-filters button.is-active { background: var(--ink); color: #f4f4f0; }
 .repository-filters button.is-active b { color: var(--blue-bright); }
-.repository-viewport { --scan-x: 50%; --scan-y: 50%; position: relative; min-height: 700px; overflow: hidden; isolation: isolate; cursor: crosshair; background: radial-gradient(circle at 52% 45%, rgba(255,255,255,.96), rgba(238,238,234,.74) 58%, rgba(226,226,220,.9)); }
+.repository-viewport { position: relative; min-height: 700px; overflow: hidden; isolation: isolate; cursor: default; background: radial-gradient(circle at 52% 45%, rgba(255,255,255,.96), rgba(238,238,234,.74) 58%, rgba(226,226,220,.9)); }
 .repository-viewport::before { content: ''; position: absolute; z-index: -1; inset: 0; opacity: .55; pointer-events: none; background-image: linear-gradient(rgba(7,7,7,.055) 1px, transparent 1px), linear-gradient(90deg, rgba(7,7,7,.055) 1px, transparent 1px); background-size: 42px 42px; mask-image: radial-gradient(circle at center, #000 20%, transparent 88%); }
 .repository-field-scene { position: absolute; z-index: 0; inset: 0; opacity: .96; pointer-events: none; }
 .repository-field-scene canvas { display: block; width: 100%; height: 100%; }
@@ -247,23 +247,52 @@ button { appearance: none; border: 0; background: transparent; font: inherit; pa
 .repository-axis--x { left: 0; right: 0; top: 50%; height: 1px; }
 .repository-axis--y { top: 0; bottom: 0; left: 50%; width: 1px; background: linear-gradient(0deg, transparent, rgba(0,17,226,.16) 25%, rgba(0,17,226,.16) 75%, transparent); }
 .repository-cloud { position: relative; z-index: 2; min-height: 700px; padding: 51px 34px 64px; display: flex; flex-wrap: wrap; align-content: center; justify-content: center; }
-.repository-node { --heat: 0; position: relative; min-height: 42px; margin: -1px 0 0 -1px; padding: 0 13px; display: inline-flex; align-items: center; gap: 9px; border: 1px solid rgba(7,7,7,calc(.11 + var(--heat) * .14)); background: rgba(244,244,240,calc(.67 + var(--heat) * .2)); color: rgba(7,7,7,calc(.68 + var(--heat) * .32)); transform: translate3d(0, calc(var(--heat) * -3px), 0) scale(calc(1 + var(--heat) * .025)); transition: color .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease, transform .14s ease; transform-origin: center; will-change: transform; }
+.repository-node { --heat: 0; position: relative; min-height: 42px; margin: -1px 0 0 -1px; padding: 0 13px; display: inline-flex; align-items: center; gap: 9px; cursor: pointer; border: 1px solid rgba(7,7,7,calc(.11 + var(--heat) * .14)); background: rgba(244,244,240,calc(.67 + var(--heat) * .2)); color: rgba(7,7,7,calc(.68 + var(--heat) * .32)); transform: translate3d(0, calc(var(--heat) * -3px), 0) scale(calc(1 + var(--heat) * .025)); transition: color .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease, transform .14s ease; transform-origin: center; will-change: transform; }
 .repository-node > span { color: rgba(7,7,7,.38); font: 400 7px/1 var(--mono); letter-spacing: .07em; }
 .repository-node > strong { font: 420 12px/1 var(--mono); letter-spacing: -.025em; white-space: nowrap; }
-.repository-node > i { width: 4px; height: 4px; flex: none; background: var(--blue); }
+.repository-node > i { position: relative; width: 4px; height: 4px; flex: none; background: var(--blue); }
+.repository-node > i::before,
+.repository-node > i::after { content: ''; position: absolute; pointer-events: none; opacity: 0; }
+.repository-node > i::before {
+  inset: -6px;
+  background:
+    linear-gradient(currentColor, currentColor) 0 0 / 6px 1px no-repeat,
+    linear-gradient(currentColor, currentColor) 0 0 / 1px 6px no-repeat,
+    linear-gradient(currentColor, currentColor) 100% 0 / 6px 1px no-repeat,
+    linear-gradient(currentColor, currentColor) 100% 0 / 1px 6px no-repeat,
+    linear-gradient(currentColor, currentColor) 0 100% / 6px 1px no-repeat,
+    linear-gradient(currentColor, currentColor) 0 100% / 1px 6px no-repeat,
+    linear-gradient(currentColor, currentColor) 100% 100% / 6px 1px no-repeat,
+    linear-gradient(currentColor, currentColor) 100% 100% / 1px 6px no-repeat;
+  transition: opacity .16s ease, transform .3s cubic-bezier(.16, 1, .3, 1);
+  transform: scale(1.45);
+}
+.repository-node > i::after { top: 50%; left: 50%; width: 2px; height: 2px; background: currentColor; transition: opacity .18s ease, transform .3s cubic-bezier(.16, 1, .3, 1); transform: translate(-50%, -50%) scale(0); }
 .repository-node > i.is-fork { border: 1px solid #858681; background: transparent; transform: rotate(45deg); }
 .repository-node--short > strong { font-size: 14px; letter-spacing: -.04em; }
 .repository-node--long > strong { font-size: 10px; letter-spacing: -.04em; }
 .repository-node--very-long > strong { font-size: 8px; letter-spacing: -.055em; }
 .repository-node:hover, .repository-node.is-active, .repository-node:focus-visible { z-index: 6; border-color: var(--blue); outline: 0; background: var(--blue); color: white; box-shadow: 0 0 0 5px rgba(0,17,226,.11), 0 19px 38px rgba(7,7,7,.18); transform: translate3d(0, -6px, 0) scale(1.035); }
 .repository-node:hover > span, .repository-node.is-active > span, .repository-node:focus-visible > span { color: rgba(255,255,255,.62); }
-.repository-node:hover > i, .repository-node.is-active > i, .repository-node:focus-visible > i { border-color: white; background: white; }
-.repository-scan { position: absolute; z-index: 5; left: 0; top: 0; width: 64px; height: 64px; border: 1px solid rgba(0,17,226,.52); opacity: 0; pointer-events: none; transform: translate3d(calc(var(--scan-x) - 50%), calc(var(--scan-y) - 50%), 0) rotate(45deg); transition: opacity .2s ease; box-shadow: inset 0 0 0 5px rgba(0,17,226,.025); }
-.repository-scan::before, .repository-scan::after { content: ''; position: absolute; left: 50%; top: 50%; background: rgba(0,17,226,.55); transform: translate(-50%,-50%); }
-.repository-scan::before { width: 88px; height: 1px; }
-.repository-scan::after { width: 1px; height: 88px; }
-.repository-scan span { position: absolute; right: -7px; bottom: -17px; color: var(--blue); font: 400 7px/1 var(--mono); letter-spacing: .13em; transform: rotate(-45deg); }
-.repository-viewport.is-scanning .repository-scan { opacity: 1; }
+.repository-node:hover > i, .repository-node.is-active > i, .repository-node:focus-visible > i {
+  border-color: transparent;
+  background: transparent;
+  color: white;
+  transform: none;
+}
+.repository-node:hover > i::before, .repository-node.is-active > i::before, .repository-node:focus-visible > i::before {
+  opacity: 1;
+  animation: repository-focus-lock .42s cubic-bezier(.16, 1, .3, 1) both;
+}
+.repository-node:hover > i::after, .repository-node.is-active > i::after, .repository-node:focus-visible > i::after {
+  opacity: .86;
+  transform: translate(-50%, -50%) scale(1);
+}
+@keyframes repository-focus-lock {
+  0% { opacity: 0; transform: scale(1.65); }
+  58% { opacity: 1; transform: scale(.9); }
+  100% { opacity: 1; transform: scale(1); }
+}
 .repository-readout { position: relative; z-index: 7; min-height: 178px; display: grid; grid-template-columns: 112px minmax(0, 1.6fr) minmax(320px, 1fr) 168px; background: var(--ink); color: #f4f4f0; border-top: 1px solid rgba(255,255,255,.16); }
 .repository-readout > * { border-right: 1px solid rgba(255,255,255,.14); }
 .repository-readout > *:last-child { border-right: 0; }
@@ -396,7 +425,6 @@ button { appearance: none; border: 0; background: transparent; font: inherit; pa
   .repository-node--long > strong { font-size: 8px; }
   .repository-node--very-long > strong { font-size: 7px; }
   .repository-node:hover, .repository-node.is-active, .repository-node:focus-visible { transform: translate3d(0, -3px, 0) scale(1.015); }
-  .repository-scan { display: none; }
   .repository-readout { min-height: 0; display: grid; grid-template-columns: 76px minmax(0, 1fr); }
   .repository-readout-index { min-height: 132px; padding: 18px 13px; }
   .repository-readout-index > span { font-size: 30px; }
