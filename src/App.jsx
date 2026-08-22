@@ -102,7 +102,7 @@ function OrbitalScene() {
 
     const scene = new THREE.Scene()
     const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100)
-    camera.position.set(0, 0.15, 8.4)
+    camera.position.set(0, 0.15, 9.2)
 
     let renderer
     try {
@@ -121,40 +121,16 @@ function OrbitalScene() {
 
     const ambient = new THREE.AmbientLight(0x3a4cff, 2.2)
     scene.add(ambient)
-    const sunLight = new THREE.PointLight(0x9fb0ff, 95, 0, 2)
+    const sunLight = new THREE.PointLight(0x9fb0ff, 108, 0, 2)
+    sunLight.position.set(0, 2.3, -0.7)
     scene.add(sunLight)
     const lightB = new THREE.PointLight(0xe6ebff, 32, 0, 2)
     lightB.position.set(-2.2, -0.9, -1.6)
     root.add(lightB)
 
-    const glowCanvas = document.createElement('canvas')
-    glowCanvas.width = glowCanvas.height = 128
-    const glowCtx = glowCanvas.getContext('2d')
-    const glowGradient = glowCtx.createRadialGradient(64, 64, 0, 64, 64, 64)
-    glowGradient.addColorStop(0, 'rgba(255,255,255,0.95)')
-    glowGradient.addColorStop(0.18, 'rgba(160,175,255,0.6)')
-    glowGradient.addColorStop(0.45, 'rgba(74,94,255,0.22)')
-    glowGradient.addColorStop(1, 'rgba(0,0,0,0)')
-    glowCtx.fillStyle = glowGradient
-    glowCtx.fillRect(0, 0, 128, 128)
-    const glowTexture = new THREE.CanvasTexture(glowCanvas)
-
-    // Empty anchor for the moving point light; it deliberately has no visible mesh.
     const sunGroup = new THREE.Group()
     sunGroup.position.set(0, 2.3, 0.9)
     scene.add(sunGroup)
-
-    const sunCore = new THREE.Mesh(
-      new THREE.IcosahedronGeometry(0.3, 2),
-      new THREE.MeshBasicMaterial({ color: 0xffffff }),
-    )
-    sunGroup.add(sunCore)
-
-    const sunGlow = new THREE.Sprite(
-      new THREE.SpriteMaterial({ map: glowTexture, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.85 }),
-    )
-    sunGlow.scale.set(2.7, 2.7, 1)
-    sunGroup.add(sunGlow)
 
     const shell = new THREE.Mesh(
       new THREE.IcosahedronGeometry(2.5, 2),
@@ -164,16 +140,6 @@ function OrbitalScene() {
       }),
     )
     root.add(shell)
-
-    const innerShell = new THREE.Mesh(
-      new THREE.IcosahedronGeometry(1.65, 2),
-      new THREE.MeshStandardMaterial({
-        color: 0x1e36ff, emissive: 0x2638ff, emissiveIntensity: 0.7,
-        wireframe: true, transparent: true, opacity: 0.38, roughness: 0.4, metalness: 0.4,
-      }),
-    )
-    innerShell.rotation.set(0.4, 0.3, 0.1)
-    root.add(innerShell)
 
     const knot = new THREE.Mesh(
       new THREE.TorusKnotGeometry(1.23, 0.035, 170, 10, 2, 3),
@@ -315,29 +281,34 @@ function OrbitalScene() {
     const render = () => {
       const elapsed = clock.getElapsedTime()
       if (!reducedMotion) {
-        root.rotation.y += 0.0018
-        root.rotation.x = (0.1 + Math.sin(elapsed * 0.22) * 0.05) + (-pointer.y * 0.16 + 0.1 - root.rotation.x) * 0.05
+        root.rotation.y += 0.0018 + pointer.x * 0.0011
+        const targetRootX = 0.1 + Math.sin(elapsed * 0.22) * 0.05 - pointer.y * 0.34
+        const targetRootZ = -0.08 + pointer.x * 0.42
+        root.rotation.x += (targetRootX - root.rotation.x) * 0.11
+        root.rotation.z += (targetRootZ - root.rotation.z) * 0.11
         shell.rotation.z -= 0.0007
-        innerShell.rotation.z += 0.0014
         knot.rotation.z += 0.003
         knot.rotation.y -= 0.0016
         ringA.rotation.z += 0.0014
         ringB.rotation.x -= 0.0008
         particles.rotation.y -= 0.00055
         stars.rotation.y += 0.00015
-        camera.position.x += (pointer.x * 0.85 - camera.position.x) * 0.08
-        camera.position.y += (-pointer.y * 0.55 + 0.15 - camera.position.y) * 0.08
-        root.rotation.z += ((pointer.x * 0.22 - 0.08) - root.rotation.z) * 0.05
-        const idleX = Math.sin(elapsed * 0.45) * 0.32
-        const idleY = 2.3 + Math.sin(elapsed * 0.7) * 0.16
-        const k = dragging ? 0.2 : 0.035
-        sunGroup.position.x += ((dragging ? dragTarget.x : idleX) - sunGroup.position.x) * k
-        sunGroup.position.y += ((dragging ? dragTarget.y : idleY) - sunGroup.position.y) * k
+        const cameraTargetX = THREE.MathUtils.clamp(pointer.x * 0.82, -0.72, 0.72)
+        const cameraTargetY = THREE.MathUtils.clamp(-pointer.y * 0.68 + 0.15, -0.5, 0.75)
+        camera.position.x += (cameraTargetX - camera.position.x) * 0.12
+        camera.position.y += (cameraTargetY - camera.position.y) * 0.12
+        const idleX = Math.sin(elapsed * 0.34) * 0.24 + Math.sin(elapsed * 0.73 + 1.9) * 0.06
+        const idleY = 2.3 + Math.sin(elapsed * 0.52 + 0.7) * 0.11 + Math.sin(elapsed * 0.91) * 0.035
+        const mouseLightX = THREE.MathUtils.clamp(pointer.x * 2.65 + idleX * 0.35, -2.9, 2.9)
+        const mouseLightY = THREE.MathUtils.clamp(2.3 - pointer.y * 1.4 + (idleY - 2.3) * 0.35, 0.45, 3.4)
+        const lightTargetX = dragging ? dragTarget.x : mouseLightX
+        const lightTargetY = dragging ? dragTarget.y : mouseLightY
+        const k = dragging ? 0.28 : 0.22
+        sunGroup.position.x += (lightTargetX - sunGroup.position.x) * k
+        sunGroup.position.y += (lightTargetY - sunGroup.position.y) * k
         sunGroup.position.z = 0.9
         sunLight.position.set(sunGroup.position.x, sunGroup.position.y, sunGroup.position.z - 1.6)
-        const sunPulse = 1 + Math.sin(elapsed * 1.8) * 0.09
-        sunGlow.scale.set(2.7 * sunPulse, 2.7 * sunPulse, 1)
-        sunGlow.material.opacity = 0.82 + Math.sin(elapsed * 1.8) * 0.12
+        sunLight.intensity = 108 + Math.sin(elapsed * 0.72) * 6
         camera.lookAt(0, 0, 0)
       }
       renderer.render(scene, camera)
@@ -357,18 +328,12 @@ function OrbitalScene() {
       stars.material.dispose()
       shell.geometry.dispose()
       shell.material.dispose()
-      innerShell.geometry.dispose()
-      innerShell.material.dispose()
       knot.geometry.dispose()
       knot.material.dispose()
       ringA.geometry.dispose()
       ringA.material.dispose()
       ringB.geometry.dispose()
       ringB.material.dispose()
-      sunCore.geometry.dispose()
-      sunCore.material.dispose()
-      sunGlow.material.map.dispose()
-      sunGlow.material.dispose()
       renderer.dispose()
       if (renderer.domElement.parentNode === mount) mount.removeChild(renderer.domElement)
     }
