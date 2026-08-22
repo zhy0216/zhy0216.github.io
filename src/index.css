@@ -217,23 +217,6 @@ button { appearance: none; border: 0; background: transparent; font: inherit; pa
 .trigger-card-code { position: absolute; z-index: 5; left: 20px; bottom: 18px; padding: 8px 10px; background: rgba(10,10,13,.92); color: #e8e8ef; font: 400 9px/1 var(--mono); letter-spacing: .11em; }
 .project-card:hover .trigger-card-mark { transform: translateY(-3px) scale(1.05); box-shadow: 0 0 0 8px rgba(7,7,7,.35), 0 0 46px rgba(0,17,226,.58); }
 .project-card:hover .trigger-card-cell--cached { background: rgba(82,104,255,.34); color: white; }
-.project-art--field { background: #d7d7d2; color: #111; }
-.field-scanlines { position: absolute; inset: 0; opacity: .43; background: repeating-linear-gradient(0deg, transparent 0 6px, rgba(0,0,0,.08) 6px 7px), repeating-linear-gradient(90deg, transparent 0 19px, rgba(0,0,0,.07) 19px 20px); }
-.field-title { position: absolute; left: 8%; bottom: 11%; font-size: clamp(45px, 6vw, 88px); line-height: .79; letter-spacing: -.1em; font-weight: 300; }
-.field-coordinate { position: absolute; top: 12%; right: 8%; color: #5e605a; font: 400 9px/1.65 var(--mono); letter-spacing: .1em; }
-.project-art--afterimage { background: #0c0c0d; }
-.afterimage-sun { position: absolute; left: 31%; top: 17%; width: 35%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #e7e7e0 0 8%, #9da8ff 27%, #0011e2 52%, rgba(0,17,226,.05) 71%); filter: blur(.2px); box-shadow: 0 0 85px rgba(0,17,226,.65); }
-.afterimage-ring { position: absolute; left: 50%; top: 50%; border: 1px solid rgba(126,127,255,.7); border-radius: 50%; transform: translate(-50%,-50%) rotate(25deg); }
-.afterimage-ring--one { width: 75%; height: 33%; }
-.afterimage-ring--two { width: 33%; height: 75%; transform: translate(-50%,-50%) rotate(-42deg); border-color: rgba(255,255,255,.35); }
-.afterimage-word { position: absolute; right: 8%; bottom: 10%; color: #d8d8d2; font: 400 10px/1.25 var(--mono); letter-spacing: .13em; text-align: right; }
-.project-art--ground { background: #1a1a18; }
-.ground-grid { position: absolute; inset: 0; background: linear-gradient(rgba(214,215,207,.12) 1px, transparent 1px), linear-gradient(90deg, rgba(214,215,207,.12) 1px, transparent 1px); background-size: 37px 37px; transform: perspective(280px) rotateX(55deg) scale(1.55); transform-origin: center bottom; }
-.ground-block { position: absolute; border: 1px solid #aaa; background: rgba(216,217,209,.14); transform: skewY(-27deg); }
-.ground-block--one { width: 31%; height: 36%; left: 17%; top: 25%; }
-.ground-block--two { width: 21%; height: 48%; left: 53%; top: 13%; border-color: #0011e2; background: rgba(0,17,226,.25); }
-.ground-block--three { width: 16%; height: 27%; right: 11%; bottom: 14%; }
-.ground-label { position: absolute; left: 8%; bottom: 10%; color: #d9dad4; font: 400 10px/1.25 var(--mono); letter-spacing: .13em; }
 
 /* Lab */
 .lab-section { overflow: hidden; }

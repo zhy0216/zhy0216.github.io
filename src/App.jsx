@@ -37,33 +37,6 @@ const PROJECTS = [
     variant: 'trigger',
     href: '/work/better-trigger/',
   },
-  {
-    number: '04',
-    title: 'FIELD NOTES',
-    type: 'EDITORIAL PLATFORM · 2024',
-    description: 'An editorial interface for curious people, quiet ideas, and long reads',
-    tags: ['Product', 'Motion', 'Build'],
-    variant: 'field',
-    href: '#contact',
-  },
-  {
-    number: '05',
-    title: 'AFTERIMAGE',
-    type: 'INTERACTIVE INSTALLATION · 2024',
-    description: 'A browser-native light study that turns a visitor into the material',
-    tags: ['Three.js', 'Experience', 'Sound'],
-    variant: 'afterimage',
-    href: '#contact',
-  },
-  {
-    number: '06',
-    title: 'COMMON GROUND',
-    type: 'PRODUCT SYSTEM · 2023',
-    description: 'A calmer way for distributed teams to make decisions together',
-    tags: ['Strategy', 'UI system', 'Prototype'],
-    variant: 'ground',
-    href: '#contact',
-  },
 ]
 
 const Arrow = ({ diagonal = true }) => (
@@ -411,31 +384,7 @@ function ProjectArt({ variant }) {
           <div className="art-cross art-cross--b" />
         </>
       )}
-      {variant === 'field' && (
-        <>
-          <div className="field-scanlines" />
-          <div className="field-title">FIELD<br />NOTES</div>
-          <div className="field-coordinate">31°14'06" N<br />121°28'14" E</div>
-        </>
-      )}
-      {variant === 'afterimage' && (
-        <>
-          <div className="afterimage-sun" />
-          <div className="afterimage-ring afterimage-ring--one" />
-          <div className="afterimage-ring afterimage-ring--two" />
-          <div className="afterimage-word">LIGHT<br />/ MEMORY</div>
-        </>
-      )}
-      {variant === 'ground' && (
-        <>
-          <div className="ground-grid" />
-          <div className="ground-block ground-block--one" />
-          <div className="ground-block ground-block--two" />
-          <div className="ground-block ground-block--three" />
-          <div className="ground-label">MAKE<br />ROOM</div>
-        </>
-      )}
-      <span className="art-index">{variant === 'zebra' || variant === 'nova' ? 'A / 01' : variant === 'starwreck' ? 'B / 02' : variant === 'trigger' ? 'C / 03' : variant === 'field' ? 'D / 04' : variant === 'afterimage' ? 'E / 05' : 'F / 06'}</span>
+      <span className="art-index">{variant === 'zebra' || variant === 'nova' ? 'A / 01' : variant === 'starwreck' ? 'B / 02' : 'C / 03'}</span>
     </div>
   )
 }
@@ -510,7 +459,7 @@ function Hero() {
       <div className="hero-bottom frame">
         <span>SCROLL TO EXPLORE</span>
         <span className="hero-line" />
-        <span>01 / 06</span>
+        <span>01 / 03</span>
       </div>
     </section>
   )
@@ -549,7 +498,7 @@ function Work() {
       <div className="frame work-frame">
         <div className="section-heading-row">
           <div><SectionLabel light>02 / selected work</SectionLabel><h2>Some things I&apos;ve<br /><span>made recently</span></h2></div>
-          <p>Six studies in making<br />the invisible visible</p>
+          <p>Three studies in making<br />the invisible visible</p>
         </div>
         <div className="project-grid">
           {PROJECTS.map((project, index) => (
@@ -564,7 +513,7 @@ function Work() {
             </article>
           ))}
         </div>
-        <div className="work-footer"><span>MORE IN THE ARCHIVE ↗</span><span className="work-footer-line" /><span>06 / 26</span></div>
+        <div className="work-footer"><span>MORE IN THE ARCHIVE ↗</span><span className="work-footer-line" /><span>03 / 26</span></div>
       </div>
     </section>
   )
