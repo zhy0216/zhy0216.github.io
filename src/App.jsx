@@ -509,8 +509,17 @@ function Nav({ activeSection }) {
 }
 
 function Hero() {
+  const heroRef = useRef(null)
+
+  const scrollOneScreen = () => {
+    const hero = heroRef.current
+    if (!hero) return
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    window.scrollTo({ top: hero.offsetHeight, behavior: reducedMotion ? 'auto' : 'smooth' })
+  }
+
   return (
-    <section id="top" className="hero section-dark">
+    <section ref={heroRef} id="top" className="hero section-dark">
       <div className="hero-grid" />
       <div className="frame hero-frame">
         <div className="hero-copy">
@@ -519,7 +528,7 @@ function Hero() {
           <p className="hero-intro"><span>Interfaces, experiments, and small pieces of the future</span></p>
           <div className="hero-actions">
             <SolidButton href="#work">EXPLORE SELECTED WORK</SolidButton>
-            <a className="text-link text-link--light" href="#about">SCROLL TO DISCOVER <Arrow diagonal={false} /></a>
+            <button className="text-link text-link--light" onClick={scrollOneScreen}>SCROLL TO DISCOVER <Arrow diagonal={false} /></button>
           </div>
         </div>
         <div className="hero-meta">
