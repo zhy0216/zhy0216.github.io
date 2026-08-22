@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
+import BetterTriggerMark from './BetterTriggerMark.jsx'
 
 const GITHUB_URL = 'https://github.com/zhy0216/better-trigger'
 const DOCS_URL = 'https://zhy0216.github.io/better-trigger/'
@@ -117,17 +118,6 @@ function Arrow({ direction = 'ne' }) {
   return (
     <svg className="bt-arrow" viewBox="0 0 16 16" aria-hidden="true">
       {direction === 'left' ? <path d="M14 8H3m4-4L3 8l4 4" /> : <path d="M3 13 13 3M5 3h8v8" />}
-    </svg>
-  )
-}
-
-function BtMark({ className = '' }) {
-  return (
-    <svg className={`bt-mark ${className}`} viewBox="0 0 64 64" aria-hidden="true">
-      <rect width="64" height="64" fill="#0011e2" />
-      <path d="M26 17 48 32 26 47Z" fill="#f4f4f0" />
-      <rect x="17" y="20" width="4" height="24" fill="#f4f4f0" opacity=".55" />
-      <path d="M17 20h8M17 44h8" stroke="#f4f4f0" strokeWidth="2" opacity=".55" />
     </svg>
   )
 }
@@ -542,7 +532,7 @@ function BetterTriggerPage() {
           <div className="bt-frame bt-hero-inner">
             <div className="bt-hero-copy">
               <CaseLabel light>Selected work / open source · durable execution / 2026</CaseLabel>
-              <div className="bt-title-lockup"><BtMark /><h1>BETTER-<br /><span>TRIGGER</span></h1></div>
+              <div className="bt-title-lockup"><BetterTriggerMark className="bt-mark" /><h1>BETTER-<br /><span>TRIGGER</span></h1></div>
               <p className="bt-hero-lede">Straight-line TypeScript<br /><span>Durable memory in Postgres</span></p>
               <div className="bt-hero-actions">
                 <CaseButton href={GITHUB_URL}>VIEW ON GITHUB</CaseButton>

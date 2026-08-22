@@ -22,7 +22,8 @@
 .better-trigger-page a:focus-visible { outline: 2px solid var(--bt-blue-light); outline-offset: 4px; }
 .bt-textlink { display: inline-flex; align-items: center; gap: 10px; padding-bottom: 8px; border-bottom: 1px solid currentColor; font: 400 10px/1 var(--mono); letter-spacing: .11em; text-transform: uppercase; transition: color .2s ease, border-color .2s ease; }
 .bt-textlink:hover { color: var(--bt-blue-light); }
-.bt-mark { display: block; width: 68px; height: 68px; flex: none; }
+.bt-mark { display: block; width: 68px; height: 68px; flex: none; filter: drop-shadow(0 0 22px rgba(0,17,226,.32)); animation: bt-mark-float 7.5s ease-in-out infinite; }
+@keyframes bt-mark-float { 0%, 100% { transform: translateY(0); } 48%, 66% { transform: translateY(-3px); } }
 
 /* case navigation */
 .bt-nav { position: sticky; z-index: 80; top: 0; height: 72px; border-bottom: 1px solid rgba(255,255,255,.15); background: rgba(8,8,8,.94); color: white; backdrop-filter: blur(14px); }
@@ -336,4 +337,5 @@
 
 @media (prefers-reduced-motion: reduce) {
   .bt-security-band div { animation: none !important; }
+  .bt-mark { animation: none !important; }
 }

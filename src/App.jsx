@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
 import RepositoryField from './RepositoryField.jsx'
+import BetterTriggerMark from './better-trigger/BetterTriggerMark.jsx'
 
 const NAV_ITEMS = [
   { id: 'about', label: 'About' },
@@ -382,8 +383,9 @@ function ProjectArt({ variant }) {
       {variant === 'trigger' && (
         <>
           <div className="trigger-card-ledger">
-            <div className="trigger-card-pass">
-              <span>PASS 01</span>
+            <div className="trigger-card-kicker"><span>EXECUTION LEDGER</span><span className="trigger-card-live"><i /> LIVE REPLAY</span></div>
+            <div className="trigger-card-pass trigger-card-pass--first">
+              <span>PASS 01<small>WAIT / CRASH</small></span>
               <div className="trigger-card-track">
                 <i className="trigger-card-cell trigger-card-cell--done">00</i>
                 <i className="trigger-card-cell trigger-card-cell--wait">01</i>
@@ -392,8 +394,8 @@ function ProjectArt({ variant }) {
               </div>
             </div>
             <div className="trigger-card-bridge"><span>SUSPEND</span><b>↓</b><span>REPLAY</span></div>
-            <div className="trigger-card-pass">
-              <span>PASS 02</span>
+            <div className="trigger-card-pass trigger-card-pass--replay">
+              <span>PASS 02<small>CACHE / RESUME</small></span>
               <div className="trigger-card-track">
                 <i className="trigger-card-cell trigger-card-cell--cached">00</i>
                 <i className="trigger-card-cell trigger-card-cell--cached">01</i>
@@ -403,7 +405,7 @@ function ProjectArt({ variant }) {
               </div>
             </div>
           </div>
-          <div className="trigger-card-mark"><i>▸</i></div>
+          <div className="trigger-card-mark"><BetterTriggerMark className="trigger-card-logo" /></div>
           <span className="trigger-card-code">STEP MEMORY / FENCE +1 / POSTGRES</span>
           <div className="art-cross art-cross--a" />
           <div className="art-cross art-cross--b" />
