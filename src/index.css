@@ -356,10 +356,11 @@ button { appearance: none; border: 0; background: transparent; font: inherit; pa
   .aside-code { display: none; }
   .about-main { padding: 58px 6% 68px; }
   .section-heading-row { padding-inline: 6%; }
-  .project-card--featured { grid-template-columns: 1fr; }
+  .project-grid { grid-template-columns: 1fr; }
+  .project-card--featured { grid-column: auto; grid-template-columns: 1fr; }
   .project-card--featured .project-art { min-height: 400px; }
-  .project-card:nth-child(odd) { border-right: 0; }
-  .project-card:nth-child(odd):not(:last-child) { border-bottom: 1px solid var(--line-light); }
+  .project-card { border-right: 0; }
+  .project-card:not(:last-child) { border-bottom: 1px solid var(--line-light); }
   .project-info, .project-card--featured .project-info { padding-inline: 6%; }
   .lab-heading { min-height: 0; padding: 64px 6% 68px; grid-template-columns: 1fr; align-items: start; gap: 45px; }
   .lab-heading-copy { max-width: 480px; }
