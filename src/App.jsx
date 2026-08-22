@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
+import RepositoryField from './RepositoryField.jsx'
 
 const NAV_ITEMS = [
   { id: 'about', label: 'About' },
@@ -591,19 +592,19 @@ function Work() {
 }
 
 function Lab() {
-  const capabilities = [
-    ['01', 'Creative direction', 'A clear point of view, from first thought to final frame'],
-    ['02', 'Interface systems', 'Flexible visual languages that stay coherent at every scale'],
-    ['03', '3D / WebGL', 'Spaces with depth, motion, and a little bit of physics'],
-    ['04', 'Prototypes', 'Fast, tangible experiments to find what words cannot'],
-  ]
   return (
     <section id="lab" className="section-paper lab-section">
-      <div className="frame lab-grid">
-        <div className="lab-intro"><SectionLabel>03 / the lab</SectionLabel><h2>A small practice<br />with a large appetite<br />for the <span>unknown</span></h2><a className="text-link" href="#contact">START A CONVERSATION <Arrow /></a></div>
-        <div className="capability-list">{capabilities.map(([number, title, text]) => <div className="capability" key={number}><span className="capability-number">{number}</span><div><h3>{title}</h3><p>{text}</p></div><Arrow diagonal={false} /></div>)}</div>
+      <div className="frame lab-heading">
+        <div>
+          <SectionLabel>03 / the open lab</SectionLabel>
+          <h2>Every rabbit hole<br />in <span>one field</span></h2>
+        </div>
+        <div className="lab-heading-copy">
+          <p>Not a shortlist. Every public repository: shipped tools, unfinished questions, old experiments, and useful detours — compressed into one living index.</p>
+          <a className="text-link" href="https://github.com/zhy0216?tab=repositories" target="_blank" rel="noreferrer">VIEW THE SOURCE <Arrow /></a>
+        </div>
       </div>
-      <div className="frame lab-baseline"><span>TOOLS I LIKE TO THINK WITH</span><span>FIGMA · THREE.JS · REACT · AFTER EFFECTS · A GOOD NOTEBOOK</span></div>
+      <div className="frame"><RepositoryField /></div>
     </section>
   )
 }

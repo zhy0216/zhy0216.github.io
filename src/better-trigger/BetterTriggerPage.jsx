@@ -7,92 +7,110 @@ const DOCS_URL = 'https://zhy0216.github.io/better-trigger/'
 const PRINCIPLES = [
   {
     number: '01',
-    title: 'Replay, not snapshots.',
-    text: 'Completed steps are memoized in Postgres. After a crash or a long wait, the task function re-runs from the top and cached steps return instantly — your code stays a straight-line async function.',
+    title: 'Replay, not snapshots',
+    text: 'Completed steps are memoized in Postgres After a crash or a long wait, the task function re-runs from the top and cached steps return instantly — your code stays a straight-line async function',
     detail: 'STEP MEMORY / POS SEQ',
   },
   {
     number: '02',
-    title: 'Postgres is the whole stack.',
-    text: 'Queue, orchestrator loops and the replay executor live in the runtime and coordinate with FOR UPDATE SKIP LOCKED. Run N daemons against one database — no leader election.',
+    title: 'Postgres is the whole stack',
+    text: 'Queue, orchestrator loops and the replay executor live in the runtime and coordinate with FOR UPDATE SKIP LOCKED Run N daemons against one database — no leader election',
     detail: 'ONE DATABASE / NO REDIS',
   },
   {
     number: '03',
-    title: 'The SDK never opens a database.',
-    text: 'better-trigger ships task() and an HTTP client with zero runtime dependencies. It is safe to import into a web server, a CLI, an edge function, or a browser bundle.',
-    detail: 'ZERO-DEP CLIENT',
+    title: 'The SDK cannot reach Postgres',
+    text: 'The app-facing package speaks HTTP and depends only on the zero-dependency core package CI fails if pg — or any extra runtime dependency — crosses that boundary',
+    detail: 'HTTP CLIENT / NO PG',
   },
   {
     number: '04',
-    title: 'One process, or many.',
-    text: 'Run the worker as a standalone daemon, or embed the same runtime in a long-lived Node/Bun app with createEmbeddedRuntime. No second port, no second execution model.',
+    title: 'One process, or many',
+    text: 'Run the worker as a standalone daemon, or embed the same runtime in a long-lived Node/Bun app with createEmbeddedRuntime No second port, no second execution model',
     detail: 'DAEMON + EMBEDDED',
   },
   {
     number: '05',
-    title: 'Crash-safe by construction.',
-    text: 'Persistent leases plus a monotonic fencing token reject late writes from a dead worker. Step history stays exactly-once even across SIGKILL.',
+    title: 'Crash-safe by construction',
+    text: 'Persistent leases plus a monotonic fencing token reject late writes from a dead worker Step history stays exactly-once even across SIGKILL',
     detail: 'LEASE + FENCING TOKEN',
   },
 ]
 
-const FLOW = [
-  ['01', 'DEFINE', 'task({ retry, run }) — straight-line async, steps via ctx.step'],
-  ['02', 'TRIGGER', 'SDK → HTTP /api/v1 · zero-dep client, no DB handle'],
-  ['03', 'CLAIM', 'FOR UPDATE SKIP LOCKED + a monotonic fencing token'],
-  ['04', 'REPLAY', 're-run from the top · memoized steps return instantly'],
-  ['05', 'SUSPEND / RESUME', 'ctx.wait releases the slot · timers wake it, leases fence zombies'],
-  ['06', 'TERMINAL', 'outcome, steps, waits, logs persist · metrics on request'],
+const REPLAY_PASSES = [
+  {
+    id: 'first',
+    number: 'PASS 01',
+    title: 'Execute until the durable boundary',
+    token: 'FENCING TOKEN / 18',
+    cells: [
+      { seq: '00', kind: 'STEP', label: 'create-user', state: 'done', note: 'COMMIT OUTPUT' },
+      { seq: '01', kind: 'WAIT', label: '24 hours', state: 'wait', note: 'SUSPEND RUN' },
+      { seq: '02', kind: 'STEP', label: 'send-tips', state: 'future', note: 'NOT REACHED' },
+      { seq: 'OUT', kind: 'RUN', label: 'completed', state: 'future', note: 'PENDING' },
+    ],
+  },
+  {
+    id: 'replay',
+    number: 'PASS 02',
+    title: 'Replay from the top; continue from memory',
+    token: 'FENCING TOKEN / 19',
+    cells: [
+      { seq: '00', kind: 'STEP', label: 'create-user', state: 'cached', note: 'CACHE HIT' },
+      { seq: '01', kind: 'WAIT', label: '24 hours', state: 'cached', note: 'CACHE HIT' },
+      { seq: '02', kind: 'STEP', label: 'send-tips', state: 'active', note: 'EXECUTE ONCE' },
+      { seq: 'OUT', kind: 'RUN', label: 'completed', state: 'terminal', note: 'PERSIST RESULT' },
+    ],
+  },
 ]
 
 const STATS = [
   ['2,584', 'ASSERTIONS IN THE<br />UNIT SUITE*'],
   ['1,114', 'TEST CASES ACROSS<br />104 FILES*'],
-  ['20', 'FAULT-INJECTION HARNESSES,<br />EACH ON A REAL POSTGRES'],
-  ['0', 'RUNTIME DEPENDENCIES<br />IN THE SDK'],
+  ['20', 'ACCEPTANCE HARNESSES,<br />EACH ON A REAL POSTGRES'],
+  ['0', 'THIRD-PARTY RUNTIME DEPS<br />ON THE CLIENT PATH'],
 ]
 
 const DECISIONS = [
   {
     number: 'A',
     title: 'History exactly-once, side effects at-least-once',
-    text: 'The ledger never records a step twice, but an external call may run more than once after a crash. Idempotency keys are the caller\u2019s lever — LLM calls cost money, so bring a key.',
+    text: 'The ledger never records a step twice, but an external call may run more than once after a crash Idempotency keys are the caller\u2019s lever — LLM calls cost money, so bring a key',
   },
   {
     number: 'B',
-    title: 'Polling, not push',
-    text: 'v1 wakes by polling: a trigger starts executing within one idle backoff (\u2264 ~2.4s), and waits scan at 50/s. Honest numbers, documented bounds, LISTEN/NOTIFY on the roadmap.',
+    title: 'Notify for speed, poll for correctness',
+    text: 'pg_notify wakes idle claim loops and terminal result waiters Every consumer still keeps a bounded polling fallback, so a dropped notification changes latency — never the outcome',
   },
   {
     number: 'C',
     title: 'Determinism is the contract',
-    text: 'Code between steps re-runs on every replay, so it must be deterministic. ctx.now / ctx.random / ctx.uuid are memoized; fingerprint drift fails loud as NonDeterminismError.',
+    text: 'Code between steps re-runs on every replay, so it must be deterministic ctx.now / ctx.random / ctx.uuid are memoized; fingerprint drift fails loud as NonDeterminismError',
   },
   {
     number: 'D',
     title: 'State is durable, compute needs a host',
-    text: 'With no daemon online, nothing executes — timers and cron included, and missed cron windows are not backfilled. The shutdown semantics are a documented promise, not an accident.',
+    text: 'With no daemon online, nothing executes — timers and cron included, and missed cron windows are not backfilled The shutdown semantics are a documented promise, not an accident',
   },
   {
     number: 'E',
     title: 'One binary, every shape',
-    text: '--tasks and --no-serve are independent: all-in-one, API-only, or executor-only from the same build. Embedded shares the host\u2019s failure domain by explicit choice.',
+    text: '--tasks and --no-serve are independent: all-in-one, API-only, or executor-only from the same build Embedded shares the host\u2019s failure domain by explicit choice',
   },
 ]
 
 const NOW_ITEMS = [
   'Kernel complete: claim / lease / fencing, replay executor, retries, cron, waits, concurrency limits',
   'Daemon + embedded runtime; dashboard served by the daemon itself — same origin, no CORS',
-  'Health + Prometheus metrics, retention / prune, multi-key rotation, rate limits, audit log',
+  'LISTEN / NOTIFY fast path with polling fallback; health + Prometheus metrics, retention / prune',
   '20 acceptance harnesses over real Postgres run on every PR',
 ]
 
 const NEXT_ITEMS = [
-  'Events: event() / wait.forEvent, cancel cascading',
-  'LISTEN / NOTIFY wake-ups to replace polling',
+  'Events: event() / wait.forEvent, cancel cascading, virtual time',
+  'batchTriggerAndWait and richer fan-out / fan-in primitives',
   'Agent primitives: ctx.handoff / ctx.gather / ctx.requestApproval / ctx.llm',
-  'Plugin interceptors, CLI polish, more of the P3\u2013P6 roadmap',
+  'Plugin interceptors, determinism linting, CLI and auth polish',
 ]
 
 function Arrow({ direction = 'ne' }) {
@@ -180,7 +198,7 @@ function buildRail() {
     if (cell.state === 2) return
     const x = X0 + cell.i * STEP
     const base = positions.length / 3
-    positions.push(x - HALF, 0, 0, x + HALF, 0, 0, x + HALF, 1, 0, x - HALF, 1, 0)
+    positions.push(-1, 0, 0, 1, 0, 0, 1, 1, 0, -1, 1, 0)
     for (let v = 0; v < 4; v += 1) {
       centers.push(x)
       halves.push(HALF)
@@ -385,10 +403,12 @@ function BetterTriggerScene() {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const clock = new THREE.Clock()
     let frame = 0
+    let visible = true
     const render = () => {
       const elapsed = clock.getElapsedTime()
       if (reducedMotion) {
         uniforms.uCursor.value = 2.1
+        head.position.x = uniforms.uCursor.value
       } else {
         const t = (Math.sin(elapsed * 0.34) + 1) / 2
         const eased = t * t * (3 - 2 * t)
@@ -400,14 +420,27 @@ function BetterTriggerScene() {
         dots.rotation.z = elapsed * 0.006
       }
       renderer.render(scene, camera)
-      if (!reducedMotion) frame = requestAnimationFrame(render)
+      if (!reducedMotion && visible) frame = requestAnimationFrame(render)
     }
+    const visibilityObserver = new IntersectionObserver(([entry]) => {
+      const nextVisible = entry.isIntersecting
+      if (nextVisible === visible) return
+      visible = nextVisible
+      if (visible && !reducedMotion) {
+        clock.start()
+        frame = requestAnimationFrame(render)
+      } else {
+        cancelAnimationFrame(frame)
+      }
+    }, { rootMargin: '160px' })
+    visibilityObserver.observe(mount)
     render()
 
     return () => {
       cancelAnimationFrame(frame)
       window.removeEventListener('pointermove', onPointerMove)
       resizeObserver.disconnect()
+      visibilityObserver.disconnect()
       bars.geometry.dispose()
       bars.material.dispose()
       railGeometry.dispose()
@@ -423,6 +456,7 @@ function BetterTriggerScene() {
       dotGeometry.dispose()
       dots.material.dispose()
       renderer.dispose()
+      renderer.forceContextLoss()
       if (renderer.domElement.parentNode === mount) mount.removeChild(renderer.domElement)
     }
   }, [])
@@ -436,6 +470,41 @@ function CodePanel({ number, label, children }) {
       <div className="bt-code-head"><span>{number}</span><span>{label}</span><span>TYPESCRIPT / STRAIGHT-LINE ASYNC</span></div>
       <pre><code>{children}</code></pre>
     </article>
+  )
+}
+
+function ReplayPass({ pass }) {
+  return (
+    <article className={`bt-replay-pass bt-replay-pass--${pass.id}`}>
+      <div className="bt-replay-passhead">
+        <span>{pass.number}</span>
+        <h3>{pass.title}</h3>
+        <small>{pass.token}</small>
+      </div>
+      <div className="bt-replay-track" role="list">
+        <span className="bt-replay-cursor" aria-hidden="true" />
+        {pass.cells.map((cell) => (
+          <div className={`bt-replay-cell bt-replay-cell--${cell.state}`} role="listitem" key={`${pass.id}-${cell.seq}`}>
+            <div className="bt-replay-celltop"><span>{cell.seq}</span><span>{cell.kind}</span></div>
+            <strong>{cell.label}</strong>
+            <small>{cell.note}</small>
+          </div>
+        ))}
+      </div>
+    </article>
+  )
+}
+
+function RuntimePath({ mode, source, transport, runtime }) {
+  return (
+    <div className="bt-runtime-row">
+      <span className="bt-runtime-mode">{mode}</span>
+      <strong>{source}</strong>
+      <i>{transport}</i>
+      <strong>{runtime}</strong>
+      <i>SQL</i>
+      <strong>POSTGRES</strong>
+    </div>
   )
 }
 
@@ -473,18 +542,18 @@ function BetterTriggerPage() {
           <div className="bt-frame bt-hero-inner">
             <div className="bt-hero-copy">
               <CaseLabel light>Selected work / open source · durable execution / 2026</CaseLabel>
-              <div className="bt-title-lockup"><BtMark /><h1>BETTER-<br /><span>TRIGGER</span><i>.</i></h1></div>
-              <p className="bt-hero-lede">Durable execution for TypeScript,<br /><span>on Postgres.</span></p>
+              <div className="bt-title-lockup"><BtMark /><h1>BETTER-<br /><span>TRIGGER</span></h1></div>
+              <p className="bt-hero-lede">Straight-line TypeScript<br /><span>Durable memory in Postgres</span></p>
               <div className="bt-hero-actions">
                 <CaseButton href={GITHUB_URL}>VIEW ON GITHUB</CaseButton>
                 <CaseButton href={DOCS_URL} light>READ THE DOCS</CaseButton>
               </div>
             </div>
-            <div className="bt-hero-scene"><BetterTriggerScene /><div className="bt-scene-caption"><span>REPLAY LEDGER / POS SEQ</span><span>MOVE YOUR CURSOR</span></div></div>
+            <div className="bt-hero-scene"><BetterTriggerScene /><div className="bt-scene-caption"><span>PASS 01 → SUSPEND → PASS 02</span><span>POSITIONAL STEP MEMORY</span></div></div>
             <div className="bt-hero-meta">
               <div><span>ROLE</span><strong>CREATOR<br />ENGINEERING<br />API DESIGN</strong></div>
               <div><span>STACK</span><strong>TYPESCRIPT<br />POSTGRES · BUN<br />HONO · DRIZZLE</strong></div>
-              <div><span>STATUS</span><strong>DAEMON + EMBEDDED<br />P2 HARDENED</strong></div>
+              <div><span>STATUS</span><strong>0.1.0<br />P2 HARDENING</strong></div>
               <div><span>LICENSE</span><strong>MIT</strong></div>
             </div>
           </div>
@@ -493,11 +562,12 @@ function BetterTriggerPage() {
 
         <section className="bt-premise">
           <div className="bt-frame bt-premise-grid">
-            <aside className="bt-aside"><CaseLabel>01 / the premise</CaseLabel><p>Durable execution usually means adding infrastructure. What if the database you already run were enough?</p><span>REPLAY MODEL<br />POSTGRES-ONLY V1</span></aside>
+            <aside className="bt-aside"><CaseLabel>01 / the premise</CaseLabel><p>Durable execution usually means adding infrastructure What if the database you already run were enough?</p><span>REPLAY MODEL<br />POSTGRES-ONLY V1</span></aside>
             <div className="bt-premise-main">
               <h2>Why does a queue <em>stop being enough</em><br />the moment a job waits?</h2>
               <div className="bt-premise-copy">
-                <p>Background jobs start simple — enqueue, run, done. Then one job needs to wait a day, another needs three retries, a third must fan out and rejoin. Keep that state in the queue and you are building a job scheduler by hand. better-trigger starts from a different premise: the task function is durable, so the whole execution model can live in one Postgres and nothing else.</p>
+                <p>Background jobs start simple — enqueue, run, done Then one job needs to wait a day, another needs three retries, a third must fan out and rejoin Keep that state in the queue and you are building a job scheduler by hand better-trigger starts from a different premise: the task function is durable, so the whole execution model can live in one Postgres and nothing else</p>
+                <p>The runtime never serializes a call stack It stores payload, position and completed results; after a wait or crash, the function starts again and moves through its old steps as cache hits The code stays readable because Postgres remembers what already happened</p>
               </div>
             </div>
           </div>
@@ -505,7 +575,7 @@ function BetterTriggerPage() {
 
         <section className="bt-principles">
           <div className="bt-frame">
-            <div className="bt-section-head"><div><CaseLabel light>02 / design principles</CaseLabel><h2>Five constraints<br />make the whole runtime.</h2></div><p>EVERY FEATURE IS TESTED<br />AGAINST THESE, IN ORDER.</p></div>
+            <div className="bt-section-head"><div><CaseLabel light>02 / design principles</CaseLabel><h2>Five constraints<br />make the whole runtime</h2></div><p>EVERY FEATURE IS TESTED<br />AGAINST THESE, IN ORDER</p></div>
             <div className="bt-principle-grid">
               {PRINCIPLES.map((item) => (
                 <article className="bt-principle" key={item.number}>
@@ -521,21 +591,30 @@ function BetterTriggerPage() {
 
         <section className="bt-system">
           <div className="bt-frame">
-            <div className="bt-system-intro"><CaseLabel>03 / the run lifecycle</CaseLabel><h2>One run.<br /><span>One legible ledger.</span></h2><p>Define in a straight line. The runtime turns it into a durable, replayable ledger.</p></div>
-            <div className="bt-flow" aria-label="better-trigger run lifecycle">
-              {FLOW.map(([number, title, text], index) => (
-                <div className="bt-flow-node" key={number}>
-                  <span>{number}</span><strong>{title}</strong><p>{text}</p>{index < FLOW.length - 1 && <i>→</i>}
-                </div>
-              ))}
+            <div className="bt-system-intro"><CaseLabel>03 / replay anatomy</CaseLabel><h2>One function<br /><span>Two passes</span></h2><p>The first pass commits durable boundaries The second pass re-enters the same code, reads completed positions from memory, and continues</p></div>
+            <div className="bt-replay-stage" aria-label="A task suspends during its first execution, then replays completed steps and continues during its second execution">
+              <div className="bt-replay-grid" aria-hidden="true" />
+              <ReplayPass pass={REPLAY_PASSES[0]} />
+              <div className="bt-replay-bridge">
+                <span>EXECUTION SLOT RELEASED</span>
+                <i>↓</i>
+                <strong>TIMER DUE / NEW CLAIM / TOKEN +1</strong>
+                <i>↓</i>
+                <span>FUNCTION STARTS FROM THE TOP</span>
+              </div>
+              <ReplayPass pass={REPLAY_PASSES[1]} />
             </div>
-            <div className="bt-boundary-band"><span>PACKAGE BOUNDARIES</span><div>SDK · ZERO-DEP &nbsp;/&nbsp; CORE · ZERO-DEP &nbsp;/&nbsp; KERNEL · ONLY pg &nbsp;/&nbsp; DB · DRIZZLE &nbsp;/&nbsp; DAEMON · EXECUTES &nbsp;/&nbsp; POSTGRES · ONE INFRA</div></div>
+            <div className="bt-runtime-map">
+              <div className="bt-runtime-head"><span>ONE EXECUTION MODEL / TWO DEPLOYMENT SHAPES</span><span>THE SDK SURFACE DOES NOT CHANGE</span></div>
+              <RuntimePath mode="DAEMON" source="APP / SDK" transport="HTTP" runtime="HONO API + EXECUTOR + LOOPS" />
+              <RuntimePath mode="EMBEDDED" source="HOST APP" transport="IN-PROCESS FETCH" runtime="SAME API + EXECUTOR + LOOPS" />
+            </div>
           </div>
         </section>
 
         <section className="bt-code-section bt-dark-section">
           <div className="bt-frame">
-            <div className="bt-code-intro"><div><CaseLabel light>04 / the interface</CaseLabel><h2>Write a straight line.<br /><span>The runtime keeps the ledger.</span></h2></div><p>ctx.step memoizes, ctx.wait suspends, retries and cron are declared. The code you read is the shape of the run.</p></div>
+            <div className="bt-code-intro"><div><CaseLabel light>04 / the interface</CaseLabel><h2>Write a straight line<br /><span>The runtime keeps the ledger</span></h2></div><p>ctx.step memoizes, ctx.wait suspends, retries and cron are declared The code you read is the shape of the run</p></div>
             <div className="bt-code-grid">
               <CodePanel number="01" label="DEFINE + TRIGGER">{`import { task } from "better-trigger";
 
@@ -575,19 +654,19 @@ await runtime.stop();`}</CodePanel>
 
         <section className="bt-numbers">
           <div className="bt-frame">
-            <div className="bt-numbers-head"><CaseLabel light>05 / repository snapshot</CaseLabel><p>AUGUST 2026 / CURRENT WORKTREE</p></div>
+            <div className="bt-numbers-head"><CaseLabel light>05 / repository snapshot</CaseLabel><p>AUGUST 2026 / VERIFIED FROM SOURCE</p></div>
             <div className="bt-stat-grid">
               {STATS.map(([value, label]) => (
                 <div key={label}><strong>{value}</strong><span dangerouslySetInnerHTML={{ __html: label }} /></div>
               ))}
             </div>
-            <div className="bt-numbers-foot"><span>* MEASURED IN THE CURRENT WORKTREE · UNIT SUITE, EXCLUDING ACCEPTANCE HARNESSES</span><span>CHECK:DEPS ENFORCES THE SDK\u2019S ZERO-DEP HARD CONSTRAINT IN CI</span></div>
+            <div className="bt-numbers-foot"><span>* MEASURED IN THE SOURCE WORKTREE · UNIT SUITE, EXCLUDING ACCEPTANCE HARNESSES</span><span>CHECK:DEPS ALLOWS ONLY @BETTER-TRIGGER/CORE ON THE CLIENT PATH</span></div>
           </div>
         </section>
 
         <section className="bt-decisions">
           <div className="bt-frame bt-decisions-grid">
-            <div className="bt-decisions-title"><CaseLabel>06 / engineering decisions</CaseLabel><h2>The honest limits<br />are the <span>design.</span></h2></div>
+            <div className="bt-decisions-title"><CaseLabel>06 / engineering decisions</CaseLabel><h2>The honest limits<br />are the <span>design</span></h2></div>
             <div className="bt-decision-list">
               {DECISIONS.map((item) => <article key={item.number}><span>{item.number}</span><div><h3>{item.title}</h3><p>{item.text}</p></div></article>)}
             </div>
@@ -597,7 +676,7 @@ await runtime.stop();`}</CodePanel>
 
         <section className="bt-state">
           <div className="bt-frame bt-state-grid">
-            <div className="bt-state-title"><CaseLabel light>07 / current state</CaseLabel><h2>Kernel hardened.<br /><span>Agents next.</span></h2></div>
+            <div className="bt-state-title"><CaseLabel light>07 / current state</CaseLabel><h2>Kernel hardened<br /><span>Agents next</span></h2></div>
             <div className="bt-state-col"><div className="bt-state-colhead"><span>NOW / SHIPPED</span><span className="bt-state-line" /></div><ul>{NOW_ITEMS.map((item) => <li key={item}>{item}</li>)}</ul></div>
             <div className="bt-state-col"><div className="bt-state-colhead"><span>NEXT / P3 → P6</span><span className="bt-state-line" /></div><ul>{NEXT_ITEMS.map((item) => <li key={item}>{item}</li>)}</ul></div>
           </div>
@@ -607,7 +686,8 @@ await runtime.stop();`}</CodePanel>
           <div className="bt-outro-grid" />
           <div className="bt-frame bt-outro-inner">
             <CaseLabel light>08 / run it</CaseLabel>
-            <h2>Define the task.<br /><span>Forget the infrastructure.</span></h2>
+            <h2>Keep the code linear<br /><span>Let Postgres remember</span></h2>
+            <p>Use the daemon when execution should scale independently Embed the same runtime when one long-lived process is the product</p>
             <div className="bt-outro-actions"><CaseButton href={GITHUB_URL}>VIEW ON GITHUB</CaseButton><CaseButton href={DOCS_URL} light>READ THE DOCUMENTATION</CaseButton></div>
             <span className="bt-outro-note">TYPESCRIPT-FIRST · POSTGRES-BACKED · MIT · ENGLISH DOCS + SIMPLIFIED CHINESE DOCS</span>
           </div>
