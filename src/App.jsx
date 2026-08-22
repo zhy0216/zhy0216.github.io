@@ -139,6 +139,7 @@ function OrbitalScene() {
     glowCtx.fillRect(0, 0, 128, 128)
     const glowTexture = new THREE.CanvasTexture(glowCanvas)
 
+    // Empty anchor for the moving point light; it deliberately has no visible mesh.
     const sunGroup = new THREE.Group()
     sunGroup.position.set(0, 2.3, 0.9)
     scene.add(sunGroup)
@@ -557,11 +558,13 @@ function About() {
           <p>My name is Yang,<br />I am a programmer.</p>
         </aside>
         <div className="about-main">
-          <h2>Good work starts<br />with a <span>strange question</span></h2>
-          <p className="about-copy">From a rough idea to a working interface, I like making things that are clear enough to use and strange enough to remember The projects below are a mix of shipped work, prototypes, and things I built simply because I had to know if they could exist</p>
+          <div className="about-intro">
+            <h2>Good work starts<br />with a <span>strange question</span></h2>
+            <p className="about-copy">From a rough idea to a working interface, I like making things that are clear enough to use and strange enough to remember The projects below are a mix of shipped work, prototypes, and things I built simply because I had to know if they could exist</p>
+          </div>
           <div className="stat-row">
-            <div><strong>07</strong><span>YEARS MAKING<br />ON THE WEB</span></div>
-            <div><strong>26</strong><span>PROJECTS<br />SHIPPED</span></div>
+            <div><strong>10+</strong><span>YEARS MAKING<br />ON THE WEB</span></div>
+            <div><strong>20+</strong><span>PROJECTS<br />SHIPPED</span></div>
             <div><strong>∞</strong><span>QUESTIONS<br />STILL OPEN</span></div>
           </div>
         </div>
