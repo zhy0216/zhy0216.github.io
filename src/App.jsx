@@ -471,6 +471,7 @@ function About() {
       <div className="frame about-grid">
         <aside className="section-aside">
           <SectionLabel>01 / about</SectionLabel>
+          <p className="aside-about">A full-stack engineer with ten-plus years on the web, lately building AI-powered products — subscription billing, real-time analytics, and low-code platforms shipped with React, TypeScript, and Bun.</p>
           <p>My name is Yang,<br />I am a programmer.</p>
         </aside>
         <div className="about-main">
@@ -486,7 +487,7 @@ function About() {
         </div>
       </div>
       <div className="frame ticker ticker--paper" aria-hidden="true">
-        <div className="ticker-track"><span>DESIGN / CODE / MOTION / 3D / SYSTEMS / </span><span>DESIGN / CODE / MOTION / 3D / SYSTEMS / </span></div>
+        <div className="ticker-track"><span>REACT / TYPESCRIPT / BUN / SCALA / GOLANG / POSTGRES / DOCKER / LLM / </span><span>REACT / TYPESCRIPT / BUN / SCALA / GOLANG / POSTGRES / DOCKER / LLM / </span></div>
       </div>
     </section>
   )

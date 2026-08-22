@@ -88,6 +88,7 @@ button { appearance: none; border: 0; background: transparent; font: inherit; pa
 .about-grid { display: grid; grid-template-columns: 29% 71%; border-inline: 1px solid var(--line); }
 .section-aside { position: relative; min-height: 650px; border-right: 1px solid var(--line); padding: 66px 8% 50px; display: flex; flex-direction: column; justify-content: space-between; }
 .section-aside p { margin: 0; max-width: 180px; font-size: 16px; line-height: 1.5; letter-spacing: -.03em; word-spacing: .05em; }
+.aside-about { max-width: 235px; font-size: 12px; line-height: 1.75; letter-spacing: 0; word-spacing: 0; color: #6d6e69; }
 .aside-code { color: #9a9b96; font: 400 9px/1.7 var(--mono); letter-spacing: .1em; }
 .about-main { padding: 75px 8% 80px; }
 .about-main h2 { margin: 0; max-width: 790px; font-size: clamp(45px, 6.2vw, 91px); line-height: .98; letter-spacing: -.075em; word-spacing: .1em; font-weight: 300; }
@@ -339,6 +340,7 @@ button { appearance: none; border: 0; background: transparent; font: inherit; pa
   .about-grid { grid-template-columns: 1fr; }
   .section-aside { min-height: auto; border-right: 0; border-bottom: 1px solid var(--line); padding: 32px 6%; flex-direction: row; align-items: start; gap: 24px; }
   .section-aside p { margin-left: auto; }
+  .aside-about { display: none; }
   .aside-code { display: none; }
   .about-main { padding: 58px 6% 68px; }
   .section-heading-row { padding-inline: 6%; }
