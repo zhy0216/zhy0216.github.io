@@ -607,7 +607,7 @@ export default function App() {
     const observer = new IntersectionObserver((entries) => {
       const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)
       if (visible[0]) setActiveSection(visible[0].target.id)
-    }, { rootMargin: '-25% 0px -60% 0px', threshold: [0.05, 0.25, 0.5] })
+    }, { rootMargin: '-25% 0px -60% 0px', threshold: 0 })
     sections.forEach((section) => observer.observe(section))
     return () => observer.disconnect()
   }, [])
