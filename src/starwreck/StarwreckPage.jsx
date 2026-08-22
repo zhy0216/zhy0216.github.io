@@ -422,7 +422,7 @@ function StarwreckPage() {
               <CaseLabel light>Selected work / game · roguelite / 2026</CaseLabel>
               <div className="sw-title-lockup">
                 <img src="/starwreck/mark.webp" alt="" />
-                <h1>STAR<br /><span>WRECK</span></h1>
+                <h1>STARWRECK</h1>
               </div>
               <div className="sw-hero-name-row"><span>V0.1.0 / PLAYABLE MVP</span></div>
               <p className="sw-hero-lede">Weld a warship, tile by tile.<br />Turn into the swarm.<br />Bring your <em>broadside</em> to bear.</p>
