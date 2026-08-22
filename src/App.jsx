@@ -10,6 +10,8 @@ const NAV_ITEMS = [
   { id: 'lab', label: 'Lab' },
 ]
 
+let endlessLoopSuppressUntil = 0
+
 const PROJECTS = [
   {
     number: '01',
@@ -395,6 +397,7 @@ function Nav({ activeSection }) {
 
   const jumpTo = (id) => {
     setMenuOpen(false)
+    endlessLoopSuppressUntil = performance.now() + 4000
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
   }
 
@@ -628,7 +631,7 @@ function EndlessFooter() {
       const scrollingUp = delta < -1 || (Math.abs(delta) <= 1 && lastDirection < 0)
       const loopForward = scrollingDown && progress >= 0.72
       const loopBackward = scrollingUp && progress <= 0.28 && loopRef.current > 0
-      if (!reducedMotion && !resetting && performance.now() > resetCooldownUntil && visible && (loopForward || loopBackward) && travel > viewportHeight) {
+      if (!reducedMotion && !resetting && performance.now() > resetCooldownUntil && performance.now() > endlessLoopSuppressUntil && visible && (loopForward || loopBackward) && travel > viewportHeight) {
         const direction = loopForward ? 1 : -1
         const nextProgress = direction > 0 ? 0.30 : 0.70
         resetting = true
@@ -724,14 +727,19 @@ function EndlessFooter() {
     const handleWheel = (event) => {
       if (event.deltaY > 0) lastDirection = 1
       if (event.deltaY < 0) lastDirection = -1
+      endlessLoopSuppressUntil = 0
       window.requestAnimationFrame(updateScrollState)
     }
+    const releaseEndlessLoop = () => { endlessLoopSuppressUntil = 0 }
     const handleResize = () => {
       resize()
       updateScrollState()
     }
     window.addEventListener('scroll', updateScrollState, { passive: true })
     window.addEventListener('wheel', handleWheel, { passive: true })
+    window.addEventListener('touchstart', releaseEndlessLoop, { passive: true })
+    window.addEventListener('mousedown', releaseEndlessLoop)
+    window.addEventListener('keydown', releaseEndlessLoop)
     window.addEventListener('resize', handleResize)
     frame = window.requestAnimationFrame(render)
 
@@ -740,6 +748,9 @@ function EndlessFooter() {
       window.clearTimeout(resetTimer)
       window.removeEventListener('scroll', updateScrollState)
       window.removeEventListener('wheel', handleWheel)
+      window.removeEventListener('touchstart', releaseEndlessLoop)
+      window.removeEventListener('mousedown', releaseEndlessLoop)
+      window.removeEventListener('keydown', releaseEndlessLoop)
       window.removeEventListener('resize', handleResize)
     }
   }, [])
