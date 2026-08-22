@@ -457,7 +457,6 @@ function Hero() {
         </div>
         <div className="hero-orb-wrap">
           <OrbitalScene />
-          <div className="orbital-caption"><span>ORBITAL STUDY / 001</span></div>
         </div>
       </div>
       <div className="hero-bottom frame">
