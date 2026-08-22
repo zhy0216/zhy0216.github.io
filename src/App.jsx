@@ -444,7 +444,7 @@ function Hero() {
       <div className="hero-grid" />
       <div className="frame hero-frame">
         <div className="hero-copy">
-          <SectionLabel light>// independent programmer · shanghai / anywhere</SectionLabel>
+          <SectionLabel light>// independent programmer</SectionLabel>
           <h1>I write software<br /><em>with a pulse</em></h1>
           <p className="hero-intro"><span>Interfaces, experiments, and small pieces of the future</span></p>
           <div className="hero-actions">
