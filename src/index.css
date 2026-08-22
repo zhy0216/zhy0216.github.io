@@ -47,10 +47,11 @@ button { appearance: none; border: 0; background: transparent; font: inherit; pa
 .wordmark span { margin: 0 4px; color: var(--blue-bright); }
 .desktop-nav { display: flex; align-items: center; gap: clamp(18px, 3vw, 48px); margin-inline: auto; }
 .desktop-nav button, .nav-contact, .mobile-nav button, .mobile-nav a { font: 400 10px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; }
-.desktop-nav button { display: inline-flex; align-items: center; gap: 7px; color: #949590; transition: color .2s ease; }
+.desktop-nav button { display: inline-flex; align-items: center; gap: 7px; color: #949590; padding: 9px 14px; border: 1px solid transparent; border-radius: 2px; transition: color .2s ease, background .2s ease, border-color .2s ease; }
 .desktop-nav button span { color: #52534f; font-size: 9px; }
-.desktop-nav button:hover, .desktop-nav button.is-active { color: var(--blue-bright); }
-.desktop-nav button.is-active span { color: var(--blue); }
+.desktop-nav button:hover { color: var(--blue-bright); }
+.desktop-nav button.is-active { background: var(--blue); border-color: var(--blue); color: #fff; }
+.desktop-nav button.is-active span { color: #9fb0ff; }
 .nav-contact { display: inline-flex; align-items: center; gap: 12px; color: #fff; transition: color .2s ease; }
 .nav-contact:hover { color: var(--blue-bright); }
 .menu-toggle, .mobile-nav { display: none; }
