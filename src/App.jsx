@@ -551,6 +551,216 @@ function Contact() {
   )
 }
 
+function EndlessFooter() {
+  const sectionRef = useRef(null)
+  const canvasRef = useRef(null)
+  const loopRef = useRef(0)
+  const [loopCount, setLoopCount] = useState(0)
+
+  useEffect(() => {
+    const section = sectionRef.current
+    const canvas = canvasRef.current
+    const context = canvas?.getContext('2d')
+    if (!section || !canvas || !context) return undefined
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const messages = [
+      'STAY HUNGRY',
+      'KEEP GOING',
+      'FOLLOW THE THREAD',
+      'ONE MORE STEP',
+      'KEEP DIGGING',
+      'TRUST THE DETOUR',
+      'GO A LITTLE FURTHER',
+      'MAKE ROOM FOR WONDER',
+      'THE NEXT THING IS HERE',
+      'KEEP LOOKING',
+      'LET CURIOSITY LEAD',
+      'THERE IS MORE TO FIND',
+      'STAY WITH THE QUESTION',
+      'SEE WHAT OPENS',
+    ]
+    const target = { opacity: 0, progress: 0, size: 120, y: 0 }
+    const current = { opacity: 0, progress: 0, size: 120, y: 0 }
+    let width = 1
+    let height = 1
+    let pixelRatio = 1
+    let frame = 0
+    let lastScrollY = window.scrollY
+    let lastDirection = 1
+    let resetting = false
+    let resetCooldownUntil = 0
+    let resetTimer = 0
+
+    const clamp = (value, min, max) => Math.min(max, Math.max(min, value))
+    const ease = (value) => value * value * (3 - 2 * value)
+
+    const resize = () => {
+      width = Math.min(window.innerWidth, 1728)
+      height = window.innerHeight
+      pixelRatio = Math.min(window.devicePixelRatio || 1, 2)
+      canvas.width = Math.floor(width * pixelRatio)
+      canvas.height = Math.floor(height * pixelRatio)
+      canvas.style.width = `${width}px`
+      canvas.style.height = `${height}px`
+      context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0)
+    }
+
+    const updateScrollState = () => {
+      const rect = section.getBoundingClientRect()
+      const viewportHeight = window.innerHeight
+      const sectionStart = section.offsetTop
+      const travel = Math.max(section.offsetHeight - viewportHeight, viewportHeight)
+      const progress = clamp((window.scrollY - sectionStart) / travel, 0, 1)
+      const reveal = clamp((viewportHeight - rect.top) / (viewportHeight * 0.62), 0, 1)
+      const visible = rect.top < viewportHeight && rect.bottom > 0
+
+      target.progress = progress
+      target.opacity = visible ? ease(reveal) * 0.92 : 0
+      target.size = Math.min(width * 0.205, viewportHeight * 0.39) * (0.78 + Math.sin(progress * Math.PI) * 0.22)
+      target.y = viewportHeight * (0.52 + Math.sin(progress * Math.PI * 2.2) * 0.08)
+
+      const delta = window.scrollY - lastScrollY
+      if (delta > 1) lastDirection = 1
+      if (delta < -1) lastDirection = -1
+      const scrollingDown = delta > 1 || (Math.abs(delta) <= 1 && lastDirection > 0)
+      const scrollingUp = delta < -1 || (Math.abs(delta) <= 1 && lastDirection < 0)
+      const loopForward = scrollingDown && progress >= 0.72
+      const loopBackward = scrollingUp && progress <= 0.28 && loopRef.current > 0
+      if (!reducedMotion && !resetting && performance.now() > resetCooldownUntil && visible && (loopForward || loopBackward) && travel > viewportHeight) {
+        const direction = loopForward ? 1 : -1
+        const nextProgress = direction > 0 ? 0.30 : 0.70
+        resetting = true
+        resetCooldownUntil = performance.now() + 120
+        lastDirection = direction
+        loopRef.current = Math.max(0, loopRef.current + direction)
+        setLoopCount(loopRef.current)
+        const root = document.documentElement
+        const previousScrollBehavior = root.style.scrollBehavior
+        root.style.scrollBehavior = 'auto'
+        const nextScrollY = sectionStart + travel * nextProgress
+        const scrollingElement = document.scrollingElement || root
+        scrollingElement.scrollTop = nextScrollY
+        window.scrollTo(0, nextScrollY)
+        resetTimer = window.setTimeout(() => {
+          root.style.scrollBehavior = previousScrollBehavior
+          resetting = false
+          lastScrollY = window.scrollY
+          lastDirection = direction
+          updateScrollState()
+        }, 90)
+      }
+
+      lastScrollY = window.scrollY
+    }
+
+    const drawLetterform = (message, fontSize, y, alpha, progress, ghost = 0) => {
+      context.font = `300 ${fontSize}px 'Manrope Variable', 'Helvetica Neue', Arial, sans-serif`
+      context.textBaseline = 'middle'
+      context.textAlign = 'center'
+      context.lineJoin = 'round'
+      context.lineWidth = clamp(fontSize * 0.012, 1, 3.2)
+      context.strokeStyle = ghost ? 'rgba(82, 104, 255, 0.26)' : '#5268ff'
+      context.globalAlpha = alpha
+
+      const characters = [...message]
+      const spacing = fontSize * (0.015 + Math.sin(progress * Math.PI * 2) * 0.018)
+      const measured = characters.reduce((sum, character) => sum + context.measureText(character).width + spacing, -spacing)
+      let x = width / 2 - measured / 2
+
+      characters.forEach((character, index) => {
+        const characterWidth = context.measureText(character).width
+        const wave = Math.sin(index * 0.72 + progress * Math.PI * 3.2 + ghost * 0.7) * fontSize * (0.055 + progress * 0.08)
+        const rotation = Math.sin(index * 0.48 + progress * Math.PI * 2.4) * (0.018 + progress * 0.035)
+        context.save()
+        context.translate(x + characterWidth / 2, y + wave + ghost * fontSize * 0.045)
+        context.rotate(rotation)
+        context.strokeText(character, 0, 0)
+        context.restore()
+        x += characterWidth + spacing
+      })
+    }
+
+    const render = () => {
+      current.opacity += (target.opacity - current.opacity) * 0.12
+      current.progress += (target.progress - current.progress) * 0.1
+      current.size += (target.size - current.size) * 0.1
+      current.y += (target.y - current.y) * 0.1
+
+      context.clearRect(0, 0, width, height)
+      if (current.opacity > 0.002) {
+        const message = messages[loopRef.current % messages.length]
+        const maxTextWidth = width * 0.9
+        let fontSize = current.size
+        context.font = `300 ${fontSize}px 'Manrope Variable', 'Helvetica Neue', Arial, sans-serif`
+        const measured = context.measureText(message).width
+        if (measured > maxTextWidth) fontSize *= maxTextWidth / measured
+
+        context.save()
+        context.globalCompositeOperation = 'source-over'
+        drawLetterform(message, fontSize, current.y - height * 0.018, current.opacity * 0.18, current.progress, 2)
+        drawLetterform(message, fontSize, current.y, current.opacity, current.progress)
+        context.restore()
+
+        context.save()
+        context.globalAlpha = current.opacity * 0.28
+        context.strokeStyle = 'rgba(255,255,255,.4)'
+        context.lineWidth = 1
+        context.beginPath()
+        context.moveTo(width * 0.08, current.y + fontSize * 0.78)
+        context.lineTo(width * 0.92, current.y + fontSize * 0.78)
+        context.moveTo(width * 0.08, current.y - fontSize * 0.78)
+        context.lineTo(width * 0.92, current.y - fontSize * 0.78)
+        context.stroke()
+        context.restore()
+      }
+
+      frame = window.requestAnimationFrame(render)
+    }
+
+    resize()
+    updateScrollState()
+    const handleWheel = (event) => {
+      if (event.deltaY > 0) lastDirection = 1
+      if (event.deltaY < 0) lastDirection = -1
+      window.requestAnimationFrame(updateScrollState)
+    }
+    const handleResize = () => {
+      resize()
+      updateScrollState()
+    }
+    window.addEventListener('scroll', updateScrollState, { passive: true })
+    window.addEventListener('wheel', handleWheel, { passive: true })
+    window.addEventListener('resize', handleResize)
+    frame = window.requestAnimationFrame(render)
+
+    return () => {
+      window.cancelAnimationFrame(frame)
+      window.clearTimeout(resetTimer)
+      window.removeEventListener('scroll', updateScrollState)
+      window.removeEventListener('wheel', handleWheel)
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
+
+  return (
+    <section ref={sectionRef} className="endless-footer" aria-label="Endless footer">
+      <canvas ref={canvasRef} className="endless-footer-canvas" aria-hidden="true" />
+      <div className="endless-footer-grid" aria-hidden="true" />
+      <div className="endless-footer-topline">
+        <span>KEEP SCROLLING</span>
+        <span>LOOP {String(loopCount + 1).padStart(2, '0')} / ∞</span>
+      </div>
+      <div className="endless-footer-bottomline">
+        <span>THE END IS A BEGINNING</span>
+        <span className="endless-footer-line" />
+        <span>YANG / 2026</span>
+      </div>
+      <span className="endless-footer-fallback" aria-hidden="true">STAY<br />HUNGRY</span>
+    </section>
+  )
+}
+
 export default function App() {
   const [activeSection, setActiveSection] = useState('about')
 
@@ -575,5 +785,5 @@ export default function App() {
     return () => window.removeEventListener('hashchange', restore)
   }, [])
 
-  return <><Nav activeSection={activeSection} /><main><Hero /><About /><Work /><Lab /></main><Contact /></>
+  return <><Nav activeSection={activeSection} /><main><Hero /><About /><Work /><Lab /></main><Contact /><EndlessFooter /></>
 }
