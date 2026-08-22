@@ -407,7 +407,7 @@ function StarwreckPage() {
     <div className="starwreck-page">
       <header className="sw-nav">
         <div className="sw-nav-inner">
-          <a className="sw-wordmark" href="/">YANG<span>/</span>0216</a>
+          <a className="sw-wordmark" href="/">YANG</a>
           <span className="sw-nav-case">CASE STUDY <i>/</i> 02</span>
           <a className="sw-nav-back" href="/#work"><Arrow direction="left" /> BACK TO INDEX</a>
         </div>
@@ -642,7 +642,7 @@ function StarwreckPage() {
 
       <footer className="sw-footer">
         <div className="sw-frame sw-footer-top"><a href="/#work"><Arrow direction="left" /> ALL PROJECTS</a><span>NEXT CASE / BETTER-TRIGGER</span><a href="/work/better-trigger/">NEXT PROJECT <Arrow /></a></div>
-        <div className="sw-frame sw-footer-bottom"><span>© {new Date().getFullYear()} YANG / 0216</span><span>STARWRECK / CASE STUDY 02</span><span>REACT · THREE.JS · SOURCE-VERIFIED COPY</span></div>
+        <div className="sw-frame sw-footer-bottom"><span>© {new Date().getFullYear()} YANG</span><span>STARWRECK / CASE STUDY 02</span><span>REACT · THREE.JS · SOURCE-VERIFIED COPY</span></div>
       </footer>
     </div>
   )

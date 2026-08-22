@@ -128,12 +128,17 @@ Reuse conventions, not Zebra-specific wording, stripes, section order, or visual
 ## 6. Copy and layout checks
 
 - The hero title should have intentional line breaks at desktop and mobile widths.
+- Body copy containing multiple sentences must use explicit punctuation between them; only headings and labels may use unpunctuated fragments.
 - Keep primary descriptive copy around 40-65 characters per line where possible.
+- Match the homepage's reading rhythm: avoid aggressive negative letter-spacing, and preserve generous line-height and controlled line lengths.
 - Put metadata in a consistent grid instead of scattering small labels across the scene.
+- Long labels must be allowed to wrap; check word breaking and text clipping at mobile widths.
 - Use bilingual copy only when each language adds value; avoid literal duplication.
 - Use numerals only when their source is defensible and their meaning is clear.
 - Keep buttons and inline links visually distinct from decorative labels.
+- Check body copy for collisions with arrows, numerals, animation, and other decorative elements.
 - Check that animated backgrounds never reduce text contrast below a comfortable reading level.
+- Validate at viewport widths of 1440px, 820px, and 390px, and confirm `document.documentElement.scrollWidth === window.innerWidth` at each width.
 
 ## 7. Acceptance checklist
 
@@ -157,6 +162,7 @@ Reuse conventions, not Zebra-specific wording, stripes, section order, or visual
 - Text over motion has a black translucent/gradient buffer.
 - Desktop and mobile compositions both feel intentional.
 - There is no unexpected horizontal scrolling, title clipping, or collision with navigation.
+- There are no accidental run-on sentences, missing punctuation, or collisions between text and decorative elements.
 - Motion has a project-specific idea and a static/reduced-motion state.
 
 ### Engineering
@@ -166,4 +172,3 @@ Reuse conventions, not Zebra-specific wording, stripes, section order, or visual
 - No new console errors appear on the homepage or detail page.
 - Three.js resources and event listeners are cleaned up.
 - Existing user changes and source-project files remain untouched.
-
