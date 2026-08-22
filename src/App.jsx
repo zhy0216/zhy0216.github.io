@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
 import RepositoryField from './RepositoryField.jsx'
 import BetterTriggerMark from './better-trigger/BetterTriggerMark.jsx'
+import ProtectedEmail from './ProtectedEmail.jsx'
 
 const NAV_ITEMS = [
   { id: 'about', label: 'About' },
@@ -410,7 +411,7 @@ function Nav({ activeSection }) {
             </button>
           ))}
         </nav>
-        <a className="nav-contact" href="#contact">LET&apos;S TALK <Arrow /></a>
+        <ProtectedEmail as="a" className="nav-contact" aria-label="Start a conversation by email">LET&apos;S TALK <Arrow /></ProtectedEmail>
         <button className={`menu-toggle ${menuOpen ? 'is-open' : ''}`} onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu" aria-expanded={menuOpen}>
           <span /><span />
         </button>
@@ -419,7 +420,7 @@ function Nav({ activeSection }) {
         {NAV_ITEMS.map((item, index) => (
           <button key={item.id} onClick={() => jumpTo(item.id)}><span>0{index + 1}</span>{item.label}</button>
         ))}
-        <a href="#contact">LET&apos;S TALK <Arrow /></a>
+        <ProtectedEmail as="a" className="nav-contact" aria-label="Start a conversation by email">LET&apos;S TALK <Arrow /></ProtectedEmail>
       </div>
     </header>
   )
@@ -543,8 +544,8 @@ function Contact() {
     <footer id="contact" className="section-dark contact-section">
       <div className="frame contact-frame">
         <div className="contact-topline"><SectionLabel light>04 / contact</SectionLabel><span>OPEN TO THE RIGHT KIND OF TROUBLE</span></div>
-        <div className="contact-body"><h2>Have a good idea?<br /><em>Let&apos;s give it a body</em></h2><SolidButton light href="https://github.com/zhy0216">LET&apos;S TALK</SolidButton></div>
-        <div className="contact-links"><div><a href="https://github.com/zhy0216" target="_blank" rel="noreferrer">GITHUB <Arrow /></a><a href="https://www.linkedin.com/in/im-yang/" target="_blank" rel="noreferrer">LINKEDIN <Arrow /></a><a href="#top">BACK TO TOP ↑</a></div></div>
+        <div className="contact-body"><h2>Have a good idea?<br /><em>Let&apos;s give it a body</em></h2><ProtectedEmail className="solid-button solid-button--light" aria-label="Start a conversation by email">LET&apos;S TALK <Arrow /></ProtectedEmail></div>
+        <div className="contact-links"><div><ProtectedEmail className="contact-email" showAddress /><a href="https://github.com/zhy0216" target="_blank" rel="noreferrer">GITHUB <Arrow /></a><a href="https://www.linkedin.com/in/im-yang/" target="_blank" rel="noreferrer">LINKEDIN <Arrow /></a><a href="#top">BACK TO TOP ↑</a></div></div>
         <div className="contact-foot"><span>© {new Date().getFullYear()} YANG</span><span>MADE WITH CURIOSITY + THREE.JS</span><span>SHANGHAI — CHINA</span></div>
       </div>
     </footer>

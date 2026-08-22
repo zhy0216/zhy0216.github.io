@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
+import ProtectedEmail from '../ProtectedEmail.jsx'
 
 const PLAY_URL = 'https://starwreck.zhy0216-66c.workers.dev/'
 
@@ -632,7 +633,7 @@ function StarwreckPage() {
             <h2>Turn the hull<br /><span>Turn the fight</span></h2>
             <div className="sw-outro-actions">
               <CaseButton href={PLAY_URL}>PLAY THE WEB BUILD</CaseButton>
-              <CaseButton light href="mailto:zhy0216@gmail.com">START A CONVERSATION</CaseButton>
+              <ProtectedEmail as="a" className="sw-button sw-button--light" aria-label="Start a conversation by email"><span>START A CONVERSATION</span><Arrow /></ProtectedEmail>
             </div>
             <span className="sw-outro-note">WEB / CLOUDFLARE WORKERS · DESKTOP / WINDOWS X64</span>
           </div>

@@ -328,6 +328,8 @@ button { appearance: none; border: 0; background: transparent; font: inherit; pa
 .contact-links > div { display: flex; flex-wrap: wrap; gap: 28px; }
 .contact-links > div a { display: inline-flex; align-items: center; gap: 8px; color: #888a84; font: 400 9px/1 var(--mono); letter-spacing: .11em; transition: color .2s ease; }
 .contact-links > div a:hover { color: var(--blue-bright); }
+.contact-links > div .contact-email { display: inline-flex; align-items: center; padding: 0; color: #888a84; font: 400 9px/1 var(--mono); letter-spacing: .11em; transition: color .2s ease; }
+.contact-links > div .contact-email:hover { color: var(--blue-bright); }
 .contact-foot { display: flex; justify-content: space-between; gap: 20px; padding: 24px 7% 30px; color: #60615d; font: 400 9px/1 var(--mono); letter-spacing: .1em; }
 
 /* Endless footer */
