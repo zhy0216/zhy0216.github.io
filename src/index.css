@@ -417,10 +417,9 @@ button { appearance: none; border: 0; background: transparent; font: inherit; pa
 .blog-article-layout { display: grid; grid-template-columns: minmax(0, 1fr) 250px; gap: clamp(62px, 7vw, 108px); padding: 0 7%; }
 .markdown-body { max-width: 750px; min-width: 0; color: #3f403c; font-size: 17px; line-height: 1.9; }
 .markdown-body > :first-child { margin-top: 0; }
-.markdown-body h2 { position: relative; margin: clamp(76px, 8vw, 104px) 0 27px; padding-top: 21px; color: var(--ink); font-size: clamp(31px, 3.15vw, 46px); line-height: 1.08; letter-spacing: -.047em; font-weight: 300; text-wrap: balance; scroll-margin-top: 110px; }
-.markdown-body h2::before { content: ''; position: absolute; top: 0; left: 0; width: 42px; height: 2px; background: var(--blue); }
-.markdown-body h3 { margin: 56px 0 18px; color: var(--ink); font-size: 25px; line-height: 1.2; letter-spacing: -.027em; font-weight: 400; text-wrap: balance; }
-.markdown-body p { margin: 0 0 23px; }
+.markdown-body h2 { position: relative; margin: clamp(76px, 8vw, 104px) 0 27px; color: var(--ink); font-family: 'New York', 'Iowan Old Style', Georgia, 'Times New Roman', 'Songti SC', 'SimSun', serif; font-size: clamp(31px, 3.15vw, 46px); line-height: 1.08; letter-spacing: .02em; font-weight: 400; text-wrap: balance; scroll-margin-top: 110px; }
+.markdown-body h3 { margin: 56px 0 18px; color: var(--ink); font-family: 'New York', 'Iowan Old Style', Georgia, 'Times New Roman', 'Songti SC', 'SimSun', serif; font-size: 25px; line-height: 1.2; letter-spacing: .02em; font-weight: 400; text-wrap: balance; }
+.markdown-body p { margin: 0; }
 .markdown-body a { color: var(--blue); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
 .markdown-body blockquote { margin: 46px 0; padding: 19px 0 19px 25px; border-left: 2px solid var(--blue); color: #60615d; font-size: 20px; line-height: 1.55; }
 .markdown-body code { padding: 3px 6px; border: 1px solid rgba(0, 17, 226, .1); border-radius: 4px; background: #e9eaf2; color: #2034bd; font: 400 .8em/1.25 var(--mono); }
@@ -622,8 +621,7 @@ button { appearance: none; border: 0; background: transparent; font: inherit; pa
   .blog-article-hero > .blog-page-frame > p { font-size: 15px; }
   .blog-article-body { padding: 62px 0 84px; }
   .markdown-body { font-size: 16px; line-height: 1.86; }
-  .markdown-body h2 { margin: 67px 0 23px; padding-top: 17px; font-size: 35px; line-height: 1.08; letter-spacing: -.045em; }
-  .markdown-body h2::before { width: 34px; height: 2px; }
+  .markdown-body h2 { margin: 67px 0 23px; font-size: 35px; line-height: 1.08; letter-spacing: .02em; }
   .markdown-body h3 { margin: 47px 0 16px; font-size: 23px; line-height: 1.22; }
   .markdown-body blockquote { margin: 35px 0; padding-left: 18px; font-size: 18px; }
   .markdown-code-block { margin: 36px -2px; border-radius: 9px; }
