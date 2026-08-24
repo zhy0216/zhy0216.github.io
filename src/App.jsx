@@ -3,10 +3,12 @@ import * as THREE from 'three'
 import RepositoryField from './RepositoryField.jsx'
 import BetterTriggerMark from './better-trigger/BetterTriggerMark.jsx'
 import ProtectedEmail from './ProtectedEmail.jsx'
+import { BLOG_POSTS, formatBlogDate } from './blogs.js'
 
 const NAV_ITEMS = [
   { id: 'about', label: 'About' },
   { id: 'work', label: 'Work' },
+  { id: 'blog', label: 'Blog' },
   { id: 'lab', label: 'Lab' },
 ]
 
@@ -484,7 +486,7 @@ function Hero() {
       <div className="hero-bottom frame">
         <span>SCROLL TO EXPLORE</span>
         <span className="hero-line" />
-        <span>01 / 03</span>
+        <span>01 / 04</span>
       </div>
     </section>
   )
@@ -550,7 +552,7 @@ function Lab() {
     <section id="lab" className="section-paper lab-section">
       <div className="frame lab-heading">
         <div>
-          <SectionLabel>03 / the open lab</SectionLabel>
+          <SectionLabel>04 / the open lab</SectionLabel>
           <h2>Every rabbit hole<br />in <span>one field</span></h2>
         </div>
         <div className="lab-heading-copy">
@@ -563,11 +565,48 @@ function Lab() {
   )
 }
 
+function Blog() {
+  const visiblePosts = BLOG_POSTS.slice(0, 3)
+
+  return (
+    <section id="blog" className="section-paper blog-section">
+      <div className="frame blog-home-frame">
+        <div className="blog-home-heading">
+          <div>
+            <SectionLabel>03 / field notes</SectionLabel>
+            <h2>Things I&apos;m<br /><span>still figuring out</span></h2>
+          </div>
+          <div className="blog-home-heading-copy">
+            <p>Small essays about software, experiments, and the questions hiding underneath the work.</p>
+            <a className="text-link" href="/blog/">OPEN THE NOTEBOOK <Arrow /></a>
+          </div>
+        </div>
+        <div className="blog-home-grid">
+          {visiblePosts.map((post, index) => (
+            <article key={post.slug} className="blog-home-card">
+              <a href={`/blog/?post=${encodeURIComponent(post.slug)}`}>
+                <div className="blog-home-card-topline"><span>0{index + 1}</span><span>{formatBlogDate(post.date)}</span></div>
+                <h3>{post.title}</h3>
+                <p>{post.excerpt}</p>
+                <div className="blog-home-card-bottomline">
+                  <div className="blog-tags">{post.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
+                  <span>READ <Arrow /></span>
+                </div>
+              </a>
+            </article>
+          ))}
+        </div>
+        <div className="blog-home-footer"><span>{String(BLOG_POSTS.length).padStart(2, '0')} NOTES IN THE FIELD</span><span className="blog-home-footer-line" /><a href="/blog/">VIEW ALL NOTES <Arrow /></a></div>
+      </div>
+    </section>
+  )
+}
+
 function Contact() {
   return (
     <footer id="contact" className="section-dark contact-section">
       <div className="frame contact-frame">
-        <div className="contact-topline"><SectionLabel light>04 / contact</SectionLabel><span>OPEN TO THE RIGHT KIND OF TROUBLE</span></div>
+        <div className="contact-topline"><SectionLabel light>05 / contact</SectionLabel><span>OPEN TO THE RIGHT KIND OF TROUBLE</span></div>
         <div className="contact-body"><h2>Have a good idea?<br /><em>Let&apos;s give it a body</em></h2><ProtectedEmail className="solid-button solid-button--light" aria-label="Start a conversation by email">LET&apos;S TALK <Arrow /></ProtectedEmail></div>
         <div className="contact-links"><div><ProtectedEmail className="contact-email" showAddress /><a href="https://github.com/zhy0216" target="_blank" rel="noreferrer">GITHUB <Arrow /></a><a href="https://www.linkedin.com/in/im-yang/" target="_blank" rel="noreferrer">LINKEDIN <Arrow /></a><a href="#top">BACK TO TOP ↑</a></div></div>
         <div className="contact-foot"><span>© {new Date().getFullYear()} YANG</span><span>MADE WITH CURIOSITY + THREE.JS</span><span>SHANGHAI — CHINA</span></div>
@@ -798,7 +837,7 @@ export default function App() {
   const [activeSection, setActiveSection] = useState('about')
 
   useEffect(() => {
-    const sections = ['about', 'work', 'lab', 'contact'].map((id) => document.getElementById(id)).filter(Boolean)
+    const sections = ['about', 'work', 'blog', 'lab', 'contact'].map((id) => document.getElementById(id)).filter(Boolean)
     const observer = new IntersectionObserver((entries) => {
       const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)
       if (visible[0]) setActiveSection(visible[0].target.id)
@@ -818,5 +857,5 @@ export default function App() {
     return () => window.removeEventListener('hashchange', restore)
   }, [])
 
-  return <><Nav activeSection={activeSection} /><main><Hero /><About /><Work /><Lab /></main><Contact /><EndlessFooter /></>
+  return <><Nav activeSection={activeSection} /><main><Hero /><About /><Work /><Blog /><Lab /></main><Contact /><EndlessFooter /></>
 }

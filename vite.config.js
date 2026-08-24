@@ -12,6 +12,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(rootDir, 'index.html'),
+        blog: resolve(rootDir, 'blog/index.html'),
         zebra: resolve(rootDir, 'work/zebra/index.html'),
         starwreck: resolve(rootDir, 'work/starwreck/index.html'),
         betterTrigger: resolve(rootDir, 'work/better-trigger/index.html'),
