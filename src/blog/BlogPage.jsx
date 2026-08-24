@@ -82,6 +82,47 @@ function BlogIndex() {
 
 function BlogArticle({ post }) {
   const otherPosts = BLOG_POSTS.filter((candidate) => candidate.slug !== post.slug).slice(0, 3)
+  const articleRef = React.useRef(null)
+
+  React.useEffect(() => {
+    const article = articleRef.current
+    if (!article) return undefined
+
+    const handleCopy = async (event) => {
+      const button = event.target.closest('[data-copy-code]')
+      if (!button || !article.contains(button)) return
+
+      const code = button.closest('.markdown-code-block')?.querySelector('code')
+      if (!code) return
+
+      const originalLabel = button.dataset.originalLabel || button.textContent
+      button.dataset.originalLabel = originalLabel
+
+      try {
+        if (!globalThis.navigator?.clipboard?.writeText) throw new Error('Clipboard API unavailable')
+        await globalThis.navigator.clipboard.writeText(code.dataset.code ?? code.textContent.replace(/\n$/, ''))
+        button.textContent = 'COPIED'
+      } catch {
+        const selection = globalThis.getSelection?.()
+        if (selection && globalThis.document?.createRange) {
+          const range = globalThis.document.createRange()
+          range.selectNodeContents(code)
+          selection.removeAllRanges()
+          selection.addRange(range)
+          button.textContent = 'SELECTED'
+        } else {
+          button.textContent = 'COPY FAILED'
+        }
+      }
+
+      globalThis.setTimeout(() => {
+        button.textContent = originalLabel
+      }, 1600)
+    }
+
+    article.addEventListener('click', handleCopy)
+    return () => article.removeEventListener('click', handleCopy)
+  }, [post])
 
   return (
     <main className="blog-page blog-page--article">
@@ -100,7 +141,7 @@ function BlogArticle({ post }) {
 
       <section className="blog-article-body section-paper">
         <div className="blog-page-frame blog-article-layout">
-          <article className="markdown-body" dangerouslySetInnerHTML={{ __html: post.html }} />
+          <article ref={articleRef} className="markdown-body" dangerouslySetInnerHTML={{ __html: post.html }} />
           <aside className="blog-article-aside">
             <Label>KEEP READING</Label>
             {otherPosts.length ? <div>
