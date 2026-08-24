@@ -3,6 +3,8 @@ title: "PostgreSQL Speculative Insertion"
 date: "2026-08-24"
 excerpt: "The small, reversible write that makes INSERT ... ON CONFLICT safe under concurrency."
 tags: ["POSTGRESQL", "CONCURRENCY", "DATABASES"]
+background: "/blog/postgresql-speculative-insertion-bg.webp"
+backgroundPosition: "center center"
 ---
 
 One of the easiest ways to misunderstand `INSERT ... ON CONFLICT` is to imagine a `SELECT` followed by an `INSERT` or an `UPDATE`. PostgreSQL does something more careful: it makes a provisional write, asks the relevant unique index to arbitrate, and only then decides whether the row should become real.

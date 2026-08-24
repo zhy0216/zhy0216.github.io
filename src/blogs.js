@@ -161,6 +161,8 @@ function normalizePost(path, source) {
     date: attributes.date || '',
     excerpt: attributes.excerpt || attributes.description || '',
     tags,
+    backgroundImage: attributes.background || attributes.backgroundImage || '',
+    backgroundPosition: attributes.backgroundPosition || 'center',
     readingTime: attributes.readingTime || readingTime(body),
     body,
     html: marked.parse(body, { gfm: true, renderer: markdownRenderer }),

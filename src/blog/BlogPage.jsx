@@ -17,6 +17,16 @@ function postHref(slug) {
   return `/blog/?post=${encodeURIComponent(slug)}`
 }
 
+function postBackgroundStyle(post) {
+  if (!post.backgroundImage) return undefined
+
+  const image = `url("${post.backgroundImage}")`
+  return {
+    '--blog-article-image': image,
+    '--blog-background-position': post.backgroundPosition || 'center',
+  }
+}
+
 function BlogNav() {
   return (
     <header className="blog-nav">
@@ -83,6 +93,7 @@ function BlogIndex() {
 function BlogArticle({ post }) {
   const otherPosts = BLOG_POSTS.filter((candidate) => candidate.slug !== post.slug).slice(0, 3)
   const articleRef = React.useRef(null)
+  const hasBackground = Boolean(post.backgroundImage)
 
   React.useEffect(() => {
     const article = articleRef.current
@@ -125,7 +136,10 @@ function BlogArticle({ post }) {
   }, [post])
 
   return (
-    <main className="blog-page blog-page--article">
+    <main
+      className={`blog-page blog-page--article ${hasBackground ? 'blog-page--has-background' : ''}`}
+      style={postBackgroundStyle(post)}
+    >
       <section className="blog-article-hero section-dark">
         <div className="blog-page-frame">
           <a className="blog-back-link" href="/blog/"><Arrow diagonal={false} /> ALL NOTES</a>
