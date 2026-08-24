@@ -7,7 +7,7 @@ tags: ["POSTGRESQL", "CONCURRENCY", "DATABASES"]
 
 One of the easiest ways to misunderstand `INSERT ... ON CONFLICT` is to imagine a `SELECT` followed by an `INSERT` or an `UPDATE`. PostgreSQL does something more careful: it makes a provisional write, asks the relevant unique index to arbitrate, and only then decides whether the row should become real.
 
-That provisional write is called **speculative insertion**. It is an internal mechanism rather than a SQL command, and it has been part of PostgreSQL's native upsert implementation since PostgreSQL 9.5. The [9.5 release notes](https://www.postgresql.org/docs/9.5/release-9-5.html) and the [original implementation commit](https://github.com/postgres/postgres/commit/168d5805e4c08bed7b95d351bf097cff7c07dd65) are good historical starting points.
+That provisional write is called **speculative insertion**. It is an internal mechanism rather than a SQL command, and it has been part of PostgreSQL's native upsert implementation since PostgreSQL 9.5.
 
 I will use “speculative insertion” throughout this article. “Tentative insertion” is another reasonable translation; the important idea is that the tuple is real enough to participate in conflict detection, but still reversible.
 
@@ -33,7 +33,7 @@ DO UPDATE SET last_seen = EXCLUDED.last_seen;
 
 Now imagine two sessions executing that statement at the same time. A naive “check, then write” sequence has a race: both sessions can observe that the email is absent, and both can try to insert it. A regular `INSERT` resolves that race by raising a unique-violation error. That is correct, but it is not the insert-or-update behavior the application asked for.
 
-PostgreSQL's documentation describes `ON CONFLICT DO UPDATE` as an atomic insert-or-update outcome, provided there is no independent error. That guarantee is the user-facing result of the machinery underneath. ([`INSERT` and `ON CONFLICT`](https://www.postgresql.org/docs/18/sql-insert.html#SQL-ON-CONFLICT))
+`ON CONFLICT DO UPDATE` provides an atomic insert-or-update outcome, provided there is no independent error. That guarantee is the user-facing result of the machinery underneath.
 
 ## A useful mental model
 
@@ -58,7 +58,7 @@ non-conclusive pre-check
              └─ conflict → back it out, wake waiters, retry
 ```
 
-The pre-check is deliberately not the final authority. PostgreSQL has not acquired the locks needed to make that conclusion permanent, so another session can still race with it. The final arbitration happens as the index entries are inserted. The relevant control flow is visible in [`nodeModifyTable.c`](https://github.com/postgres/postgres/blob/REL_18_STABLE/src/backend/executor/nodeModifyTable.c) and [`execIndexing.c`](https://github.com/postgres/postgres/blob/REL_18_STABLE/src/backend/executor/execIndexing.c).
+The pre-check is deliberately not the final authority. PostgreSQL has not acquired the locks needed to make that conclusion permanent, so another session can still race with it. The final arbitration happens as the index entries are inserted.
 
 ## What happens inside PostgreSQL?
 
@@ -82,13 +82,13 @@ This is an important distinction: speculative insertion is not merely an in-memo
 
 The executor inserts the candidate's index entries. A unique B-tree index searches for equal keys and checks the corresponding heap tuples using transaction visibility information.
 
-If the equal key belongs to an uncommitted ordinary insertion, PostgreSQL waits for that transaction to finish and checks again. If the equal key belongs to another speculative insertion, it waits on that insertion's token instead. The [index uniqueness documentation](https://www.postgresql.org/docs/18/index-unique-checks.html) explains why the index access method must inspect the heap as part of the uniqueness check: under MVCC, physical duplicates can exist even though no valid snapshot may see two live rows with the same key.
+If the equal key belongs to an uncommitted ordinary insertion, PostgreSQL waits for that transaction to finish and checks again. If the equal key belongs to another speculative insertion, it waits on that insertion's token instead. The index access method must inspect the heap as part of the uniqueness check: under MVCC, physical duplicates can exist even though no valid snapshot may see two live rows with the same key.
 
 ### 5. PostgreSQL confirms or withdraws the tuple
 
 If no conflict is found, PostgreSQL confirms the speculative tuple. If a conflict is found, it marks the speculative tuple dead and backs it out without aborting the surrounding transaction. The executor then returns to the conflict path and either retries the insert or performs `DO NOTHING`/`DO UPDATE` against the conflicting row.
 
-The heap-level confirmation and abort paths are implemented in [`heapam.c`](https://github.com/postgres/postgres/blob/REL_18_STABLE/src/backend/access/heap/heapam.c). The source comments are unusually helpful here: they make clear that the tuple must be explicitly finished or aborted before the transaction can commit.
+The heap layer has dedicated confirmation and abort paths. The important rule is that the tuple must be explicitly finished or aborted before the transaction can commit.
 
 ## A two-session example
 
@@ -120,7 +120,7 @@ FROM pg_locks
 WHERE locktype = 'spectoken';
 ```
 
-The [PostgreSQL lock view](https://www.postgresql.org/docs/18/view-pg-locks.html) documents both the `spectoken` lock type and the fact that the token is shown in `objid`. These locks can be very short-lived, so not seeing one in a snapshot does not prove that no speculative wait occurred.
+The lock manager exposes both the `spectoken` lock type and the token in `objid`. These locks can be very short-lived, so not seeing one in a snapshot does not prove that no speculative wait occurred.
 
 The source also contains a livelock-prevention rule for simultaneous speculative conflicts in the exclusion-constraint path: one transaction backs out first while the other waits. That detail is mostly invisible to application code, but it is a good example of how much care is required to make “just retry” safe under concurrency.
 
@@ -130,7 +130,7 @@ There are a few boundaries worth keeping in view:
 
 - It does not make conflicts free. A real conflict may already have caused heap and index work before the candidate is withdrawn. The dead tuple is later reclaimed by normal cleanup, so a very hot key can still create write amplification and vacuum pressure.
 - It only arbitrates conflicts represented by the relevant unique or exclusion machinery. It does not protect arbitrary business predicates such as “there must be fewer than five active rows.”
-- In `READ COMMITTED`, `DO NOTHING` can skip a row whose inserting transaction was not visible to the statement snapshot, and `DO UPDATE` can update a conflicting row that was not conventionally visible to that snapshot. This behavior is documented in the [transaction isolation chapter](https://www.postgresql.org/docs/18/transaction-iso.html#XACT-READ-COMMITTED).
+- In `READ COMMITTED`, `DO NOTHING` can skip a row whose inserting transaction was not visible to the statement snapshot, and `DO UPDATE` can update a conflicting row that was not conventionally visible to that snapshot.
 - Repeatable-read and serializable transactions can still fail with a serialization error. Speculative insertion handles uniqueness races; it does not remove the application's responsibility to retry a transaction when the isolation level requires it.
 - `MERGE` is not a drop-in synonym. It is more general, but PostgreSQL documents different behavior for a concurrent unique-key insert; a `MERGE` may raise a unique-violation error instead of restarting the match.
 - If multiple input rows in one `INSERT ... ON CONFLICT DO UPDATE` target the same existing row, PostgreSQL raises a cardinality violation rather than updating that row repeatedly.
@@ -154,3 +154,5 @@ The internal field names and function names may evolve between PostgreSQL releas
 - [PostgreSQL 18: Transaction Isolation](https://www.postgresql.org/docs/18/transaction-iso.html#XACT-READ-COMMITTED)
 - [PostgreSQL 18: `pg_locks`](https://www.postgresql.org/docs/18/view-pg-locks.html)
 - [PostgreSQL source: speculative insertion executor path](https://github.com/postgres/postgres/blob/REL_18_STABLE/src/backend/executor/execIndexing.c)
+
+This article was completed with the help of Codex.
