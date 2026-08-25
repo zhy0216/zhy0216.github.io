@@ -1,0 +1,5 @@
+interface:
+  display_name: "Make Article"
+  short_description: "Create researched technical posts for this blog"
+  brand_color: "#0011E2"
+  default_prompt: "Use $make-article to turn this topic or research into a polished English article for the portfolio blog."
