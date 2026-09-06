@@ -418,11 +418,25 @@ function ProjectArt({ variant }) {
 
 function Nav({ activeSection }) {
   const [menuOpen, setMenuOpen] = useState(false)
+  const menuToggleRef = useRef(null)
+
+  useEffect(() => {
+    if (!menuOpen) return undefined
+    const closeOnEscape = (event) => {
+      if (event.key !== 'Escape') return
+      setMenuOpen(false)
+      menuToggleRef.current?.focus()
+    }
+    document.addEventListener('keydown', closeOnEscape)
+    return () => document.removeEventListener('keydown', closeOnEscape)
+  }, [menuOpen])
 
   const jumpTo = (id) => {
+    if (menuOpen) menuToggleRef.current?.focus()
     setMenuOpen(false)
     endlessLoopSuppressUntil = performance.now() + 4000
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    document.getElementById(id)?.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth' })
   }
 
   return (
@@ -439,16 +453,16 @@ function Nav({ activeSection }) {
           ))}
         </nav>
         <ProtectedEmail as="a" className="nav-contact" aria-label="Start a conversation by email">LET&apos;S TALK <Arrow /></ProtectedEmail>
-        <button className={`menu-toggle ${menuOpen ? 'is-open' : ''}`} onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu" aria-expanded={menuOpen}>
+        <button ref={menuToggleRef} className={`menu-toggle ${menuOpen ? 'is-open' : ''}`} onClick={() => setMenuOpen(!menuOpen)} aria-label={menuOpen ? 'Close menu' : 'Open menu'} aria-expanded={menuOpen} aria-controls="mobile-navigation">
           <span /><span />
         </button>
       </div>
-      <div className={`mobile-nav ${menuOpen ? 'is-open' : ''}`}>
+      <nav id="mobile-navigation" className={`mobile-nav ${menuOpen ? 'is-open' : ''}`} aria-label="Mobile navigation" inert={!menuOpen}>
         {NAV_ITEMS.map((item, index) => (
           <button key={item.id} onClick={() => jumpTo(item.id)}><span>0{index + 1}</span>{item.label}</button>
         ))}
         <ProtectedEmail as="a" className="nav-contact" aria-label="Start a conversation by email">LET&apos;S TALK <Arrow /></ProtectedEmail>
-      </div>
+      </nav>
     </header>
   )
 }
@@ -470,7 +484,7 @@ function Hero() {
         <div className="hero-copy">
           <SectionLabel light>// independent programmer</SectionLabel>
           <h1>I write software<br /><em>with a pulse</em></h1>
-          <p className="hero-intro"><span>Interfaces, experiments, and small pieces of the future</span></p>
+          <p className="hero-intro">Interfaces, experiments, and small pieces of the future</p>
           <div className="hero-actions">
             <SolidButton href="#work">EXPLORE SELECTED WORK</SolidButton>
             <button className="text-link text-link--light" onClick={scrollOneScreen}>SCROLL TO DISCOVER <Arrow diagonal={false} /></button>
@@ -581,11 +595,12 @@ function Blog() {
             <a className="text-link" href="/blog/">OPEN THE NOTEBOOK <Arrow /></a>
           </div>
         </div>
-        <div className="blog-home-grid">
+        <div className="blog-home-grid" style={{ '--post-columns': Math.max(1, visiblePosts.length) }}>
           {visiblePosts.map((post, index) => (
             <article key={post.slug} className="blog-home-card">
               <a href={`/blog/?post=${encodeURIComponent(post.slug)}`}>
                 <div className="blog-home-card-topline"><span>0{index + 1}</span><span>{formatBlogDate(post.date)}</span></div>
+                <span className="blog-card-reading-time">{post.readingTime}</span>
                 <h3>{post.title}</h3>
                 <p>{post.excerpt}</p>
                 <div className="blog-home-card-bottomline">
@@ -857,5 +872,5 @@ export default function App() {
     return () => window.removeEventListener('hashchange', restore)
   }, [])
 
-  return <><Nav activeSection={activeSection} /><main><Hero /><About /><Work /><Blog /><Lab /></main><Contact /><EndlessFooter /></>
+  return <><Nav activeSection={activeSection} /><main className="portfolio-home"><Hero /><About /><Work /><Blog /><Lab /></main><Contact /><EndlessFooter /></>
 }

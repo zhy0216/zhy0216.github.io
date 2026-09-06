@@ -187,7 +187,7 @@ function RepositoryFieldScene() {
 
 function FilterButton({ filter, active, count, onClick }) {
   return (
-    <button className={active ? 'is-active' : ''} onClick={onClick} type="button">
+    <button className={active ? 'is-active' : ''} onClick={onClick} type="button" aria-pressed={active}>
       <span>{filter.label}</span>
       <b>{String(count).padStart(2, '0')}</b>
     </button>

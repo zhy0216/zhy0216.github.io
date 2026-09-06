@@ -49,6 +49,7 @@ function BlogCard({ post, index }) {
           <span>{String(index + 1).padStart(2, '0')}</span>
           <span>{formatBlogDate(post.date)}</span>
         </div>
+        <span className="blog-card-reading-time">{post.readingTime}</span>
         <h3>{post.title}</h3>
         <p>{post.excerpt}</p>
         <div className="blog-card-bottomline">
@@ -68,7 +69,7 @@ function BlogIndex() {
           <div className="blog-hero-grid" aria-hidden="true" />
           <div className="blog-hero-copy">
             <Label light>03 / field notes</Label>
-            <h1>Notes from the<br /><em>unfinished edge</em></h1>
+            <h1><span>Notes from the</span><em>unfinished edge</em></h1>
             <p>Short dispatches about making software, following questions, and keeping the useful parts visible.</p>
           </div>
           <div className="blog-hero-meta"><span>ARTICLES</span><strong>{String(BLOG_POSTS.length).padStart(2, '0')}</strong></div>
@@ -79,9 +80,9 @@ function BlogIndex() {
         <div className="blog-page-frame">
           <div className="blog-index-heading">
             <Label>RECENT WRITING</Label>
-            <span>MARKDOWN / BUILT AT DEPLOY TIME</span>
+            <span>{String(BLOG_POSTS.length).padStart(2, '0')} {BLOG_POSTS.length === 1 ? 'ARTICLE' : 'ARTICLES'}{BLOG_POSTS[0]?.date && ` / LATEST ${formatBlogDate(BLOG_POSTS[0].date)}`}</span>
           </div>
-          <div className="blog-page-grid">
+          <div className="blog-page-grid" style={{ '--post-columns': BLOG_POSTS.length === 4 ? 2 : Math.max(1, Math.min(3, BLOG_POSTS.length)) }}>
             {BLOG_POSTS.map((post, index) => <BlogCard key={post.slug} post={post} index={index} />)}
           </div>
         </div>
