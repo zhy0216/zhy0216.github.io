@@ -139,3 +139,20 @@
 - 球体效果因 GPU 与 WebGL 可用性不同而变化；视觉依赖的层次应有 CSS 退化版本，不能通过提高粒子数或像素比弥补构图。
 - 一、二、三、四篇文章的验证使用临时数据或临时浏览器脚本，不能创建假文章进入交付。
 - 本计划属于明确视觉需求，不进入无 prompt 的全仓库探索模式；没有需要本轮排队的 roadmap 事项，也没有阻塞方案的开放问题。
+
+## 执行结果
+
+2026-09-06，按 `01 → 02` 串行完成，原分支为 `master`，起点为 `60a3e3058a7858fc10b601f838caea2b976b35d7`。两项任务均由 Herdr 在各自独立 worktree 中启动 Codex，显式使用 YOLO 模式；`agent: inherit` 继承 `default_agent: codex`，`medium` 均使用 `gpt-6-astra` / `xhigh`，与本次用户要求一致。
+
+| 任务 | 合入 commit | 归档文件 | 结果 |
+| --- | --- | --- | --- |
+| 01 · 首页与博客视觉精修 | `8d71fbfa35eebf10683f92067100e93351bb8d4c` | [01-editorial-visual-refinement.md](todos/done/01-editorial-visual-refinement.md) | 首页构图、排版、卡片、博客布局、阅读和键盘/手机状态已精修；交付八张 before 截图 |
+| 02 · 响应式与交互视觉复核 | `e0335c422b879614a2db71496cb39d656dc2a7e6` | [02-responsive-visual-review.md](todos/done/02-responsive-visual-review.md) | 独立浏览器复核完成，交付验证报告及 13 张精选 after；没有需要修改源码的本轮回归 |
+
+每项只保留一个任务 commit。两个任务均由原任务 agent 执行 `git rebase master`，没有冲突；协调器分别确认单一任务提交、干净 worktree、祖先关系和 diff 范围，亲自在对应 worktree 运行 `npm run build`、`git diff --check` 后执行快进合并。最终原分支再次构建通过：61 个模块、六个 HTML 入口，无构建警告；整体任务 diff 检查通过。仓库没有 lint、typecheck 或 test 脚本，未新增测试框架或依赖。
+
+真实浏览器证据见 [verification.md](verification.md)，包含八组同视口前后画面、四种视口的 32 个页面组合、48 个入口/动画与 WebGL 状态组合、文章数量变化、链接/键盘/触控/复制/筛选和文字对比取样。协调器另用 Chrome 独立复测了 24 个页面/视口组合：手机说明从 11.52px 提升到 16px，桌面为 18px；桌面博客标题由四行收为两行，当前两篇文章完整占据两列；未发现新增整页溢出或未捕获异常。
+
+本轮 todo 没有 blocked、deferred 或未完成项。已复现但不属本轮回归的 Sangota 窄屏整页溢出、Starwreck 手机标题裁切保留并在验证报告中记录；Safari、Firefox、实体设备/GPU 等未测范围也明确列出。没有将这些情况写成全站通过。
+
+两项任务的 Herdr workspace（`w52`、`w54`）、worktree 和本地任务分支均在成功合并后清理；自建浏览器与预览服务已关闭，无本轮执行资源残留。队列状态同步为已集成并清理。本轮没有 push、发布、创建 PR 或修改远端状态；执行记录另作本地收尾提交。

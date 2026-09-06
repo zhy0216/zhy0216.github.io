@@ -18,12 +18,12 @@ default_agent: codex
 | 文件 | 优先级 | 难度 | agent | 模型 / Codex 推理强度 | 说明 |
 | --- | --- | --- | --- | --- | --- |
 | [01-editorial-visual-refinement.md](done/01-editorial-visual-refinement.md) | P1 | medium | codex（inherit，继承宿主默认） | `gpt-6-astra` / `xhigh` | **已集成并清理**；提交 `8d71fbf`，统一首页与博客的构图、排版、卡片、文章布局及交互表现 |
-| [02-responsive-visual-review.md](done/02-responsive-visual-review.md) | P1 | medium | codex（inherit，继承宿主默认） | `gpt-6-astra` / `xhigh` | **实施完成，待集成**；独立浏览器复验及精选截图已交付，未发现需改源码的本轮回归 |
+| [02-responsive-visual-review.md](done/02-responsive-visual-review.md) | P1 | medium | codex（inherit，继承宿主默认） | `gpt-6-astra` / `xhigh` | **已集成并清理**；提交 `e0335c4`，独立浏览器复验及精选截图已交付，未发现需改源码的本轮回归 |
 
 ## 文件
 
 1. [01-editorial-visual-refinement.md](done/01-editorial-visual-refinement.md) — **已集成并清理**，提交 `8d71fbfa35eebf10683f92067100e93351bb8d4c`；依赖：无。
-2. [02-responsive-visual-review.md](done/02-responsive-visual-review.md) — **实施完成并归档，待协调器集成**；依赖 01-editorial-visual-refinement；从 `8d71fbf` 完成独立复验。
+2. [02-responsive-visual-review.md](done/02-responsive-visual-review.md) — **已集成并清理**，提交 `e0335c422b879614a2db71496cb39d656dc2a7e6`；依赖 01-editorial-visual-refinement；从 `8d71fbf` 完成独立复验。
 
 验证交付：[verification.md](../verification.md)。Sangota 窄屏溢出和 Starwreck 手机标题裁切已独立复现为基线问题，报告明确记录；没有本轮集成 blocker。
 
