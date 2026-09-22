@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ProtectedEmail from '../ProtectedEmail.jsx'
+import { STEAM_URL } from './links.js'
 
 const GITHUB_URL = 'https://github.com/zhy0216/sangota'
 
@@ -7,7 +8,7 @@ const PRINCIPLES = [
   {
     number: '01',
     title: 'Choose your general',
-    text: '关羽, 赵云, and the unfinished 诸葛亮 do not just change the portrait. Each one asks for a different hand, rhythm, and way through the war.',
+    text: '关羽, 赵云, and 诸葛亮 do not just change the portrait. Each one asks for a different hand, rhythm, and way through the war.',
     detail: 'GUAN YU / ZHAO YUN / ZHUGE LIANG',
   },
   {
@@ -49,7 +50,7 @@ const DECISIONS = [
   {
     number: 'B',
     title: 'The hero changes the hand',
-    text: '关羽 wants weight behind one decisive blow. 赵云 wants a chain that keeps moving. 诸葛亮 is still being tuned, waiting behind a visible 制作中 mark.',
+    text: '关羽 wants weight behind one decisive blow. 赵云 wants a chain that keeps moving. 诸葛亮 builds his advantage through stratagems and formations.',
   },
   {
     number: 'C',
@@ -154,16 +155,16 @@ function SangotaPage() {
               <div className="sg-title-lockup"><h1>SANGOTA</h1></div>
               <p className="sg-hero-lede">三国题材的 roguelike 卡牌构筑。<span>每一次选路，都会重写下一场战斗。</span></p>
               <div className="sg-hero-actions">
-                <CaseButton href={GITHUB_URL}>VIEW THE SOURCE</CaseButton>
-                <TextLink href="#premise" light>UNPACK THE RUN</TextLink>
+                <CaseButton href={STEAM_URL}>WISHLIST ON STEAM</CaseButton>
+                <TextLink href={GITHUB_URL} light external>VIEW THE SOURCE</TextLink>
               </div>
             </div>
             <div className="sg-hero-art" aria-hidden="true" />
             <div className="sg-hero-meta">
               <div><span>PROJECT</span><strong>PERSONAL GAME<br />THREE KINGDOMS</strong></div>
               <div><span>STACK</span><strong>PHASER 3<br />TYPESCRIPT<br />VITE</strong></div>
-              <div><span>STATE</span><strong>IN ACTIVE<br />DEVELOPMENT</strong></div>
-              <div><span>ROSTER</span><strong>2 PLAYABLE<br />1 IN PROGRESS</strong></div>
+              <div><span>STATE</span><strong>STEAM PAGE LIVE<br />COMING SOON</strong></div>
+              <div><span>ROSTER</span><strong>3 HEROES<br />IN THE BASE GAME</strong></div>
             </div>
           </div>
           <div className="sg-frame sg-hero-foot"><span>PROJECT / 04</span><span className="sg-rule" /><span>SCROLL TO UNPACK ↓</span></div>
@@ -252,7 +253,7 @@ function SangotaPage() {
             <div className="sg-inventory">
               <div className="sg-inventory-copy"><h3>There is always another card</h3><p>Every run grows through small discoveries: a new weapon, a relic with a catch, a potion saved for the wrong-looking fight, an enemy that changes the plan.</p><span>THE CURRENT CONTENT PASS / STILL GROWING</span></div>
               <div className="sg-inventory-list">
-                {INVENTORY.map(([value, label]) => <div key={label}><strong>{value}</strong><span>{label}</span><i style={{ '--bar': `${Math.min(100, Number(value) / 1.52)}%` }} /></div>)}
+                {INVENTORY.map(([value, label]) => <div key={label}><strong>{value}</strong><span>{label}</span><i style={{ '--bar': Math.min(1, Number(value) / 152) }} /></div>)}
               </div>
             </div>
           </div>
@@ -271,9 +272,9 @@ function SangotaPage() {
           <div className="sg-outro-map" />
           <div className="sg-frame sg-outro-inner">
             <CaseLabel light>07 / current state</CaseLabel>
-            <h2>A living prototype<br /><span>with a road ahead</span></h2>
-            <p>Sangota is an active personal game build. The core journey is playable, two heroes are ready to take into the fog, and 诸葛亮 remains visibly 制作中 while his deck finds its shape.</p>
-            <div className="sg-outro-actions"><CaseButton href={GITHUB_URL}>FOLLOW THE BUILD</CaseButton><CaseButton href="/#work" light external={false}>BACK TO ALL WORK</CaseButton></div>
+            <h2>The next stop<br /><span>is Steam</span></h2>
+            <p>Sangota is coming to Steam as Three Kingdoms: Spire of War. The store page is live, with Guan Yu, Zhao Yun, and Zhuge Liang in the base game across a four-act campaign. Wishlist it to follow the road to release.</p>
+            <div className="sg-outro-actions"><CaseButton href={STEAM_URL}>WISHLIST ON STEAM</CaseButton><CaseButton href="/#work" light external={false}>BACK TO ALL WORK</CaseButton></div>
           </div>
         </section>
       </main>

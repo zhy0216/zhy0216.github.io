@@ -4,6 +4,7 @@ import RepositoryField from './RepositoryField.jsx'
 import BetterTriggerMark from './better-trigger/BetterTriggerMark.jsx'
 import ProtectedEmail from './ProtectedEmail.jsx'
 import { BLOG_POSTS, formatBlogDate } from './blogs.js'
+import { STEAM_URL } from './sangota/links.js'
 
 const NAV_ITEMS = [
   { id: 'about', label: 'About' },
@@ -47,9 +48,10 @@ const PROJECTS = [
     title: 'SANGOTA',
     type: 'THREE KINGDOMS ROGUELIKE · 2026',
     description: 'Choose a general, read the road, and make the next fight yours',
-    tags: ['Phaser 3', 'TypeScript', 'Game systems'],
+    tags: ['Phaser 3', 'TypeScript', 'Steam · Coming soon'],
     variant: 'sangota',
     href: '/work/sangota/',
+    steamHref: STEAM_URL,
   },
 ]
 
@@ -550,7 +552,13 @@ function Work() {
                 <div className="project-topline"><span>{project.number}</span><span>{project.type}</span></div>
                 <h3>{project.title}</h3>
                 <p>{project.description}</p>
-                <div className="project-bottom"><div>{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div><a href={project.href} aria-label={`View ${project.title}`}>VIEW PROJECT <Arrow /></a></div>
+                <div className="project-bottom">
+                  <div className="project-tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
+                  <div className="project-links">
+                    <a href={project.href} aria-label={`View ${project.title}`}>VIEW PROJECT <Arrow /></a>
+                    {project.steamHref && <a href={project.steamHref} target="_blank" rel="noreferrer" aria-label={`Wishlist ${project.title} on Steam`}>WISHLIST ON STEAM <Arrow /></a>}
+                  </div>
+                </div>
               </div>
             </article>
           ))}
