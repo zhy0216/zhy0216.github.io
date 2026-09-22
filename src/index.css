@@ -127,8 +127,9 @@ button { appearance: none; border: 0; background: transparent; font: inherit; pa
 .project-card:is(:hover, :focus-within) { background: #1a1c22; }
 .project-card--standard .project-art { min-height: 310px; }
 .project-art::after { content: ''; position: absolute; inset: 0; border: 1px solid rgba(255,255,255,.08); pointer-events: none; }
-.project-info { display: flex; flex-direction: column; min-height: 340px; padding: 32px 7%; }
+.project-info { display: flex; flex-direction: column; min-width: 0; min-height: 340px; padding: 32px 7%; }
 .project-card--featured .project-info { min-height: 380px; padding: 38px 8%; }
+.project-info .steam-widget { margin-top: 26px; }
 .project-topline { display: flex; justify-content: space-between; gap: 18px; color: var(--text-light); font: 400 10px/1.6 var(--mono); letter-spacing: .06em; }
 .project-topline span:first-child { color: var(--blue-bright); }
 .project-topline span:last-child { text-align: right; }

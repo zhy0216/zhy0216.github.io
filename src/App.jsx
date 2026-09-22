@@ -5,6 +5,7 @@ import BetterTriggerMark from './better-trigger/BetterTriggerMark.jsx'
 import ProtectedEmail from './ProtectedEmail.jsx'
 import { BLOG_POSTS, formatBlogDate } from './blogs.js'
 import { STEAM_URL } from './sangota/links.js'
+import SteamWidget from './sangota/SteamWidget.jsx'
 
 const NAV_ITEMS = [
   { id: 'about', label: 'About' },
@@ -552,6 +553,7 @@ function Work() {
                 <div className="project-topline"><span>{project.number}</span><span>{project.type}</span></div>
                 <h3>{project.title}</h3>
                 <p>{project.description}</p>
+                {project.steamHref && <SteamWidget />}
                 <div className="project-bottom">
                   <div className="project-tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
                   <div className="project-links">

@@ -1,0 +1,18 @@
+.steam-widget {
+  min-width: 0;
+  width: 100%;
+  max-width: 646px;
+  height: calc(190px * var(--steam-widget-scale));
+  flex-shrink: 0;
+}
+
+/* Steam's purchase row needs a minimum width inside its cross-origin frame. */
+.steam-widget iframe {
+  display: block;
+  width: 100%;
+  min-width: var(--steam-widget-min-width);
+  height: 190px;
+  border: 0;
+  transform: scale(var(--steam-widget-scale));
+  transform-origin: top left;
+}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ProtectedEmail from '../ProtectedEmail.jsx'
 import { STEAM_URL } from './links.js'
+import SteamWidget from './SteamWidget.jsx'
 
 const GITHUB_URL = 'https://github.com/zhy0216/sangota'
 
@@ -274,6 +275,7 @@ function SangotaPage() {
             <CaseLabel light>07 / current state</CaseLabel>
             <h2>The next stop<br /><span>is Steam</span></h2>
             <p>Sangota is coming to Steam as Three Kingdoms: Spire of War. The store page is live, with Guan Yu, Zhao Yun, and Zhuge Liang in the base game across a four-act campaign. Wishlist it to follow the road to release.</p>
+            <SteamWidget />
             <div className="sg-outro-actions"><CaseButton href={STEAM_URL}>WISHLIST ON STEAM</CaseButton><CaseButton href="/#work" light external={false}>BACK TO ALL WORK</CaseButton></div>
           </div>
         </section>
